@@ -11,6 +11,8 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://d8j0ntlcm91z4.cloudfront.net">
+<link rel="dns-prefetch" href="https://d8j0ntlcm91z4.cloudfront.net">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100;200;300;400;600&display=swap" rel="stylesheet">
@@ -28,8 +30,6 @@ body{background:#000;color:var(--ink);font-family:var(--sans);overflow-x:hidden;
 a{color:inherit;text-decoration:none}
 video{display:block}
 ::selection{background:#fff;color:#000}
-html.lenis, html.lenis body{height:auto}
-.lenis.lenis-smooth{scroll-behavior:auto!important}
 
 /* grain */
 .grain{position:fixed;inset:-50%;z-index:70;pointer-events:none;opacity:.038;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");animation:gr 9s steps(10) infinite}
@@ -204,6 +204,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 </style>
 </head>
 <body>
+<noscript><div style="padding:16px;text-align:center;background:#111;color:#fff;font-size:14px">לחוויה המלאה יש להפעיל JavaScript</div></noscript>
 <div class="grain"></div>
 <div class="vig"></div>
 
@@ -264,8 +265,8 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     <p class="floor-sub">אותן אנימציות, על המסך של האולם, ברגע שכולם עולים לרקוד.</p>
   </div>
   <div class="fgrid rv d1">
-    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_205654_c36df9a6-abcb-411e-97f3-6ea80e4ed807.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_210449_e9389f53-9883-4d2c-906c-0149c11fca55.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_205654_c36df9a6-abcb-411e-97f3-6ea80e4ed807.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_210449_e9389f53-9883-4d2c-906c-0149c11fca55.mp4" muted loop playsinline preload="none"></video></div>
   </div>
 </section>
 
@@ -276,7 +277,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 </div>
 
 <section class="world">
-  <video class="bgv plx" src="/videos/clip3.mp4" muted loop playsinline preload="metadata"></video>
+  <video class="bgv plx" src="/videos/clip3.mp4" muted loop playsinline preload="none"></video>
   <div class="shade"></div>
   <div class="content rv">
     <div class="idx">Signature</div>
@@ -296,9 +297,9 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     <h2 class="sec-title">עוד עולמות לרחבה</h2>
   </div>
   <div class="mgrid rv d1">
-    <a class="mtile" href="#contact"><video src="/videos/clip2.mp4" muted loop playsinline preload="metadata"></video><span>Crimson</span></a>
-    <a class="mtile" href="#contact"><video src="/videos/clip5.mp4" muted loop playsinline preload="metadata"></video><span>Teal</span></a>
-    <a class="mtile wide" href="#contact"><video src="/videos/clip4.mp4" muted loop playsinline preload="metadata"></video><span>Indigo</span></a>
+    <a class="mtile" href="#contact"><video src="/videos/clip2.mp4" muted loop playsinline preload="none"></video><span>Crimson</span></a>
+    <a class="mtile" href="#contact"><video src="/videos/clip5.mp4" muted loop playsinline preload="none"></video><span>Teal</span></a>
+    <a class="mtile wide" href="#contact"><video src="/videos/clip4.mp4" muted loop playsinline preload="none"></video><span>Indigo</span></a>
   </div>
   <p class="mosaic-note rv d2">כל עולם נבנה בהתאמה אישית לחתונה שלכם, לצבעים ולאווירה שאתם רוצים על הרחבה</p>
 </div>
@@ -370,27 +371,10 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2.05 22l5.3-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.1c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.26 8.26 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.23 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg>
 </a>
 
-<script src="/js/lenis.min.js"></script>
 <script src="/js/three.min.js"></script>
 <script>
 (function(){
   'use strict';
-
-  // ---------- Lenis smooth scrolling ----------
-  var lenis = null;
-  if (false && window.Lenis) {
-    lenis = new Lenis({ duration: 1.35, smoothWheel: true, easing: function(t){ return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
-    function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-    document.querySelectorAll('nav a, .logo').forEach(function(a){
-      a.addEventListener('click', function(ev){
-        var href = a.getAttribute('href');
-        if (href && href.charAt(0) === '#' && href.length > 1 && document.querySelector(href)) {
-          ev.preventDefault(); lenis.scrollTo(href, {offset: 0});
-        }
-      });
-    });
-  }
 
   // ---------- reveal: fade + blur + slide ----------
   var io = new IntersectionObserver(function(es){
@@ -398,23 +382,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   }, {threshold:.05});
   document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
 
-  // ---------- video parallax + play/pause management ----------
-  var worlds = Array.prototype.slice.call(document.querySelectorAll('.world'));
-  function parallax(){
-    var vh = innerHeight;
-    worlds.forEach(function(sec){
-      var r = sec.getBoundingClientRect();
-      if (r.bottom < -80 || r.top > vh + 80) return;
-      var p = (r.top + r.height/2 - vh/2) / (vh + r.height); // -0.5 .. 0.5
-      var v = sec.querySelector('.plx');
-      if (v) v.style.transform = '';
-      var c = sec.querySelector('.content');
-      if (c) c.style.transform = '';
-    });
-  }
-  if (lenis) { lenis.on('scroll', parallax); } else { addEventListener('scroll', parallax, {passive:true}); }
-  parallax();
-
+  // ---------- video play/pause management ----------
   var vio = new IntersectionObserver(function(es){
     es.forEach(function(e){
       var v = e.target;
@@ -571,7 +539,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       var p = 1 - (r.top + r.height) / (innerHeight + r.height); // 0..1 through section
       scrollTurn = p * 2.2;
     }
-    if (lenis) lenis.on('scroll', onScroll); else addEventListener('scroll', onScroll, {passive:true});
+    addEventListener('scroll', onScroll, {passive:true});
     onScroll();
     var clock = new THREE.Clock();
     function frame(){
@@ -599,8 +567,8 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     var burger = document.getElementById('burger');
     var close = document.getElementById('mclose');
     if (!menu || !burger) return;
-    function openM(){ menu.classList.add('open'); if (lenis) lenis.stop(); }
-    function closeM(){ menu.classList.remove('open'); if (lenis) lenis.start(); }
+    function openM(){ menu.classList.add('open'); document.body.style.overflow='hidden'; }
+    function closeM(){ menu.classList.remove('open'); document.body.style.overflow=''; }
     burger.addEventListener('click', openM);
     close.addEventListener('click', closeM);
     menu.querySelectorAll('a').forEach(function(a){
@@ -610,7 +578,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
         if (href && href.charAt(0) === '#' && document.querySelector(href)) {
           ev.preventDefault();
           setTimeout(function(){
-            if (lenis) lenis.scrollTo(href); else document.querySelector(href).scrollIntoView();
+            document.querySelector(href).scrollIntoView({behavior:'smooth'});
           }, 60);
         }
       });
@@ -658,7 +626,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     var n = document.getElementById('fName').value.trim();
     var p = document.getElementById('fPhone').value.trim();
     var t = document.getElementById('fType').value || '';
-    if (!n || !p) return;
+    if (!n || p.replace(/\D/g,'').length < 9) { alert('נא למלא שם וטלפון תקין'); return; }
     var original = btn ? btn.textContent : '';
     if (btn) { btn.disabled = true; btn.textContent = 'שולח...'; }
     fetch('/api/lead', {
