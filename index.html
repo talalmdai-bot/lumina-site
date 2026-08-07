@@ -231,7 +231,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 <!-- HERO -->
 <section class="hero">
   <video class="bgv" id="heroA" src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_6a301df1-0118-47e5-bc51-252a614168a4.mp4" muted loop playsinline autoplay preload="auto"></video>
-  <video class="bgv hid" id="heroB" muted loop playsinline preload="none"></video>
+  <video class="bgv hid" id="heroB" muted loop playsinline autoplay preload="auto"></video>
   <div class="shade"></div>
   <canvas id="dust"></canvas>
   <div class="hero-inner">
@@ -265,8 +265,8 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     <p class="floor-sub">אותן אנימציות, על המסך של האולם, ברגע שכולם עולים לרקוד.</p>
   </div>
   <div class="fgrid rv d1">
-    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_205654_c36df9a6-abcb-411e-97f3-6ea80e4ed807.mp4" muted loop playsinline preload="none"></video></div>
-    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_210449_e9389f53-9883-4d2c-906c-0149c11fca55.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_205654_c36df9a6-abcb-411e-97f3-6ea80e4ed807.mp4" muted loop playsinline autoplay preload="auto"></video></div>
+    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_210449_e9389f53-9883-4d2c-906c-0149c11fca55.mp4" muted loop playsinline autoplay preload="auto"></video></div>
   </div>
 </section>
 
@@ -277,7 +277,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 </div>
 
 <section class="world">
-  <video class="bgv plx" src="/videos/clip3.mp4" muted loop playsinline preload="none"></video>
+  <video class="bgv plx" src="/videos/clip3.mp4" muted loop playsinline autoplay preload="auto"></video>
   <div class="shade"></div>
   <div class="content rv">
     <div class="idx">Signature</div>
@@ -297,9 +297,9 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     <h2 class="sec-title">עוד עולמות לרחבה</h2>
   </div>
   <div class="mgrid rv d1">
-    <a class="mtile" href="#contact"><video src="/videos/clip2.mp4" muted loop playsinline preload="none"></video><span>Crimson</span></a>
-    <a class="mtile" href="#contact"><video src="/videos/clip5.mp4" muted loop playsinline preload="none"></video><span>Teal</span></a>
-    <a class="mtile wide" href="#contact"><video src="/videos/clip4.mp4" muted loop playsinline preload="none"></video><span>Indigo</span></a>
+    <a class="mtile" href="#contact"><video src="/videos/clip2.mp4" muted loop playsinline autoplay preload="auto"></video><span>Crimson</span></a>
+    <a class="mtile" href="#contact"><video src="/videos/clip5.mp4" muted loop playsinline autoplay preload="auto"></video><span>Teal</span></a>
+    <a class="mtile wide" href="#contact"><video src="/videos/clip4.mp4" muted loop playsinline autoplay preload="auto"></video><span>Indigo</span></a>
   </div>
   <p class="mosaic-note rv d2">כל עולם נבנה בהתאמה אישית לחתונה שלכם, לצבעים ולאווירה שאתם רוצים על הרחבה</p>
 </div>
@@ -387,179 +387,25 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     es.forEach(function(e){
       var v = e.target;
       if (e.isIntersecting) { v.muted = true; v.play().catch(function(){}); }
-      else { v.pause(); }
     });
-  }, {threshold:.08});
-  document.querySelectorAll('video').forEach(function(v){ v.muted = true; vio.observe(v); });
+  }, {rootMargin: '600px 0px', threshold: 0});
+  document.querySelectorAll('video').forEach(function(v){
+    v.muted = true;
+    v.setAttribute('playsinline','');
+    vio.observe(v);
+    v.play().catch(function(){});
+  });
   function kickVideos(){
     document.querySelectorAll('video').forEach(function(v){
-      var r = v.getBoundingClientRect();
-      if (r.bottom > 0 && r.top < innerHeight && v.paused) { v.muted = true; v.play().catch(function(){}); }
+      if (v.paused) { v.muted = true; v.play().catch(function(){}); }
     });
   }
   addEventListener('pointerdown', kickVideos, {passive:true});
   addEventListener('touchstart', kickVideos, {passive:true});
+  addEventListener('scroll', kickVideos, {passive:true, once:true});
   addEventListener('keydown', kickVideos);
-  setTimeout(kickVideos, 600); setTimeout(kickVideos, 2500);
-
-  if (!window.THREE) return;
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var mx=0,my=0,tx=0,ty=0;
-  addEventListener('pointermove', function(e){
-    tx = e.clientX/innerWidth - .5;
-    ty = e.clientY/innerHeight - .5;
-  }, {passive:true});
-  addEventListener('deviceorientation', function(e){
-    if (e.gamma !== null && e.gamma !== undefined) {
-      tx = Math.max(-.5, Math.min(.5, e.gamma/70));
-      ty = Math.max(-.5, Math.min(.5, ((e.beta||45)-45)/100));
-    }
-  }, {passive:true});
-  (function(){
-    var el = document.getElementById('heroTilt');
-    if (!el) return;
-    var rx=0, ry=0;
-    function tick(){
-      rx += ((-ty*7) - rx)*.06;
-      ry += ((tx*9) - ry)*.06;
-      el.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
-      requestAnimationFrame(tick);
-    }
-    if (!reduce) tick();
-  })();
-
-  function fit(renderer, canvas, cam){
-    var w = canvas.clientWidth, h = canvas.clientHeight;
-    var dpr = Math.min(devicePixelRatio||1, 1.75);
-    if (canvas.width !== Math.floor(w*dpr) || canvas.height !== Math.floor(h*dpr)) {
-      renderer.setPixelRatio(dpr);
-      renderer.setSize(w, h, false);
-      cam.aspect = w/h; cam.updateProjectionMatrix();
-    }
-  }
-
-  // ---------- HERO: spatial dust field ----------
-  (function(){
-    var canvas = document.getElementById('dust');
-    var renderer;
-    try { renderer = new THREE.WebGLRenderer({canvas:canvas, alpha:true, antialias:false}); } catch(err){ return; }
-    var scene = new THREE.Scene();
-    var cam = new THREE.PerspectiveCamera(60, 1, .1, 60);
-    cam.position.z = 10;
-    var mobile = Math.min(innerWidth, innerHeight) < 700;
-    var N = mobile ? 480 : 1100;
-    var pos = new Float32Array(N*3), spd = new Float32Array(N), zsp = new Float32Array(N);
-    for (var i=0;i<N;i++){
-      pos[i*3]   = (Math.random()-.5)*30;
-      pos[i*3+1] = (Math.random()-.5)*18;
-      pos[i*3+2] = Math.random()*22 - 13;
-      spd[i] = .1 + Math.random()*.45;
-      zsp[i] = .25 + Math.random()*.9;
-    }
-    var geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
-    var mat = new THREE.PointsMaterial({color:0xbfd4ff, size:.05, transparent:true, opacity:.65, blending:THREE.AdditiveBlending, depthWrite:false, sizeAttenuation:true});
-    var pts = new THREE.Points(geo, mat);
-    scene.add(pts);
-    var clock = new THREE.Clock();
-    function frame(){
-      fit(renderer, canvas, cam);
-      var dt = Math.min(clock.getDelta(), .05);
-      var arr = geo.attributes.position.array;
-      for (var k=0;k<N;k++){
-        arr[k*3+1] += spd[k]*dt;
-        arr[k*3+2] += zsp[k]*dt;
-        if (arr[k*3+1] > 9) arr[k*3+1] = -9;
-        if (arr[k*3+2] > 9) { arr[k*3+2] = -13; arr[k*3] = (Math.random()-.5)*30; arr[k*3+1] = (Math.random()-.5)*18; }
-      }
-      geo.attributes.position.needsUpdate = true;
-      cam.position.x += ((tx*1.6) - cam.position.x)*.04;
-      cam.position.y += ((-ty*1.0) - cam.position.y)*.04;
-      cam.lookAt(0,0,0);
-      renderer.render(scene, cam);
-      if (!reduce) requestAnimationFrame(frame);
-    }
-    frame();
-  })();
-
-  // ---------- ORB: particle sphere, scroll-reactive ----------
-  (function(){
-    var canvas = document.getElementById('orb');
-    var sec = document.querySelector('.orb-sec');
-    var renderer;
-    try { renderer = new THREE.WebGLRenderer({canvas:canvas, alpha:true, antialias:false}); } catch(err){ return; }
-    var scene = new THREE.Scene();
-    var cam = new THREE.PerspectiveCamera(52, 1, .1, 100);
-    cam.position.z = 6.3;
-    var mobile = Math.min(innerWidth, innerHeight) < 700;
-    var N = mobile ? 9000 : 18000;
-    var R = 2.05;
-    var pos = new Float32Array(N*3), col = new Float32Array(N*3), seed = new Float32Array(N);
-    var cV = new THREE.Color(0x8b7bff), cI = new THREE.Color(0x6fd6ff), cD = new THREE.Color(0x3b2fa0), cW = new THREE.Color(0xf2f2ff);
-    for (var i=0;i<N;i++){
-      var y = 1 - (i/(N-1))*2;
-      var rad = Math.sqrt(Math.max(0, 1-y*y));
-      var th = 2.39996323*i;
-      var jit = 1 + (Math.random()-.5)*.05;
-      pos[i*3]=Math.cos(th)*rad*R*jit; pos[i*3+1]=y*R*jit; pos[i*3+2]=Math.sin(th)*rad*R*jit;
-      var m = Math.random(), c;
-      if (m<.58) c = cV.clone().lerp(cD, Math.random()*.6);
-      else if (m<.9) c = cI.clone().lerp(cV, Math.random());
-      else c = cW;
-      col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b;
-      seed[i]=Math.random()*6.283;
-    }
-    var geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
-    geo.setAttribute('color', new THREE.BufferAttribute(col,3));
-    var base = pos.slice();
-    var g = new THREE.Group();
-    scene.add(g);
-    g.position.set(mobile ? 0 : -1.75, mobile ? .85 : 0, 0);
-    if (mobile) g.scale.setScalar(.78);
-    var orb = new THREE.Points(geo, new THREE.PointsMaterial({size: mobile? .03 : .023, vertexColors:true, transparent:true, opacity:.92, blending:THREE.AdditiveBlending, depthWrite:false, sizeAttenuation:true}));
-    g.add(orb);
-    var core = new THREE.LineSegments(
-      new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(1.02, 1)),
-      new THREE.LineBasicMaterial({color:0x5a48e0, transparent:true, opacity:.3})
-    );
-    g.add(core);
-    var H = mobile? 500 : 1300;
-    var hp = new Float32Array(H*3);
-    for (var j=0;j<H;j++){
-      var v = new THREE.Vector3(Math.random()-.5, Math.random()-.5, Math.random()-.5).normalize().multiplyScalar(R*1.3 + Math.random()*2.8);
-      hp[j*3]=v.x; hp[j*3+1]=v.y; hp[j*3+2]=v.z;
-    }
-    var hgeo = new THREE.BufferGeometry();
-    hgeo.setAttribute('position', new THREE.BufferAttribute(hp,3));
-    g.add(new THREE.Points(hgeo, new THREE.PointsMaterial({size:.02, color:0x6fd6ff, transparent:true, opacity:.4, blending:THREE.AdditiveBlending, depthWrite:false})));
-    var scrollTurn = 0;
-    function onScroll(){
-      var r = sec.getBoundingClientRect();
-      var p = 1 - (r.top + r.height) / (innerHeight + r.height); // 0..1 through section
-      scrollTurn = p * 2.2;
-    }
-    addEventListener('scroll', onScroll, {passive:true});
-    onScroll();
-    var clock = new THREE.Clock();
-    function frame(){
-      fit(renderer, canvas, cam);
-      var t = clock.getElapsedTime();
-      mx += (tx-mx)*.045; my += (ty-my)*.045;
-      orb.rotation.y = t*.34 + scrollTurn + mx*.8;
-      orb.rotation.x = Math.sin(t*.35)*.1 + my*.5;
-      core.rotation.y = -t*.5 - scrollTurn*.6; core.rotation.x = t*.28;
-      var arr = geo.attributes.position.array;
-      for (var k=0;k<N;k++){
-        var s = 1 + Math.sin(t*2 + seed[k])*.022;
-        arr[k*3]=base[k*3]*s; arr[k*3+1]=base[k*3+1]*s; arr[k*3+2]=base[k*3+2]*s;
-      }
-      geo.attributes.position.needsUpdate = true;
-      renderer.render(scene, cam);
-      if (!reduce) requestAnimationFrame(frame);
-    }
-    frame();
-  })();
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) kickVideos(); });
+  setTimeout(kickVideos, 400); setTimeout(kickVideos, 1500); setTimeout(kickVideos, 4000);
 
   // ---------- mobile menu ----------
   (function(){
