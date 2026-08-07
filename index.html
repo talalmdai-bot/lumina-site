@@ -654,11 +654,24 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   // ---------- lead form ----------
   document.getElementById('leadForm').addEventListener('submit', function(ev){
     ev.preventDefault();
+    var btn = document.querySelector('#leadForm .btn');
     var n = document.getElementById('fName').value.trim();
     var p = document.getElementById('fPhone').value.trim();
     var t = document.getElementById('fType').value || '';
-    var msg = 'היי, אשמח להצעת מחיר לויזואלים.' + '\n' + 'שם: ' + n + '\n' + 'טלפון: ' + p + (t ? '\n' + 'סוג אירוע: ' + t : '');
-    open('https://wa.me/972500000000?text=' + encodeURIComponent(msg), '_blank');
+    if (!n || !p) return;
+    var original = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'שולח...'; }
+    fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: n, phone: p, type: t })
+    }).catch(function(){}).then(function(){
+      if (btn) { btn.textContent = 'קיבלנו! חוזרים אליכם'; }
+      var note = document.querySelector('.note');
+      if (note) { note.textContent = 'הפרטים נשלחו. נחזור אליכם תוך 24 שעות.'; note.style.color = '#c9beff'; }
+      var msg = 'היי, אשמח להצעת מחיר לאנימציות לחתונה.' + '\n' + 'שם: ' + n + '\n' + 'טלפון: ' + p + (t ? '\n' + 'סוג אירוע: ' + t : '');
+      open('https://wa.me/972500000000?text=' + encodeURIComponent(msg), '_blank');
+    });
   });
 })();
 </script>
