@@ -152,6 +152,31 @@ nav a:hover{opacity:1}
 .note{margin-top:16px;color:var(--faint);font-size:12px;letter-spacing:.14em;font-weight:300}
 @media (max-width:600px){.row2{grid-template-columns:1fr}}
 
+
+/* ---------- mosaic ---------- */
+.mosaic-sec{max-width:1280px;margin:0 auto;padding:140px 40px}
+.mosaic-head{margin-bottom:44px}
+.mgrid{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.mtile{position:relative;display:block;overflow:hidden;aspect-ratio:16/9;border:1px solid rgba(255,255,255,.1)}
+.mtile.wide{grid-column:span 2;aspect-ratio:21/8}
+.mtile video{width:100%;height:100%;object-fit:cover;transition:transform .8s ease}
+.mtile:hover video{transform:scale(1.05)}
+.mtile span{position:absolute;bottom:16px;right:20px;color:#fff;font-weight:100;font-size:22px;letter-spacing:.22em;text-transform:uppercase;text-shadow:0 1px 20px rgba(0,0,0,.8)}
+.mosaic-note{margin-top:22px;color:var(--faint);font-size:13px;letter-spacing:.1em}
+/* ---------- process ---------- */
+.process{max-width:1280px;margin:0 auto;padding:120px 40px;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--brd);border-bottom:1px solid var(--brd)}
+.process .pcol{padding:16px 34px;border-right:1px solid var(--brd)}
+.process .pcol:first-child{border-right:none}
+.process .pn{font-weight:100;font-size:46px;color:#8b7bff}
+.process h4{margin-top:10px;font-weight:300;font-size:18px;letter-spacing:.05em}
+.process .pcol p:last-child{margin-top:8px;color:var(--dim);font-weight:200;font-size:14px;line-height:1.8}
+/* ---------- statement ---------- */
+.statement{min-height:64svh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 30px}
+.statement h2{font-weight:100;font-size:clamp(38px,7vw,80px);letter-spacing:.08em;line-height:1.22;text-transform:none}
+.stprops{margin-top:34px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.stprops span{border:1px solid rgba(255,255,255,.22);padding:12px 24px;color:var(--dim);font-size:12px;letter-spacing:.2em}
+@media (max-width:860px){.mgrid{grid-template-columns:1fr}.mtile.wide{grid-column:span 1;aspect-ratio:16/9}.process{grid-template-columns:1fr}.process .pcol{border-right:none;border-top:1px solid var(--brd);padding:26px 6px}.process .pcol:first-child{border-top:none}.mosaic-sec{padding:90px 24px}}
+
 footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter-spacing:.4em;border-top:1px solid var(--brd);text-transform:uppercase;font-weight:300}
 
 /* ---------- whatsapp ---------- */
@@ -215,18 +240,17 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   </div>
 </section>
 
-<!-- WORLDS -->
+<!-- FLAGSHIP WORLD -->
 <div class="w-intro" id="worlds">
-  <div class="sec-eyebrow rv">Worlds</div>
-  <h2 class="sec-title rv d1">כל אירוע מקבל עולם משלו</h2>
-  <p class="sec-desc rv d2">שכחו מלופים גנריים מהאינטרנט. אצלנו כל אירוע מקבל עולם שנבנה רק בשבילו: דמויות תלת ממדיות שנושמות, זזות ומחליפות צבע עם כל טראק, ולא נותנות לאף אחד להוריד את העיניים מהמסך.</p>
+  <div class="sec-eyebrow rv">Signature World</div>
+  <h2 class="sec-title rv d1">העולם שפותח כל ערב</h2>
 </div>
 
 <section class="world">
   <video class="bgv plx" src="/videos/clip3.mp4" muted loop playsinline preload="metadata"></video>
   <div class="shade"></div>
   <div class="content rv">
-    <div class="idx">01 / World</div>
+    <div class="idx">Signature</div>
     <h3>Deep Violet</h3>
     <div class="meta">
       <div>אווירה<b>טכנו כהה</b></div>
@@ -236,62 +260,38 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   </div>
 </section>
 
-<section class="world">
-  <video class="bgv plx" src="/videos/clip2.mp4" muted loop playsinline preload="metadata"></video>
-  <div class="shade"></div>
-  <div class="content rv">
-    <div class="idx">02 / World</div>
-    <h3>Crimson</h3>
-    <div class="meta">
-      <div>אווירה<b>עשן וורדים</b></div>
-      <div>תנועה<b>התפרצות חלקיקים</b></div>
-      <div>שיא<b>הדרופ</b></div>
-    </div>
+<!-- WORLD MOSAIC -->
+<div class="mosaic-sec">
+  <div class="mosaic-head rv">
+    <div class="sec-eyebrow">More Worlds</div>
+    <h2 class="sec-title">עוד עולמות</h2>
   </div>
-</section>
-
-<section class="world">
-  <video class="bgv plx" src="/videos/clip5.mp4" muted loop playsinline preload="metadata"></video>
-  <div class="shade"></div>
-  <div class="content rv">
-    <div class="idx">03 / World</div>
-    <h3>Teal</h3>
-    <div class="meta">
-      <div>אווירה<b>זוהר קר</b></div>
-      <div>תנועה<b>גוף מלא רציף</b></div>
-      <div>שיא<b>התפשטות לקצוות</b></div>
-    </div>
+  <div class="mgrid rv d1">
+    <a class="mtile" href="#contact"><video src="/videos/clip2.mp4" muted loop playsinline preload="metadata"></video><span>Crimson</span></a>
+    <a class="mtile" href="#contact"><video src="/videos/clip5.mp4" muted loop playsinline preload="metadata"></video><span>Teal</span></a>
+    <a class="mtile wide" href="#contact"><video src="/videos/clip4.mp4" muted loop playsinline preload="metadata"></video><span>Indigo</span></a>
   </div>
-</section>
-
-<section class="world">
-  <video class="bgv plx" src="/videos/clip4.mp4" muted loop playsinline preload="metadata"></video>
-  <div class="shade"></div>
-  <div class="content rv">
-    <div class="idx">04 / World</div>
-    <h3>Indigo</h3>
-    <div class="meta">
-      <div>אווירה<b>חלום כהה</b></div>
-      <div>תנועה<b>שיער של עשן דיו</b></div>
-      <div>שיא<b>מערבולת איטית</b></div>
-    </div>
-  </div>
-</section>
-
-<!-- OFFER -->
-<div class="offer" id="offer">
-  <div class="sec-eyebrow rv">The Offer</div>
-  <h2 class="rv d1">המחיר הזול בישראל. מובטח.</h2>
-  <p class="lead-line rv d2">הרמה שרואים בפסטיבלים הגדולים בעולם, בשבריר מהמחיר. טכנולוגיה שמחליפה סטודיו שלם עובדת בשבילכם, ואתם משלמים הכי פחות בישראל.</p>
-  <div class="ogrid rv d2">
-    <div class="ocell"><div class="n">01</div><h4>עולם ויזואלי בהתאמה אישית</h4><p>קונספט, פלטת צבעים ודמויות שנבנים סביב האירוע שלכם, כולל שילוב שמות, מונוגרמה או מיתוג של הערב.</p></div>
-    <div class="ocell"><div class="n">02</div><h4>מיפוי מדויק לכל מסך</h4><p>מסך עגול, קיר LED או מבנה מפוצל. אנחנו עובדים לפי המידות והרזולוציה של האולם, פיקסל מול פיקסל, בלי מתיחות ובלי חיתוכים.</p></div>
-    <div class="ocell"><div class="n">03</div><h4>סטים לרגעי השיא של הערב</h4><p>כניסה לרחבה, סלואו, דרופ ראשון ושיא המסיבה. כל רגע מקבל את הלופ שנבנה בשבילו, מוכן להחלפה בלחיצה.</p></div>
-    <div class="ocell"><div class="n">04</div><h4>ליווי טכני עד ההקרנה</h4><p>אנחנו מדברים ישירות עם הטכנאי או מנהל האולם, מספקים את הפורמט שהמערכת שלהם דורשת, ונשארים זמינים ביום האירוע.</p></div>
-    <div class="ocell"><div class="n">05</div><h4>לוחות זמנים מחייבים</h4><p>הצעת מחיר תוך 24 שעות, אספקה מלאה תוך ימים ספורים, וערוץ מהיר לדד ליין קצר. מה שסוכם, מסופק.</p></div>
-    <div class="ocell"><div class="n">06</div><h4>סבבי תיקונים כלולים במחיר</h4><p>מדייקים את התוצאה עד שהיא בדיוק מה שדמיינתם. בלי לספור גרסאות ובלי סעיפים קטנים בהצעה.</p></div>
-  </div>
+  <p class="mosaic-note rv d2">כל עולם נבנה בהתאמה אישית מלאה לאירוע, לצבעים ולאווירה שלכם</p>
 </div>
+
+<!-- PROCESS -->
+<div class="process" id="offer">
+  <div class="pcol rv"><p class="pn">01</p><h4>מספרים לנו על האירוע</h4><p>סוג האירוע, האווירה, הצבעים והמסכים של האולם. אפשר גם מונוגרמה או מיתוג של הערב.</p></div>
+  <div class="pcol rv d1"><p class="pn">02</p><h4>אנחנו בונים לכם עולם</h4><p>דמויות ועולמות תלת ממדיים במיפוי מדויק למסך שלכם, פיקסל מול פיקסל, עם סבבי תיקונים כלולים במחיר.</p></div>
+  <div class="pcol rv d2"><p class="pn">03</p><h4>מקרינים</h4><p>קבצים בפורמט של מערכת האולם, סטים לרגעי השיא של הערב, וליווי טכני עד ההקרנה.</p></div>
+</div>
+
+<!-- PRICE STATEMENT -->
+<section class="statement">
+  <div class="rv">
+    <h2>המחיר הכי זול בישראל.<br>מובטח.</h2>
+    <div class="stprops">
+      <span>ללא הגבלת גרסאות</span>
+      <span>מותאם לכל מסך</span>
+      <span>הצעת מחיר תוך 24 שעות</span>
+    </div>
+  </div>
+</section>
 
 <!-- CONTACT -->
 <section class="contact" id="contact">
