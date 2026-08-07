@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUMINA | ויזואלים לאולמות אירועים</title>
+<meta name="description" content="ויזואלים קולנועיים בתלת ממד למסכי LED באולמות אירועים. במחיר הזול בישראל.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:title" content="LUMINA | ויזואלים לאולמות אירועים">
+<meta property="og:description" content="ויזואלים קולנועיים בתלת ממד למסכי LED באולמות אירועים. במחיר הזול בישראל.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100;200;300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#ffffff;
+  --dim:rgba(255,255,255,.62);
+  --faint:rgba(255,255,255,.34);
+  --brd:rgba(255,255,255,.1);
+  --sans:"Heebo", system-ui, sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:#000;color-scheme:dark}
+body{background:#000;color:var(--ink);font-family:var(--sans);overflow-x:hidden;line-height:1.65;font-weight:300;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+video{display:block}
+::selection{background:#fff;color:#000}
+html.lenis, html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+
+/* grain */
+.grain{position:fixed;inset:-50%;z-index:70;pointer-events:none;opacity:.038;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");animation:gr 9s steps(10) infinite}
+@keyframes gr{0%{transform:translate(0,0)}20%{transform:translate(1%,-2%)}40%{transform:translate(2%,1%)}60%{transform:translate(1%,2%)}80%{transform:translate(-1%,-2%)}100%{transform:translate(0,0)}}
+
+/* vignette cinematic light */
+.vig{position:fixed;inset:0;z-index:65;pointer-events:none;background:radial-gradient(ellipse 120% 90% at 50% 40%, transparent 55%, rgba(0,0,0,.55) 100%)}
+
+/* ---------- header ---------- */
+header{position:fixed;top:0;right:0;left:0;z-index:90;display:flex;align-items:center;justify-content:space-between;padding:26px 40px;mix-blend-mode:difference}
+.logo{font-weight:100;font-size:19px;letter-spacing:.55em;color:#fff;text-transform:uppercase;padding-right:.55em}
+nav{display:flex;gap:34px}
+nav a{font-size:11px;font-weight:300;letter-spacing:.3em;color:#fff;opacity:.6;text-transform:uppercase;transition:opacity .3s}
+.burger{display:none;background:none;border:none;cursor:pointer;padding:10px;flex-direction:column;gap:6px}
+.burger span{display:block;width:26px;height:1px;background:#fff;transition:transform .3s ease, opacity .3s ease}
+@media (max-width:760px){.burger{display:flex}}
+.mmenu{position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.97);backdrop-filter:blur(12px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.mmenu.open{opacity:1;pointer-events:auto}
+.mmenu a{font-weight:100;font-size:26px;letter-spacing:.3em;text-transform:uppercase;color:#fff;opacity:0;transform:translateY(16px);transition:opacity .45s ease, transform .45s ease}
+.mmenu.open a{opacity:.9;transform:none}
+.mmenu.open a:nth-child(2){transition-delay:.06s}.mmenu.open a:nth-child(3){transition-delay:.12s}.mmenu.open a:nth-child(4){transition-delay:.18s}.mmenu.open a:nth-child(5){transition-delay:.24s}
+.mmenu .m-cta{margin-top:10px;font-size:13px;letter-spacing:.34em;border:1px solid rgba(255,255,255,.85);padding:16px 34px}
+.mclose{position:absolute;top:22px;left:22px;background:none;border:none;color:#fff;font-size:30px;font-weight:100;cursor:pointer;line-height:1}
+nav a:hover{opacity:1}
+@media (max-width:760px){
+  nav{display:none}
+  header{padding:20px 22px}
+  .tilt, .tilt .eyebrow, .tilt h1, .tilt .tag, .tilt .meta-line{transform:none!important}
+  .hero .tag{max-width:88vw;margin-left:auto;margin-right:auto;font-size:15px;letter-spacing:.06em;line-height:1.75}
+  .hero h1{letter-spacing:.22em;padding-right:.22em}
+  .hero .eyebrow{letter-spacing:.4em;padding-right:.4em;font-size:10px}
+  .hero .meta-line{gap:10px;flex-wrap:wrap;font-size:9.5px;letter-spacing:.24em}
+  .hero .meta-line i{display:none}
+}
+
+/* ---------- reveal motion (fade + blur + slide) ---------- */
+.rv{opacity:0;transform:translateY(46px);filter:blur(14px);transition:opacity 1.1s cubic-bezier(.2,.65,.2,1), transform 1.1s cubic-bezier(.2,.65,.2,1), filter 1.1s cubic-bezier(.2,.65,.2,1)}
+.rv.on{opacity:1;transform:none;filter:blur(0)}
+.rv.d1{transition-delay:.12s}.rv.d2{transition-delay:.24s}.rv.d3{transition-delay:.36s}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
+.hero .bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.72;transform:scale(1.06);transition:opacity 1.4s ease}
+.hero .bgv.hid{opacity:0}
+.hero .shade{position:absolute;inset:0;background:radial-gradient(ellipse 85% 70% at 50% 45%, rgba(0,0,0,0) 0%, rgba(0,0,0,.5) 72%, #000 100%)}
+#dust{position:absolute;inset:0;width:100%;height:100%}
+.hero-inner{position:relative;z-index:4;padding:0 24px;perspective:1100px}
+.tilt{transform-style:preserve-3d;will-change:transform}
+.tilt .eyebrow{transform:translateZ(30px)}
+.tilt h1{transform:translateZ(70px)}
+.tilt .tag{transform:translateZ(45px)}
+.tilt .meta-line{transform:translateZ(20px)}
+.hero .eyebrow{font-size:11px;font-weight:300;letter-spacing:.6em;color:var(--dim);text-transform:uppercase;padding-right:.6em}
+.hero h1{margin-top:26px;font-weight:100;font-size:clamp(58px,14vw,200px);letter-spacing:.32em;padding-right:.32em;line-height:1;text-transform:uppercase;color:#fff}
+.hero .tag{margin-top:30px;font-size:clamp(14px,1.9vw,19px);font-weight:200;letter-spacing:.14em;color:var(--dim)}
+.price-badge{display:inline-block;margin-top:26px;padding:15px 34px;border:1px solid rgba(139,123,255,.75);background:rgba(139,123,255,.07);color:#fff;font-weight:400;font-size:14.5px;letter-spacing:.22em;animation:pulseGlow 3s ease-in-out infinite}
+.price-badge b{font-weight:600;color:#c9beff}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(139,123,255,.0), 0 0 26px rgba(139,123,255,.12)}50%{box-shadow:0 0 0 1px rgba(139,123,255,.35), 0 0 44px rgba(139,123,255,.3)}}
+@media (max-width:760px){.price-badge{padding:13px 22px;font-size:12.5px;letter-spacing:.14em}}
+.hero .meta-line{margin:44px auto 0;display:flex;align-items:center;justify-content:center;gap:26px;font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--faint);font-weight:300}
+.hero .meta-line span{padding:0 4px}
+.hero .meta-line i{display:block;width:34px;height:1px;background:var(--brd)}
+.scroll-cue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:4;font-size:10px;font-weight:300;letter-spacing:.5em;color:var(--faint);text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:12px;padding-right:.5em}
+.scroll-cue::after{content:"";width:1px;height:44px;background:linear-gradient(rgba(255,255,255,.8),transparent);animation:drip 2s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1);transform-origin:top}56%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- 3D orb section ---------- */
+.orb-sec{position:relative;height:110svh;overflow:hidden;display:flex;align-items:center}
+.orb-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(to left, rgba(0,0,0,.9) 6%, rgba(0,0,0,.55) 34%, rgba(0,0,0,0) 60%)}
+@media (max-width:760px){.orb-sec{align-items:flex-end}.orb-scrim{background:linear-gradient(to top, rgba(0,0,0,.94) 6%, rgba(0,0,0,.6) 42%, rgba(0,0,0,0) 72%)}.orb-copy{padding-bottom:90px}}
+#orb{position:absolute;inset:0;width:100%;height:100%}
+.orb-copy{position:relative;z-index:3;width:100%;max-width:1280px;margin:0 auto;padding:0 40px;pointer-events:none}
+.sec-eyebrow{font-size:11px;font-weight:300;letter-spacing:.5em;text-transform:uppercase;color:var(--faint)}
+.sec-title{margin-top:16px;font-weight:100;font-size:clamp(34px,5.6vw,76px);letter-spacing:.1em;line-height:1.18;text-transform:uppercase}
+.sec-desc{margin-top:20px;max-width:430px;color:rgba(255,255,255,.82);font-weight:200;font-size:16.5px;letter-spacing:.02em;text-shadow:0 1px 18px rgba(0,0,0,.9)}
+
+/* ---------- worlds ---------- */
+.w-intro{max-width:1280px;margin:0 auto;padding:150px 40px 70px;border-top:1px solid var(--brd)}
+.world{position:relative;height:100svh;overflow:hidden;display:flex;align-items:flex-end;perspective:1200px}
+.world .bgv{position:absolute;inset:0;width:100%;height:116%;top:-8%;object-fit:cover;will-change:transform;transform-origin:50% 50%}
+.world .shade{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.18) 42%, rgba(0,0,0,.42) 100%)}
+.world .content{position:relative;z-index:3;width:100%;max-width:1280px;margin:0 auto;padding:0 40px 66px}
+.world .idx{font-size:11px;font-weight:300;letter-spacing:.5em;color:var(--dim);text-transform:uppercase}
+.world h3{margin-top:10px;font-weight:100;font-size:clamp(40px,7vw,96px);letter-spacing:.16em;line-height:1.06;text-transform:uppercase}
+.world .meta{margin-top:22px;display:flex;flex-wrap:wrap;border:1px solid var(--brd);max-width:640px}
+.world .meta div{flex:1 1 33%;min-width:150px;padding:14px 18px;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);font-weight:300;border-left:1px solid var(--brd)}
+.world .meta div:last-child{border-left:none}
+.world .meta b{display:block;color:#fff;font-weight:300;margin-top:3px;font-size:12px}
+
+/* ---------- offer grid ---------- */
+.offer{max-width:1280px;margin:0 auto;padding:160px 40px}
+.offer h2{margin-top:16px;font-weight:100;font-size:clamp(36px,6vw,84px);letter-spacing:.1em;line-height:1.14;text-transform:uppercase}
+.offer .lead-line{margin-top:18px;color:var(--dim);font-weight:200;font-size:17px;max-width:520px}
+.ogrid{margin-top:60px;display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--brd)}
+.ocell{padding:40px 32px;border-left:1px solid var(--brd);border-top:1px solid var(--brd)}
+.ocell:nth-child(-n+3){border-top:none}
+.ocell:nth-child(3n+1){border-left:none}
+[dir="rtl"] .ocell{border-left:none;border-right:1px solid var(--brd)}
+[dir="rtl"] .ocell:nth-child(3n+1){border-right:none}
+.ocell .n{font-weight:100;font-size:13px;letter-spacing:.4em;color:var(--faint)}
+.ocell h4{margin-top:14px;font-weight:300;font-size:19px;letter-spacing:.06em}
+.ocell p{margin-top:8px;color:var(--dim);font-weight:200;font-size:14.5px}
+@media (max-width:860px){.ogrid{grid-template-columns:1fr}.ocell{border-left:none!important;border-right:none!important;border-top:1px solid var(--brd)!important}.ocell:first-child{border-top:none!important}}
+
+/* ---------- contact ---------- */
+.contact{position:relative;overflow:hidden;border-top:1px solid var(--brd)}
+.contact .inner{max-width:640px;margin:0 auto;padding:150px 32px;text-align:center;position:relative;z-index:2}
+.contact h2{font-weight:100;font-size:clamp(34px,5.6vw,70px);letter-spacing:.12em;line-height:1.2;text-transform:uppercase}
+.contact p{margin:18px auto 0;color:var(--dim);font-weight:200;font-size:16.5px;max-width:420px}
+.form{margin-top:52px;display:grid;gap:26px;text-align:right}
+.form input,.form select{width:100%;padding:15px 14px;font-size:16px;font-family:var(--sans);font-weight:300;color:#fff;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.22);outline:none;transition:border-color .3s, background .3s;border-radius:0;letter-spacing:.04em}
+.form select option{background:#0a0a0c;color:#fff}
+.form label{display:block;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px;font-weight:300}
+.form input::placeholder{color:rgba(255,255,255,.5)}
+.form select{color:#fff;appearance:none;background-image:linear-gradient(45deg, transparent 50%, rgba(255,255,255,.7) 50%),linear-gradient(135deg, rgba(255,255,255,.7) 50%, transparent 50%);background-position:calc(14px) 50%, calc(14px + 6px) 50%;background-size:6px 6px;background-repeat:no-repeat}
+.form input:focus,.form select:focus{border-color:rgba(255,255,255,.75);background:rgba(255,255,255,.07)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.btn{margin-top:10px;display:inline-block;width:100%;font-weight:300;font-size:13px;letter-spacing:.4em;padding:20px 40px;border:1px solid rgba(255,255,255,.85);background:transparent;color:#fff;cursor:pointer;text-transform:uppercase;font-family:var(--sans);transition:background .3s,color .3s;padding-right:calc(40px + .4em)}
+.btn:hover{background:#fff;color:#000}
+.note{margin-top:16px;color:var(--faint);font-size:12px;letter-spacing:.14em;font-weight:300}
+@media (max-width:600px){.row2{grid-template-columns:1fr}}
+
+footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter-spacing:.4em;border-top:1px solid var(--brd);text-transform:uppercase;font-weight:300}
+
+/* ---------- whatsapp ---------- */
+.wa-float{position:fixed;bottom:24px;left:24px;z-index:85;width:56px;height:56px;border-radius:50%;background:#25D366;display:grid;place-items:center;box-shadow:0 10px 34px rgba(0,0,0,.6);transition:transform .25s}
+.wa-float:hover{transform:scale(1.1)}
+.wa-float svg{width:29px;height:29px;fill:#fff}
+@media (max-width:600px){.wa-float{bottom:18px;left:18px;width:53px;height:53px}}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none;transition:none}.scroll-cue::after,.grain{animation:none}}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="vig"></div>
+
+<header>
+  <a class="logo" href="#">Lumina</a>
+  <button class="burger" id="burger" aria-label="תפריט"><span></span><span></span><span></span></button>
+  <nav>
+    <a href="#exp">Experience</a>
+    <a href="#worlds">Worlds</a>
+    <a href="#offer">Offer</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<div class="mmenu" id="mmenu">
+  <button class="mclose" id="mclose" aria-label="סגירה">&#215;</button>
+  <a href="#exp">Experience</a>
+  <a href="#worlds">Worlds</a>
+  <a href="#offer">Offer</a>
+  <a href="#contact">Contact</a>
+  <a class="m-cta" href="#contact">הצעת מחיר</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <video class="bgv" id="heroA" src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_6a301df1-0118-47e5-bc51-252a614168a4.mp4" muted loop playsinline autoplay preload="auto"></video>
+  <video class="bgv hid" id="heroB" muted loop playsinline preload="none"></video>
+  <div class="shade"></div>
+  <canvas id="dust"></canvas>
+  <div class="hero-inner">
+   <div class="tilt" id="heroTilt">
+    <div class="eyebrow rv">Visuals for Event Halls</div>
+    <h1 class="rv d1">Lumina</h1>
+    <p class="tag rv d2">הרגע שהאורחים נכנסים לאולם ולא מאמינים למה שהם רואים</p>
+    <div class="rv d2"><span class="price-badge"><b>המחיר הכי זול בישראל</b> · מובטח</span></div>
+    <div class="meta-line rv d3"><i></i><span>Real-Time 3D</span><i></i><span>Custom Worlds</span><i></i><span>Any Screen</span><i></i></div>
+   </div>
+  </div>
+  <div class="scroll-cue">Scroll</div>
+</section>
+
+<!-- 3D ORB -->
+<section class="orb-sec" id="exp">
+  <canvas id="orb"></canvas>
+  <div class="orb-scrim"></div>
+  <div class="orb-copy">
+    <div class="sec-eyebrow rv">Real-Time 3D</div>
+    <h2 class="sec-title rv d1">תלת ממד חי.<br>לא סרטון.</h2>
+    <p class="sec-desc rv d2">מה שזז עכשיו מול העיניים שלכם מרונדר בזמן אמת ומגיב לכל תנועה. עכשיו תדמיינו את זה בגובה שישה מטרים, מאחורי הדיג'יי, בשיא הערב.</p>
+  </div>
+</section>
+
+<!-- WORLDS -->
+<div class="w-intro" id="worlds">
+  <div class="sec-eyebrow rv">Worlds</div>
+  <h2 class="sec-title rv d1">כל אירוע מקבל עולם משלו</h2>
+  <p class="sec-desc rv d2">שכחו מלופים גנריים מהאינטרנט. אצלנו כל אירוע מקבל עולם שנבנה רק בשבילו: דמויות תלת ממדיות שנושמות, זזות ומחליפות צבע עם כל טראק, ולא נותנות לאף אחד להוריד את העיניים מהמסך.</p>
+</div>
+
+<section class="world">
+  <video class="bgv plx" src="/videos/clip3.mp4" muted loop playsinline preload="metadata"></video>
+  <div class="shade"></div>
+  <div class="content rv">
+    <div class="idx">01 / World</div>
+    <h3>Deep Violet</h3>
+    <div class="meta">
+      <div>אווירה<b>טכנו כהה</b></div>
+      <div>תנועה<b>מסלול מצלמה איטי</b></div>
+      <div>שיא<b>סדקים זוהרים</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="world">
+  <video class="bgv plx" src="/videos/clip2.mp4" muted loop playsinline preload="metadata"></video>
+  <div class="shade"></div>
+  <div class="content rv">
+    <div class="idx">02 / World</div>
+    <h3>Crimson</h3>
+    <div class="meta">
+      <div>אווירה<b>עשן וורדים</b></div>
+      <div>תנועה<b>התפרצות חלקיקים</b></div>
+      <div>שיא<b>הדרופ</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="world">
+  <video class="bgv plx" src="/videos/clip5.mp4" muted loop playsinline preload="metadata"></video>
+  <div class="shade"></div>
+  <div class="content rv">
+    <div class="idx">03 / World</div>
+    <h3>Teal</h3>
+    <div class="meta">
+      <div>אווירה<b>זוהר קר</b></div>
+      <div>תנועה<b>גוף מלא רציף</b></div>
+      <div>שיא<b>התפשטות לקצוות</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="world">
+  <video class="bgv plx" src="/videos/clip4.mp4" muted loop playsinline preload="metadata"></video>
+  <div class="shade"></div>
+  <div class="content rv">
+    <div class="idx">04 / World</div>
+    <h3>Indigo</h3>
+    <div class="meta">
+      <div>אווירה<b>חלום כהה</b></div>
+      <div>תנועה<b>שיער של עשן דיו</b></div>
+      <div>שיא<b>מערבולת איטית</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFER -->
+<div class="offer" id="offer">
+  <div class="sec-eyebrow rv">The Offer</div>
+  <h2 class="rv d1">המחיר הזול בישראל. מובטח.</h2>
+  <p class="lead-line rv d2">הרמה שרואים בפסטיבלים הגדולים בעולם, בשבריר מהמחיר. טכנולוגיה שמחליפה סטודיו שלם עובדת בשבילכם, ואתם משלמים הכי פחות בישראל.</p>
+  <div class="ogrid rv d2">
+    <div class="ocell"><div class="n">01</div><h4>עולם ויזואלי בהתאמה אישית</h4><p>קונספט, פלטת צבעים ודמויות שנבנים סביב האירוע שלכם, כולל שילוב שמות, מונוגרמה או מיתוג של הערב.</p></div>
+    <div class="ocell"><div class="n">02</div><h4>מיפוי מדויק לכל מסך</h4><p>מסך עגול, קיר LED או מבנה מפוצל. אנחנו עובדים לפי המידות והרזולוציה של האולם, פיקסל מול פיקסל, בלי מתיחות ובלי חיתוכים.</p></div>
+    <div class="ocell"><div class="n">03</div><h4>סטים לרגעי השיא של הערב</h4><p>כניסה לרחבה, סלואו, דרופ ראשון ושיא המסיבה. כל רגע מקבל את הלופ שנבנה בשבילו, מוכן להחלפה בלחיצה.</p></div>
+    <div class="ocell"><div class="n">04</div><h4>ליווי טכני עד ההקרנה</h4><p>אנחנו מדברים ישירות עם הטכנאי או מנהל האולם, מספקים את הפורמט שהמערכת שלהם דורשת, ונשארים זמינים ביום האירוע.</p></div>
+    <div class="ocell"><div class="n">05</div><h4>לוחות זמנים מחייבים</h4><p>הצעת מחיר תוך 24 שעות, אספקה מלאה תוך ימים ספורים, וערוץ מהיר לדד ליין קצר. מה שסוכם, מסופק.</p></div>
+    <div class="ocell"><div class="n">06</div><h4>סבבי תיקונים כלולים במחיר</h4><p>מדייקים את התוצאה עד שהיא בדיוק מה שדמיינתם. בלי לספור גרסאות ובלי סעיפים קטנים בהצעה.</p></div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="inner rv">
+    <div class="sec-eyebrow">Contact</div>
+    <h2 style="margin-top:16px">בואו נדליק את האירוע שלכם</h2>
+    <p>האולם כבר סגור, התאריך כבר נעול. עכשיו נשאר רק להפוך אותו לבלתי נשכח.</p>
+    <form class="form" id="leadForm">
+      <div class="row2">
+        <div><label for="fName">שם מלא</label><input type="text" id="fName" placeholder="ישראל ישראלי" required></div>
+        <div><label for="fPhone">טלפון</label><input type="tel" id="fPhone" placeholder="050 000 0000" required></div>
+      </div>
+      <div style="text-align:right"><label for="fType">סוג האירוע</label><select id="fType">
+        <option value="" disabled selected>סוג האירוע</option>
+        <option>חתונה</option>
+        <option>בר / בת מצווה</option>
+        <option>מסיבה / מועדון</option>
+        <option>אירוע עסקי</option>
+        <option>אחר</option>
+      </select></div>
+      <button class="btn" type="submit">אני רוצה את זה באירוע שלי</button>
+    </form>
+    <p class="note">הצעת מחיר תוך 24 שעות · בלי התחייבות</p>
+  </div>
+</section>
+
+<footer>Lumina · Visuals for Event Halls · 2026</footer>
+
+<a class="wa-float" href="https://wa.me/972500000000?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A2%D7%9C%20%D7%95%D7%99%D7%96%D7%95%D7%90%D7%9C%D7%99%D7%9D%20%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2.05 22l5.3-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.1c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.26 8.26 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.23 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg>
+</a>
+
+<script src="/js/lenis.min.js"></script>
+<script src="/js/three.min.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  // ---------- Lenis smooth scrolling ----------
+  var lenis = null;
+  if (window.Lenis) {
+    lenis = new Lenis({ duration: 1.35, smoothWheel: true, easing: function(t){ return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
+    function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+    document.querySelectorAll('nav a, .logo').forEach(function(a){
+      a.addEventListener('click', function(ev){
+        var href = a.getAttribute('href');
+        if (href && href.charAt(0) === '#' && href.length > 1 && document.querySelector(href)) {
+          ev.preventDefault(); lenis.scrollTo(href, {offset: 0});
+        }
+      });
+    });
+  }
+
+  // ---------- reveal: fade + blur + slide ----------
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, {threshold:.15});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+  // ---------- video parallax + play/pause management ----------
+  var worlds = Array.prototype.slice.call(document.querySelectorAll('.world'));
+  function parallax(){
+    var vh = innerHeight;
+    worlds.forEach(function(sec){
+      var r = sec.getBoundingClientRect();
+      if (r.bottom < -80 || r.top > vh + 80) return;
+      var p = (r.top + r.height/2 - vh/2) / (vh + r.height); // -0.5 .. 0.5
+      var v = sec.querySelector('.plx');
+      if (v) v.style.transform = 'translateY(' + (p * -60) + 'px) scale(' + (1.05 + Math.abs(p)*.06) + ') rotateX(' + (p * 5) + 'deg)';
+      var c = sec.querySelector('.content');
+      if (c) c.style.transform = 'translateZ(0) translateY(' + (p * 26) + 'px)';
+    });
+  }
+  if (lenis) { lenis.on('scroll', parallax); } else { addEventListener('scroll', parallax, {passive:true}); }
+  parallax();
+
+  var vio = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      var v = e.target;
+      if (e.isIntersecting) { v.muted = true; v.play().catch(function(){}); }
+      else { v.pause(); }
+    });
+  }, {threshold:.08});
+  document.querySelectorAll('video').forEach(function(v){ v.muted = true; vio.observe(v); });
+  function kickVideos(){
+    document.querySelectorAll('video').forEach(function(v){
+      var r = v.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < innerHeight && v.paused) { v.muted = true; v.play().catch(function(){}); }
+    });
+  }
+  addEventListener('pointerdown', kickVideos, {passive:true});
+  addEventListener('touchstart', kickVideos, {passive:true});
+  addEventListener('keydown', kickVideos);
+  setTimeout(kickVideos, 600); setTimeout(kickVideos, 2500);
+
+  if (!window.THREE) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mx=0,my=0,tx=0,ty=0;
+  addEventListener('pointermove', function(e){
+    tx = e.clientX/innerWidth - .5;
+    ty = e.clientY/innerHeight - .5;
+  }, {passive:true});
+  addEventListener('deviceorientation', function(e){
+    if (e.gamma !== null && e.gamma !== undefined) {
+      tx = Math.max(-.5, Math.min(.5, e.gamma/70));
+      ty = Math.max(-.5, Math.min(.5, ((e.beta||45)-45)/100));
+    }
+  }, {passive:true});
+  (function(){
+    var el = document.getElementById('heroTilt');
+    if (!el) return;
+    var rx=0, ry=0;
+    function tick(){
+      rx += ((-ty*7) - rx)*.06;
+      ry += ((tx*9) - ry)*.06;
+      el.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+      requestAnimationFrame(tick);
+    }
+    if (!reduce) tick();
+  })();
+
+  function fit(renderer, canvas, cam){
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    var dpr = Math.min(devicePixelRatio||1, 1.75);
+    if (canvas.width !== Math.floor(w*dpr) || canvas.height !== Math.floor(h*dpr)) {
+      renderer.setPixelRatio(dpr);
+      renderer.setSize(w, h, false);
+      cam.aspect = w/h; cam.updateProjectionMatrix();
+    }
+  }
+
+  // ---------- HERO: spatial dust field ----------
+  (function(){
+    var canvas = document.getElementById('dust');
+    var renderer;
+    try { renderer = new THREE.WebGLRenderer({canvas:canvas, alpha:true, antialias:false}); } catch(err){ return; }
+    var scene = new THREE.Scene();
+    var cam = new THREE.PerspectiveCamera(60, 1, .1, 60);
+    cam.position.z = 10;
+    var mobile = Math.min(innerWidth, innerHeight) < 700;
+    var N = mobile ? 480 : 1100;
+    var pos = new Float32Array(N*3), spd = new Float32Array(N), zsp = new Float32Array(N);
+    for (var i=0;i<N;i++){
+      pos[i*3]   = (Math.random()-.5)*30;
+      pos[i*3+1] = (Math.random()-.5)*18;
+      pos[i*3+2] = Math.random()*22 - 13;
+      spd[i] = .1 + Math.random()*.45;
+      zsp[i] = .25 + Math.random()*.9;
+    }
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+    var mat = new THREE.PointsMaterial({color:0xbfd4ff, size:.05, transparent:true, opacity:.65, blending:THREE.AdditiveBlending, depthWrite:false, sizeAttenuation:true});
+    var pts = new THREE.Points(geo, mat);
+    scene.add(pts);
+    var clock = new THREE.Clock();
+    function frame(){
+      fit(renderer, canvas, cam);
+      var dt = Math.min(clock.getDelta(), .05);
+      var arr = geo.attributes.position.array;
+      for (var k=0;k<N;k++){
+        arr[k*3+1] += spd[k]*dt;
+        arr[k*3+2] += zsp[k]*dt;
+        if (arr[k*3+1] > 9) arr[k*3+1] = -9;
+        if (arr[k*3+2] > 9) { arr[k*3+2] = -13; arr[k*3] = (Math.random()-.5)*30; arr[k*3+1] = (Math.random()-.5)*18; }
+      }
+      geo.attributes.position.needsUpdate = true;
+      cam.position.x += ((tx*1.6) - cam.position.x)*.04;
+      cam.position.y += ((-ty*1.0) - cam.position.y)*.04;
+      cam.lookAt(0,0,0);
+      renderer.render(scene, cam);
+      if (!reduce) requestAnimationFrame(frame);
+    }
+    frame();
+  })();
+
+  // ---------- ORB: particle sphere, scroll-reactive ----------
+  (function(){
+    var canvas = document.getElementById('orb');
+    var sec = document.querySelector('.orb-sec');
+    var renderer;
+    try { renderer = new THREE.WebGLRenderer({canvas:canvas, alpha:true, antialias:false}); } catch(err){ return; }
+    var scene = new THREE.Scene();
+    var cam = new THREE.PerspectiveCamera(52, 1, .1, 100);
+    cam.position.z = 6.3;
+    var mobile = Math.min(innerWidth, innerHeight) < 700;
+    var N = mobile ? 9000 : 18000;
+    var R = 2.05;
+    var pos = new Float32Array(N*3), col = new Float32Array(N*3), seed = new Float32Array(N);
+    var cV = new THREE.Color(0x8b7bff), cI = new THREE.Color(0x6fd6ff), cD = new THREE.Color(0x3b2fa0), cW = new THREE.Color(0xf2f2ff);
+    for (var i=0;i<N;i++){
+      var y = 1 - (i/(N-1))*2;
+      var rad = Math.sqrt(Math.max(0, 1-y*y));
+      var th = 2.39996323*i;
+      var jit = 1 + (Math.random()-.5)*.05;
+      pos[i*3]=Math.cos(th)*rad*R*jit; pos[i*3+1]=y*R*jit; pos[i*3+2]=Math.sin(th)*rad*R*jit;
+      var m = Math.random(), c;
+      if (m<.58) c = cV.clone().lerp(cD, Math.random()*.6);
+      else if (m<.9) c = cI.clone().lerp(cV, Math.random());
+      else c = cW;
+      col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b;
+      seed[i]=Math.random()*6.283;
+    }
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+    geo.setAttribute('color', new THREE.BufferAttribute(col,3));
+    var base = pos.slice();
+    var g = new THREE.Group();
+    scene.add(g);
+    g.position.set(mobile ? 0 : -1.75, mobile ? .85 : 0, 0);
+    if (mobile) g.scale.setScalar(.78);
+    var orb = new THREE.Points(geo, new THREE.PointsMaterial({size: mobile? .03 : .023, vertexColors:true, transparent:true, opacity:.92, blending:THREE.AdditiveBlending, depthWrite:false, sizeAttenuation:true}));
+    g.add(orb);
+    var core = new THREE.LineSegments(
+      new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(1.02, 1)),
+      new THREE.LineBasicMaterial({color:0x5a48e0, transparent:true, opacity:.3})
+    );
+    g.add(core);
+    var H = mobile? 500 : 1300;
+    var hp = new Float32Array(H*3);
+    for (var j=0;j<H;j++){
+      var v = new THREE.Vector3(Math.random()-.5, Math.random()-.5, Math.random()-.5).normalize().multiplyScalar(R*1.3 + Math.random()*2.8);
+      hp[j*3]=v.x; hp[j*3+1]=v.y; hp[j*3+2]=v.z;
+    }
+    var hgeo = new THREE.BufferGeometry();
+    hgeo.setAttribute('position', new THREE.BufferAttribute(hp,3));
+    g.add(new THREE.Points(hgeo, new THREE.PointsMaterial({size:.02, color:0x6fd6ff, transparent:true, opacity:.4, blending:THREE.AdditiveBlending, depthWrite:false})));
+    var scrollTurn = 0;
+    function onScroll(){
+      var r = sec.getBoundingClientRect();
+      var p = 1 - (r.top + r.height) / (innerHeight + r.height); // 0..1 through section
+      scrollTurn = p * 2.2;
+    }
+    if (lenis) lenis.on('scroll', onScroll); else addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+    var clock = new THREE.Clock();
+    function frame(){
+      fit(renderer, canvas, cam);
+      var t = clock.getElapsedTime();
+      mx += (tx-mx)*.045; my += (ty-my)*.045;
+      orb.rotation.y = t*.34 + scrollTurn + mx*.8;
+      orb.rotation.x = Math.sin(t*.35)*.1 + my*.5;
+      core.rotation.y = -t*.5 - scrollTurn*.6; core.rotation.x = t*.28;
+      var arr = geo.attributes.position.array;
+      for (var k=0;k<N;k++){
+        var s = 1 + Math.sin(t*2 + seed[k])*.022;
+        arr[k*3]=base[k*3]*s; arr[k*3+1]=base[k*3+1]*s; arr[k*3+2]=base[k*3+2]*s;
+      }
+      geo.attributes.position.needsUpdate = true;
+      renderer.render(scene, cam);
+      if (!reduce) requestAnimationFrame(frame);
+    }
+    frame();
+  })();
+
+  // ---------- mobile menu ----------
+  (function(){
+    var menu = document.getElementById('mmenu');
+    var burger = document.getElementById('burger');
+    var close = document.getElementById('mclose');
+    if (!menu || !burger) return;
+    function openM(){ menu.classList.add('open'); if (lenis) lenis.stop(); }
+    function closeM(){ menu.classList.remove('open'); if (lenis) lenis.start(); }
+    burger.addEventListener('click', openM);
+    close.addEventListener('click', closeM);
+    menu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(ev){
+        var href = a.getAttribute('href');
+        closeM();
+        if (href && href.charAt(0) === '#' && document.querySelector(href)) {
+          ev.preventDefault();
+          setTimeout(function(){
+            if (lenis) lenis.scrollTo(href); else document.querySelector(href).scrollIntoView();
+          }, 60);
+        }
+      });
+    });
+  })();
+
+  // ---------- hero rotation through the 4 new clips ----------
+  (function(){
+    var srcs = [
+      'https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_6a301df1-0118-47e5-bc51-252a614168a4.mp4',
+      'https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_836e2b5b-ed34-43e4-9a7b-000015ea300b.mp4',
+      'https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_764ff7ff-6101-45e3-9ed3-3707bf4b388c.mp4',
+      'https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_ac159449-abaf-44fb-8f35-908eddf100d3.mp4'
+    ];
+    var a = document.getElementById('heroA'), b = document.getElementById('heroB');
+    if (!a || !b) return;
+    var i = 0, front = a, busy = false;
+    function swap(){
+      if (busy || document.hidden) return;
+      busy = true;
+      var back = (front === a) ? b : a;
+      i = (i + 1) % srcs.length;
+      back.src = srcs[i];
+      back.muted = true;
+      var done = false;
+      function go(){
+        if (done) return; done = true;
+        back.play().catch(function(){});
+        back.classList.remove('hid'); back.style.opacity = '';
+        front.classList.add('hid');
+        setTimeout(function(){ front.pause(); }, 1500);
+        front = back; busy = false;
+      }
+      back.addEventListener('canplay', go, {once:true});
+      setTimeout(function(){ if (!done) { busy = false; } }, 8000);
+      back.load();
+    }
+    setInterval(swap, 12000);
+  })();
+
+  // ---------- lead form ----------
+  document.getElementById('leadForm').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var n = document.getElementById('fName').value.trim();
+    var p = document.getElementById('fPhone').value.trim();
+    var t = document.getElementById('fType').value || '';
+    var msg = 'היי, אשמח להצעת מחיר לויזואלים.' + '\n' + 'שם: ' + n + '\n' + 'טלפון: ' + p + (t ? '\n' + 'סוג אירוע: ' + t : '');
+    open('https://wa.me/972500000000?text=' + encodeURIComponent(msg), '_blank');
+  });
+})();
+</script>
+</body>
+</html>
