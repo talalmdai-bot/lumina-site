@@ -2,20 +2,17 @@
   <defs>
     <linearGradient id="lvg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#c9beff"/>
-      <stop offset="0.5" stop-color="#ffffff"/>
+      <stop offset="0.45" stop-color="#ffffff"/>
       <stop offset="1" stop-color="#6fd6ff"/>
     </linearGradient>
-    <radialGradient id="bgg" cx="0.5" cy="0.42" r="0.72">
-      <stop offset="0" stop-color="#161233"/>
-      <stop offset="1" stop-color="#0a0818"/>
+    <radialGradient id="bgg" cx="0.5" cy="0.4" r="0.8">
+      <stop offset="0" stop-color="#1a1540"/>
+      <stop offset="1" stop-color="#08060f"/>
     </radialGradient>
   </defs>
-  <circle cx="32" cy="32" r="32" fill="url(#bgg)"/>
+  <rect width="64" height="64" fill="url(#bgg)"/>
   <g fill="url(#lvg)">
-    <path d="M17 18 h6.5 v22.5 h11.5 v6 H17 Z"/>
-    <path d="M35.5 18 h6.8 l5.2 18.6 L52.7 18 h6.8 L51 46.5 h-7.1 Z" transform="translate(-6,0)"/>
-  </g>
-  <g fill="none" stroke="#6fd6ff" stroke-width="0.9" opacity="0.55">
-    <path d="M17 18 h6.5 v22.5 h11.5"/>
+    <path d="M11 16 h7 v25 h13 v7 H11 Z"/>
+    <path d="M31 16 h7.4 l5.9 21.5 L50.2 16 h7.4 L48 48 h-7.4 Z"/>
   </g>
 </svg>
