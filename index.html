@@ -701,7 +701,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     var contact = document.getElementById('contact');
     if (!pop || !contact || popSeen()) return;
     var mmenu = document.getElementById('mmenu');
-    var lastFocus = null, sawEnd = false, opened = false, lastY = scrollY, pending = null;
+    var lastFocus = null, sawEnd = false, opened = false, pending = null;
 
     function open(){
       if (opened) return;
@@ -737,17 +737,14 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       obs.disconnect();
     }, {threshold:.25}).observe(contact);
 
+    // fires once scrolling settles in the top half of the page, after the end was seen
     addEventListener('scroll', function(){
-      var y = scrollY;
-      var up = y < lastY;
-      lastY = y;
-      if (opened || !sawEnd || (mmenu && mmenu.classList.contains('open'))) return;
-      if (up && y < innerHeight * 0.5) {
-        if (!pending) pending = setTimeout(function(){ pending = null; open(); }, 700);
-      } else if (pending) {
-        clearTimeout(pending);
-        pending = null;
-      }
+      if (opened) return;
+      if (!sawEnd && scrollY + innerHeight >= document.documentElement.scrollHeight - 240) sawEnd = true;
+      if (pending) { clearTimeout(pending); pending = null; }
+      if (!sawEnd || scrollY > innerHeight * 0.5) return;
+      if (mmenu && mmenu.classList.contains('open')) return;
+      pending = setTimeout(open, 600);
     }, {passive:true});
   })();
 })();
