@@ -80,9 +80,9 @@ nav a:hover{opacity:1}
 }
 
 /* ---------- reveal motion (fade + blur + slide) ---------- */
-.rv{opacity:0;transform:translateY(18px);transition:opacity .5s ease-out, transform .5s ease-out}
+.rv{opacity:0;transform:translateY(10px);transition:opacity .32s ease-out, transform .32s ease-out}
 .rv.on{opacity:1;transform:none;filter:blur(0)}
-.rv.d1{transition-delay:.06s}.rv.d2{transition-delay:.12s}.rv.d3{transition-delay:.18s}
+.rv.d1{transition-delay:.04s}.rv.d2{transition-delay:.08s}.rv.d3{transition-delay:.12s}
 
 /* ---------- hero ---------- */
 .hero{position:relative;height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
@@ -210,6 +210,21 @@ nav a:hover{opacity:1}
 @media (max-width:860px){.fgrid{grid-template-columns:1fr}.floor{padding:90px 24px 30px}}
 
 footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter-spacing:.4em;border-top:1px solid var(--brd);text-transform:uppercase;font-weight:300}
+
+/* ---------- lead popup ---------- */
+.lp{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.lp.open{opacity:1;pointer-events:auto}
+.lp-bd{position:absolute;inset:0;background:rgba(0,0,0,.86);backdrop-filter:blur(6px)}
+.lp-card{position:relative;z-index:2;width:100%;max-width:520px;max-height:92svh;overflow-y:auto;background:#050507;border:1px solid rgba(139,123,255,.4);box-shadow:0 30px 90px rgba(0,0,0,.85);padding:46px 38px 34px;text-align:center;transform:translateY(22px);transition:transform .45s cubic-bezier(.2,.85,.3,1)}
+.lp.open .lp-card{transform:none}
+.lp-card:focus{outline:none}
+.lp-close{position:absolute;top:10px;left:14px;background:none;border:none;color:rgba(255,255,255,.6);font-size:28px;font-weight:100;line-height:1;cursor:pointer;padding:6px;transition:color .25s}
+.lp-close:hover{color:#fff}
+.lp-card h3{margin-top:14px;font-weight:100;font-size:clamp(25px,4.2vw,36px);letter-spacing:.05em;line-height:1.3}
+.lp-p{margin:16px auto 0;max-width:390px;color:var(--dim);font-weight:200;font-size:15.5px;line-height:1.8}
+.lp-card .form{margin-top:30px;gap:20px}
+@media (max-width:600px){.lp-card{padding:40px 22px 28px}}
+@media (prefers-reduced-motion:reduce){.lp,.lp-card{transition:none}}
 
 /* ---------- whatsapp ---------- */
 .social-dock{position:fixed;bottom:24px;left:24px;z-index:85;display:flex;flex-direction:column-reverse;gap:12px}
@@ -381,10 +396,10 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     <p>האולם כבר סגור, הדיג'יי כבר נבחר. נשאר רק הדבר שכולם יזכרו מהערב.</p>
     <form class="form" id="leadForm">
       <div class="row2">
-        <div><label for="fName">שם מלא</label><input type="text" id="fName" placeholder="ישראל ישראלי" required></div>
-        <div><label for="fPhone">טלפון</label><input type="tel" id="fPhone" placeholder="050 000 0000" required></div>
+        <div><label for="fName">שם מלא</label><input type="text" id="fName" name="name" placeholder="ישראל ישראלי" required></div>
+        <div><label for="fPhone">טלפון</label><input type="tel" id="fPhone" name="phone" placeholder="050 000 0000" required></div>
       </div>
-      <div style="text-align:right"><label for="fType">סוג האירוע</label><select id="fType">
+      <div style="text-align:right"><label for="fType">סוג האירוע</label><select id="fType" name="type">
         <option value="" disabled>סוג האירוע</option>
         <option selected>חתונה</option>
         <option>בר / בת מצווה</option>
@@ -428,6 +443,34 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   
 </div>
 
+<div class="lp" id="leadPop" role="dialog" aria-modal="true" aria-labelledby="lpTitle" aria-hidden="true">
+  <div class="lp-bd" id="lpBd"></div>
+  <div class="lp-card" id="lpCard" tabindex="-1">
+    <button class="lp-close" id="lpClose" aria-label="סגירה">&#215;</button>
+    <div class="sec-eyebrow">One Last Thing</div>
+    <h3 id="lpTitle">ראיתם את העולמות.<br>עכשיו נראה אותם על המסך שלכם.</h3>
+    <p class="lp-p">משאירים שם וטלפון, ואנחנו חוזרים אליכם עם הצעת מחיר תוך 24 שעות. בלי התחייבות.</p>
+    <form class="form" id="popForm">
+      <div class="row2">
+        <div><label for="pName">שם מלא</label><input type="text" id="pName" name="name" placeholder="ישראל ישראלי" required></div>
+        <div><label for="pPhone">טלפון</label><input type="tel" id="pPhone" name="phone" placeholder="050 000 0000" required></div>
+      </div>
+      <div style="text-align:right"><label for="pType">סוג האירוע</label><select id="pType" name="type">
+        <option value="" disabled>סוג האירוע</option>
+        <option selected>חתונה</option>
+        <option>בר / בת מצווה</option>
+        <option>מסיבה / מועדון</option>
+        <option>אירוע עסקי</option>
+        <option>אחר</option>
+      </select></div>
+      <div class="hp" aria-hidden="true"><label for="pCompany">אל תמלאו שדה זה</label><input type="text" id="pCompany" name="company" tabindex="-1" autocomplete="off"></div>
+      <button class="btn" type="submit">שלחו לי הצעת מחיר</button>
+      <p class="err" role="alert"></p>
+    </form>
+    <p class="note">מחיר השקה · עד סוף ספטמבר</p>
+  </div>
+</div>
+
 <script src="/js/three.min.js"></script>
 <script>
 (function(){
@@ -436,7 +479,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   // ---------- reveal: fade + blur + slide ----------
   var io = new IntersectionObserver(function(es){
     es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
-  }, {threshold:.05});
+  }, {threshold:0, rootMargin: '0px 0px 25% 0px'});
   document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
 
   // ---------- video play/pause management ----------
@@ -574,8 +617,11 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     });
   })();
 
-  // ---------- lead form ----------
+  // ---------- lead forms ----------
   var formShownAt = Date.now();
+
+  function popSeen(){ try { return sessionStorage.getItem('lumina_pop') === '1'; } catch(e){ return false; } }
+  function markPopSeen(){ try { sessionStorage.setItem('lumina_pop','1'); } catch(e){} }
 
   // Israeli mobile (05X + 8) or landline (0X + 7), with or without the +972 prefix
   function validPhone(raw){
@@ -584,47 +630,109 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     return /^0(5\d{8}|[23489]\d{7})$/.test(d);
   }
 
-  document.getElementById('leadForm').addEventListener('submit', function(ev){
-    ev.preventDefault();
-    var btn = document.querySelector('#leadForm .btn');
-    var err = document.getElementById('formErr');
-    var n = document.getElementById('fName').value.trim();
-    var p = document.getElementById('fPhone').value.trim();
-    var t = document.getElementById('fType').value || '';
-    var hp = document.getElementById('fCompany').value;
-    function fail(msg, focusEl){
-      if (err) err.textContent = msg;
-      if (focusEl) focusEl.focus();
-    }
-    if (err) err.textContent = '';
-    if (!n) { fail('נא למלא שם מלא', document.getElementById('fName')); return; }
-    if (!validPhone(p)) { fail('נא למלא מספר טלפון ישראלי תקין', document.getElementById('fPhone')); return; }
-    var original = btn ? btn.textContent : '';
-    if (btn) { btn.disabled = true; btn.textContent = 'שולח...'; }
-    fetch('/api/lead', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: n, phone: p, type: t, company: hp, elapsed: Date.now() - formShownAt })
-    }).then(function(r){
-      var note = document.querySelector('.note');
-      if (r && r.ok) {
-        console.log('[lead] forwarded to telegram');
-        if (btn) { btn.textContent = 'קיבלנו! חוזרים אליכם'; }
-        if (note) { note.textContent = 'הפרטים נשלחו. נחזור אליכם תוך 24 שעות.'; note.style.color = '#c9beff'; }
-        return;
+  function bindLeadForm(form, typeSuffix){
+    if (!form) return;
+    var btn = form.querySelector('.btn');
+    var err = form.querySelector('.err');
+    var note = form.parentElement.querySelector('.note');
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var nameEl = form.elements['name'], phoneEl = form.elements['phone'];
+      var n = nameEl.value.trim();
+      var p = phoneEl.value.trim();
+      var t = (form.elements['type'] ? form.elements['type'].value : '') + typeSuffix;
+      var hp = form.elements['company'].value;
+      function fail(msg, focusEl){
+        if (err) err.textContent = msg;
+        if (focusEl) focusEl.focus();
       }
-      console.warn('[lead] telegram forward failed', r && r.status);
-      throw new Error('send failed');
-    }).catch(function(e){
-      console.warn('[lead] request failed', e);
-      var note = document.querySelector('.note');
-      if (btn) { btn.disabled = false; btn.textContent = original || 'שליחה'; }
-      if (note) {
-        note.innerHTML = 'השליחה נכשלה. אפשר לפנות אלינו ישירות ב<a href="https://wa.me/972542216690" target="_blank" rel="noopener" style="color:#8fe3ff;text-decoration:underline">וואטסאפ</a>.';
-        note.style.color = '#ffb4b4';
-      }
+      if (err) err.textContent = '';
+      if (!n) { fail('נא למלא שם מלא', nameEl); return; }
+      if (!validPhone(p)) { fail('נא למלא מספר טלפון ישראלי תקין', phoneEl); return; }
+      var original = btn ? btn.textContent : '';
+      if (btn) { btn.disabled = true; btn.textContent = 'שולח...'; }
+      fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: n, phone: p, type: t, company: hp, elapsed: Date.now() - formShownAt })
+      }).then(function(r){
+        if (r && r.ok) {
+          console.log('[lead] forwarded to telegram');
+          markPopSeen();
+          if (btn) { btn.textContent = 'קיבלנו! חוזרים אליכם'; }
+          if (note) { note.textContent = 'הפרטים נשלחו. נחזור אליכם תוך 24 שעות.'; note.style.color = '#c9beff'; }
+          return;
+        }
+        console.warn('[lead] telegram forward failed', r && r.status);
+        throw new Error('send failed');
+      }).catch(function(e){
+        console.warn('[lead] request failed', e);
+        if (btn) { btn.disabled = false; btn.textContent = original || 'שליחה'; }
+        if (note) {
+          note.innerHTML = 'השליחה נכשלה. אפשר לפנות אלינו ישירות ב<a href="https://wa.me/972542216690" target="_blank" rel="noopener" style="color:#8fe3ff;text-decoration:underline">וואטסאפ</a>.';
+          note.style.color = '#ffb4b4';
+        }
+      });
     });
-  });
+  }
+  bindLeadForm(document.getElementById('leadForm'), '');
+  bindLeadForm(document.getElementById('popForm'), ' · חלונית');
+
+  // ---------- lead popup: saw the whole page, then scrolled back up ----------
+  (function(){
+    var pop = document.getElementById('leadPop');
+    var contact = document.getElementById('contact');
+    if (!pop || !contact || popSeen()) return;
+    var mmenu = document.getElementById('mmenu');
+    var lastFocus = null, sawEnd = false, opened = false, lastY = scrollY, pending = null;
+
+    function open(){
+      if (opened) return;
+      opened = true;
+      markPopSeen();
+      lastFocus = document.activeElement;
+      pop.setAttribute('aria-hidden','false');
+      pop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('lpCard').focus({preventScroll:true});
+    }
+    function close(){
+      pop.classList.remove('open');
+      pop.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus({preventScroll:true});
+    }
+    document.getElementById('lpClose').addEventListener('click', close);
+    document.getElementById('lpBd').addEventListener('click', close);
+    addEventListener('keydown', function(ev){
+      if (!pop.classList.contains('open')) return;
+      if (ev.key === 'Escape') { close(); return; }
+      if (ev.key !== 'Tab') return;
+      var f = pop.querySelectorAll('button, input, select');
+      var first = f[0], last = f[f.length - 1];
+      if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+      else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+    });
+
+    new IntersectionObserver(function(es, obs){
+      if (!es[0].isIntersecting) return;
+      sawEnd = true;
+      obs.disconnect();
+    }, {threshold:.25}).observe(contact);
+
+    addEventListener('scroll', function(){
+      var y = scrollY;
+      var up = y < lastY;
+      lastY = y;
+      if (opened || !sawEnd || (mmenu && mmenu.classList.contains('open'))) return;
+      if (up && y < innerHeight * 0.5) {
+        if (!pending) pending = setTimeout(function(){ pending = null; open(); }, 700);
+      } else if (pending) {
+        clearTimeout(pending);
+        pending = null;
+      }
+    }, {passive:true});
+  })();
 })();
 </script>
 <script src="/a11y.js"></script>
