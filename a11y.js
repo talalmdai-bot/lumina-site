@@ -60,7 +60,7 @@
 
   function build(){
     var skip = document.createElement('a');
-    skip.className = 'skip-link'; skip.href = '#exp'; skip.textContent = 'דלג לתוכן הראשי';
+    skip.className = 'skip-link'; skip.href = '#main'; skip.textContent = 'דלג לתוכן הראשי';
     document.body.insertBefore(skip, document.body.firstChild);
 
     var btn = document.createElement('button');

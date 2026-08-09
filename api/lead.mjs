@@ -1,17 +1,70 @@
+const ALLOWED_HOSTS = ['luminavisual.co.il', 'www.luminavisual.co.il'];
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const RATE_MAX = 3;
+const MIN_FILL_MS = 3000;
+
+// survives only while the serverless instance stays warm — slows floods, does not stop them
+const hits = new Map();
+
+function rateLimited(ip) {
+  const now = Date.now();
+  const recent = (hits.get(ip) || []).filter(function (t) { return now - t < RATE_WINDOW_MS; });
+  if (recent.length >= RATE_MAX) { hits.set(ip, recent); return true; }
+  recent.push(now);
+  hits.set(ip, recent);
+  if (hits.size > 5000) hits.clear();
+  return false;
+}
+
+function clean(value, max) {
+  return String(value || '').replace(/[\r\n\t]+/g, ' ').slice(0, max).trim();
+}
+
+function originAllowed(origin) {
+  if (!origin) return true; // non-browser callers and same-origin requests without the header
+  try {
+    const host = new URL(origin).hostname;
+    return ALLOWED_HOSTS.includes(host) || host.endsWith('.vercel.app');
+  } catch (err) {
+    return false;
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ ok: false, error: 'method not allowed' });
     return;
   }
+  if (!originAllowed(req.headers.origin)) {
+    res.status(403).json({ ok: false, error: 'forbidden origin' });
+    return;
+  }
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-    const name = String(body.name || '').slice(0, 100).trim();
-    const phone = String(body.phone || '').slice(0, 40).trim();
-    const type = String(body.type || '').slice(0, 60).trim();
-    if (!name || !phone) {
+
+    // bot traps: hidden field must stay empty, and a human cannot fill the form instantly
+    const elapsed = Number(body.elapsed) || 0;
+    if (clean(body.company, 100) || (elapsed > 0 && elapsed < MIN_FILL_MS)) {
+      console.warn('[lead] bot trap triggered');
+      res.status(200).json({ ok: true });
+      return;
+    }
+
+    const name = clean(body.name, 100);
+    const phone = clean(body.phone, 40);
+    const type = clean(body.type, 60);
+    if (!name || phone.replace(/\D/g, '').length < 9) {
       res.status(400).json({ ok: false, error: 'missing fields' });
       return;
     }
+
+    const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+    if (rateLimited(ip)) {
+      console.warn('[lead] rate limited', ip);
+      res.status(429).json({ ok: false, error: 'too many requests' });
+      return;
+    }
+
     const token = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
     if (!token || !chatId) {
