@@ -798,6 +798,202 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   document.addEventListener('visibilitychange', function(){ if (!document.hidden) kickVideos(); });
   setTimeout(kickVideos, 400); setTimeout(kickVideos, 1500); setTimeout(kickVideos, 4000);
 
+  // ---------- 3D particle orb: the section claims real-time rendering, so it has to be real ----------
+  (function(){
+    var canvas = document.getElementById('orb');
+    if (!canvas || typeof THREE === 'undefined') return;
+    var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+    var renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true, powerPreference: 'low-power' });
+    } catch (e) { return; }
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(46, 1, 0.1, 100);
+    camera.position.z = 3.15;
+    var group = new THREE.Group();
+    scene.add(group);
+
+    // a soft radial sprite, otherwise every particle renders as a hard square
+    var tex = (function(){
+      var c = document.createElement('canvas');
+      c.width = c.height = 64;
+      var g = c.getContext('2d');
+      var grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0, 'rgba(255,255,255,1)');
+      grd.addColorStop(.35, 'rgba(255,255,255,.6)');
+      grd.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = grd;
+      g.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(c);
+    })();
+
+    var CYAN = new THREE.Color(0x8fe3ff), VIOLET = new THREE.Color(0x8b7bff);
+
+    // fibonacci placement spreads the points evenly instead of clumping them at the poles
+    function shell(count, radius, size, opacity){
+      var pos = new Float32Array(count * 3), col = new Float32Array(count * 3);
+      var base = new Float32Array(count * 3), phase = new Float32Array(count);
+      var golden = Math.PI * (3 - Math.sqrt(5));
+      var mix = new THREE.Color();
+      for (var i = 0; i < count; i++){
+        var y = 1 - (i / (count - 1)) * 2;
+        var ring = Math.sqrt(Math.max(0, 1 - y * y));
+        var th = golden * i;
+        var x = Math.cos(th) * ring, z = Math.sin(th) * ring;
+        base[i*3] = x * radius; base[i*3+1] = y * radius; base[i*3+2] = z * radius;
+        pos[i*3] = base[i*3]; pos[i*3+1] = base[i*3+1]; pos[i*3+2] = base[i*3+2];
+        mix.copy(VIOLET).lerp(CYAN, (y + 1) / 2);
+        col[i*3] = mix.r; col[i*3+1] = mix.g; col[i*3+2] = mix.b;
+        phase[i] = Math.random() * Math.PI * 2;
+      }
+      var geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+      geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+      var pts = new THREE.Points(geo, new THREE.PointsMaterial({
+        size: size, map: tex, vertexColors: true, transparent: true, opacity: opacity,
+        depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true
+      }));
+      pts.userData = { base: base, phase: phase, count: count };
+      group.add(pts);
+      return pts;
+    }
+
+    var core = shell(4200, 1, .021, .95);
+    var halo = shell(1100, 1.44, .013, .4);
+
+    function wave(pts, t, amp, speed){
+      var p = pts.geometry.attributes.position.array;
+      var b = pts.userData.base, ph = pts.userData.phase, n = pts.userData.count;
+      for (var i = 0; i < n; i++){
+        var k = 1 + Math.sin(t * speed + ph[i]) * amp;
+        p[i*3] = b[i*3] * k; p[i*3+1] = b[i*3+1] * k; p[i*3+2] = b[i*3+2] * k;
+      }
+      pts.geometry.attributes.position.needsUpdate = true;
+    }
+
+    var tx = 0, ty = 0, mx = 0, my = 0;
+    addEventListener('pointermove', function(e){
+      tx = e.clientX / innerWidth - .5;
+      ty = e.clientY / innerHeight - .5;
+    }, {passive:true});
+
+    // the outer shell plus its wave, which is what must stay inside the frustum
+    var REACH = 1.53;
+
+    function resize(){
+      var r = canvas.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      renderer.setSize(r.width, r.height, false);
+      var wide = r.width > 860;
+      camera.aspect = r.width / r.height;
+      camera.position.z = wide ? 3.5 : 4.1;
+      camera.updateProjectionMatrix();
+      // in RTL the copy sits on the right, so the orb slides left as far as it can
+      // without running off the canvas, which depends on the frustum at this aspect
+      var visH = 2 * camera.position.z * Math.tan(camera.fov * Math.PI / 360);
+      var room = Math.max(0, (visH * camera.aspect) / 2 - REACH);
+      group.position.x = wide ? -Math.min(0.95, room) : 0;
+      renderer.render(scene, camera);
+    }
+
+    var raf = null, elapsed = 0, last = 0;
+    function frame(now){
+      raf = requestAnimationFrame(frame);
+      if (!last) last = now;
+      elapsed += Math.min((now - last) / 1000, .05);
+      last = now;
+      wave(core, elapsed, .055, .9);
+      wave(halo, elapsed, .03, .55);
+      core.rotation.y = elapsed * .075;
+      halo.rotation.y = elapsed * -.045;
+      mx += (tx - mx) * .045;
+      my += (ty - my) * .045;
+      group.rotation.y = mx * .5;
+      group.rotation.x = my * .35;
+      renderer.render(scene, camera);
+    }
+    function start(){ if (raf || reduce) return; last = 0; raf = requestAnimationFrame(frame); }
+    function stop(){ if (raf) cancelAnimationFrame(raf); raf = null; last = 0; }
+
+    // rendering costs GPU, so it only runs while the section is actually on screen
+    function onScreen(){
+      if (document.hidden) return false;
+      var r = canvas.getBoundingClientRect();
+      return r.bottom > -100 && r.top < innerHeight + 100;
+    }
+    function sync(){ onScreen() ? start() : stop(); }
+
+    var pending = false;
+    addEventListener('scroll', function(){
+      if (pending) return;
+      pending = true;
+      setTimeout(function(){ pending = false; sync(); }, 200);
+    }, {passive:true});
+    addEventListener('resize', function(){ resize(); sync(); }, {passive:true});
+    document.addEventListener('visibilitychange', sync);
+
+    resize();
+    sync();
+  })();
+
+  // ---------- hero dust: the second canvas the markup already carried ----------
+  (function(){
+    var canvas = document.getElementById('dust');
+    if (!canvas || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    if (innerWidth < 760) return;
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    var dpr = Math.min(devicePixelRatio || 1, 2);
+    var motes = [], raf = null, w = 0, h = 0;
+
+    function seed(){
+      var r = canvas.getBoundingClientRect();
+      w = r.width; h = r.height;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      motes = [];
+      for (var i = 0; i < 70; i++){
+        motes.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.5 + .4,
+                     vy: -(Math.random() * .16 + .04), vx: (Math.random() - .5) * .12,
+                     a: Math.random() * .35 + .1 });
+      }
+    }
+    function frame(){
+      raf = requestAnimationFrame(frame);
+      ctx.clearRect(0, 0, w, h);
+      for (var i = 0; i < motes.length; i++){
+        var m = motes[i];
+        m.y += m.vy; m.x += m.vx;
+        if (m.y < -4) { m.y = h + 4; m.x = Math.random() * w; }
+        if (m.x < -4) m.x = w + 4; else if (m.x > w + 4) m.x = -4;
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(143,227,255,' + m.a + ')';
+        ctx.fill();
+      }
+    }
+    function start(){ if (!raf) raf = requestAnimationFrame(frame); }
+    function stop(){ if (raf) cancelAnimationFrame(raf); raf = null; }
+    function sync(){ (!document.hidden && scrollY < innerHeight) ? start() : stop(); }
+
+    var pending = false;
+    addEventListener('scroll', function(){
+      if (pending) return;
+      pending = true;
+      setTimeout(function(){ pending = false; sync(); }, 200);
+    }, {passive:true});
+    addEventListener('resize', function(){ seed(); sync(); }, {passive:true});
+    document.addEventListener('visibilitychange', sync);
+
+    seed();
+    sync();
+  })();
+
   // ---------- back to top ----------
   (function(){
     var btn = document.getElementById('toTop');
