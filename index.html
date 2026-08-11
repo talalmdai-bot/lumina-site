@@ -117,13 +117,23 @@ nav a:hover{opacity:1}
 
 /* ---------- 3D orb section ---------- */
 .orb-sec{position:relative;min-height:88svh;overflow:hidden;display:flex;align-items:center;padding:70px 0}
-.orb-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(to left, rgba(0,0,0,.9) 6%, rgba(0,0,0,.55) 34%, rgba(0,0,0,0) 60%)}
-@media (max-width:760px){.orb-sec{min-height:auto;align-items:center;padding:80px 0 90px}.orb-scrim{background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,0,0,.25), rgba(0,0,0,.85) 75%)}.orb-copy{padding:0 24px}}
+/* darkest behind the centred copy, clear at the rim so the orb still reads */
+.orb-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse 56% 44% at 50% 50%, rgba(0,0,0,.82) 0%, rgba(0,0,0,.46) 58%, rgba(0,0,0,0) 100%)}
+@media (max-width:760px){.orb-sec{min-height:78svh;align-items:center;padding:70px 0 80px}.orb-scrim{background:radial-gradient(ellipse 74% 34% at 50% 50%, rgba(0,0,0,.84) 0%, rgba(0,0,0,.5) 62%, rgba(0,0,0,0) 100%)}.orb-copy{padding:0 24px}}
 #orb{position:absolute;inset:0;width:100%;height:100%;display:block}
 .orb-copy{position:relative;z-index:3;width:100%;max-width:1280px;margin:0 auto;padding:0 40px;pointer-events:none}
 .sec-eyebrow{font-size:11px;font-weight:300;letter-spacing:.5em;text-transform:uppercase;color:var(--faint)}
 .sec-title{margin-top:16px;font-weight:100;font-size:clamp(34px,5.6vw,76px);letter-spacing:.1em;line-height:1.18;text-transform:uppercase}
 .sec-desc{margin-top:20px;max-width:430px;color:rgba(255,255,255,.82);font-weight:200;font-size:16.5px;letter-spacing:.02em;text-shadow:0 1px 18px rgba(0,0,0,.9)}
+
+/* ---------- section headings are centred ---------- */
+.sec-eyebrow,.sec-title{text-align:center}
+.sec-desc,.floor-sub,.g-sub,.offer .lead-line{margin-inline:auto;text-align:center}
+.orb-copy,.w-intro,.floor-head,.g-head{text-align:center}
+.offer .sec-eyebrow,.offer h2{text-align:center}
+.world .content{text-align:center}
+.world .meta{margin-inline:auto}
+.g-filters{justify-content:center}
 
 /* ---------- worlds ---------- */
 .w-intro{max-width:1280px;margin:0 auto;padding:150px 40px 70px;border-top:1px solid var(--brd)}
@@ -808,8 +818,6 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     try {
       renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true, powerPreference: 'low-power' });
     } catch (e) { return; }
-    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
-
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(46, 1, 0.1, 100);
     camera.position.z = 3.15;
@@ -880,22 +888,22 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       ty = e.clientY / innerHeight - .5;
     }, {passive:true});
 
-    // the outer shell plus its wave, which is what must stay inside the frustum
-    var REACH = 1.53;
+    // the core shell plus its wave. The halo is deliberately excluded: it is sparse
+    // and dim, and letting it bleed off frame keeps the core from shrinking away
+    var REACH = 1.12;
 
     function resize(){
       var r = canvas.getBoundingClientRect();
       if (!r.width || !r.height) return;
+      renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
       renderer.setSize(r.width, r.height, false);
-      var wide = r.width > 860;
       camera.aspect = r.width / r.height;
-      camera.position.z = wide ? 3.5 : 4.1;
+      // pull the camera back until the orb fits the tighter axis, so a tall phone
+      // canvas never slices the shell the way a fixed distance did
+      var fill = r.width > 860 ? .72 : .88;
+      var visH = (2 * REACH / fill) * Math.max(1, 1 / camera.aspect);
+      camera.position.z = visH / (2 * Math.tan(camera.fov * Math.PI / 360));
       camera.updateProjectionMatrix();
-      // in RTL the copy sits on the right, so the orb slides left as far as it can
-      // without running off the canvas, which depends on the frustum at this aspect
-      var visH = 2 * camera.position.z * Math.tan(camera.fov * Math.PI / 360);
-      var room = Math.max(0, (visH * camera.aspect) / 2 - REACH);
-      group.position.x = wide ? -Math.min(0.95, room) : 0;
       renderer.render(scene, camera);
     }
 
