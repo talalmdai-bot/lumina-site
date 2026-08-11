@@ -57,6 +57,11 @@ export default async function handler(req, res) {
       res.status(400).json({ ok: false, error: 'missing fields' });
       return;
     }
+    // consent to the terms and the privacy policy is what makes the contact lawful
+    if (body.consent !== true) {
+      res.status(400).json({ ok: false, error: 'consent required' });
+      return;
+    }
 
     const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
     if (rateLimited(ip)) {
@@ -79,7 +84,8 @@ export default async function handler(req, res) {
       'שם: ' + name + '\n' +
       'טלפון: ' + phone + '\n' +
       (type ? 'סוג אירוע: ' + type + '\n' : '') +
-      'זמן: ' + when + '\n\n' +
+      'זמן: ' + when + '\n' +
+      'אישר תקנון ומדיניות פרטיות: כן\n\n' +
       'https://wa.me/' + wa;
 
     const tg = await fetch('https://api.telegram.org/bot' + token + '/sendMessage', {

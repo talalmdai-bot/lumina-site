@@ -66,7 +66,7 @@ nav a{font-size:11px;font-weight:300;letter-spacing:.3em;color:#fff;opacity:.6;t
 .mmenu.open a{opacity:.9;transform:none}
 .mmenu.open a:nth-child(2){transition-delay:.06s}.mmenu.open a:nth-child(3){transition-delay:.12s}.mmenu.open a:nth-child(4){transition-delay:.18s}.mmenu.open a:nth-child(5){transition-delay:.24s}
 .mmenu .m-cta{margin-top:10px;font-size:13px;letter-spacing:.34em;border:1px solid rgba(255,255,255,.85);padding:16px 34px}
-.mclose{position:absolute;top:22px;left:22px;background:none;border:none;color:#fff;font-size:30px;font-weight:100;cursor:pointer;line-height:1}
+.mclose{position:absolute;top:14px;left:14px;width:44px;height:44px;background:none;border:none;color:#fff;font-size:30px;font-weight:100;cursor:pointer;line-height:1}
 nav a:hover{opacity:1}
 @media (max-width:760px){
   nav{display:none}
@@ -109,6 +109,11 @@ nav a:hover{opacity:1}
 .scroll-cue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:4;font-size:10px;font-weight:300;letter-spacing:.5em;color:var(--faint);text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:12px;padding-right:.5em}
 .scroll-cue::after{content:"";width:1px;height:44px;background:linear-gradient(rgba(255,255,255,.8),transparent);animation:drip 2s ease-in-out infinite}
 @keyframes drip{0%{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1);transform-origin:top}56%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+/* under ~400px the logotype outgrew the viewport and was being clipped on both sides */
+@media (max-width:400px){
+  .hero-inner{padding:0 14px}
+  .hero h1{font-size:min(58px,12.4vw);letter-spacing:.16em;padding-right:.16em}
+}
 
 /* ---------- 3D orb section ---------- */
 .orb-sec{position:relative;min-height:88svh;overflow:hidden;display:flex;align-items:center;padding:70px 0}
@@ -154,7 +159,7 @@ nav a:hover{opacity:1}
 .contact h2{font-weight:100;font-size:clamp(34px,5.6vw,70px);letter-spacing:.12em;line-height:1.2;text-transform:uppercase}
 .contact p{margin:18px auto 0;color:var(--dim);font-weight:200;font-size:16.5px;max-width:420px}
 .form{margin-top:52px;display:grid;gap:26px;text-align:right}
-.form input,.form select{width:100%;padding:15px 14px;font-size:16px;font-family:var(--sans);font-weight:300;color:#fff;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.22);outline:none;transition:border-color .3s, background .3s;border-radius:0;letter-spacing:.04em}
+.form input:not([type=checkbox]),.form select{width:100%;padding:15px 14px;font-size:16px;font-family:var(--sans);font-weight:300;color:#fff;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.22);outline:none;transition:border-color .3s, background .3s;border-radius:0;letter-spacing:.04em}
 .form select option{background:#0a0a0c;color:#fff}
 .form label{display:block;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px;font-weight:300}
 .form input::placeholder{color:rgba(255,255,255,.5)}
@@ -165,20 +170,83 @@ nav a:hover{opacity:1}
 .btn:hover{background:#fff;color:#000}
 .note{margin-top:16px;color:var(--faint);font-size:12px;letter-spacing:.14em;font-weight:300}
 .hp{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.consent{display:flex;align-items:flex-start;gap:11px;text-align:right}
+.consent input{appearance:none;-webkit-appearance:none;position:relative;flex:0 0 auto;width:24px;height:24px;margin:0;padding:0;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.3);cursor:pointer;transition:background .2s ease,border-color .2s ease}
+.consent input:checked{background:rgba(143,227,255,.16);border-color:#8fe3ff}
+.consent input:checked::after{content:"";position:absolute;left:50%;top:46%;width:5px;height:10px;border:solid #8fe3ff;border-width:0 1.6px 1.6px 0;transform:translate(-50%,-50%) rotate(45deg)}
+.consent input:focus-visible{outline:1px solid #8fe3ff;outline-offset:2px}
+.consent label{margin:0;font-size:13px;font-weight:300;letter-spacing:.01em;text-transform:none;color:rgba(255,255,255,.66);line-height:1.65;cursor:pointer}
+.consent a{color:#8fe3ff;text-decoration:underline;text-underline-offset:2px}
 .err{margin-top:8px;color:#ffb4b4;font-size:12.5px;letter-spacing:.06em;font-weight:300;min-height:1px}
 @media (max-width:600px){.row2{grid-template-columns:1fr}}
 
 
-/* ---------- mosaic ---------- */
-.mosaic-sec{max-width:1280px;margin:0 auto;padding:140px 40px}
-.mosaic-head{margin-bottom:44px}
-.mgrid{display:grid;grid-template-columns:2fr 1fr;gap:16px}
-.mtile{position:relative;display:block;overflow:hidden;aspect-ratio:16/9;border:1px solid rgba(255,255,255,.1)}
-.mtile.wide{grid-column:span 2;aspect-ratio:21/8}
-.mtile video{width:100%;height:100%;object-fit:cover;transition:transform .8s ease}
-.mtile:hover video{transform:scale(1.05)}
-.mtile span{position:absolute;bottom:16px;right:20px;color:#fff;font-weight:100;font-size:22px;letter-spacing:.22em;text-transform:uppercase;text-shadow:0 1px 20px rgba(0,0,0,.8)}
-.mosaic-note{margin-top:22px;color:var(--faint);font-size:13px;letter-spacing:.1em}
+/* ---------- gallery ---------- */
+.gallery{max-width:1280px;margin:0 auto;padding:140px 40px}
+.g-head{margin-bottom:36px}
+.g-sub{margin-top:18px;max-width:500px;color:var(--dim);font-weight:200;font-size:16.5px}
+.g-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.g-chip{font-family:var(--sans);font-weight:300;font-size:13px;letter-spacing:.05em;color:rgba(255,255,255,.66);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:999px;padding:9px 18px;cursor:pointer;transition:color .18s ease,border-color .18s ease,background .18s ease}
+.g-chip i{font-style:normal;font-size:12px;opacity:.5}
+.g-chip i::before{content:"·";margin:0 5px;opacity:.8}
+.g-chip:hover{color:#fff;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2)}
+.g-chip.on{color:#d3f1ff;background:rgba(143,227,255,.14);border-color:rgba(143,227,255,.45)}
+.g-chip:focus-visible{outline:1px solid #8fe3ff;outline-offset:3px}
+
+.g-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+.gcard{position:relative;grid-column:span 4;aspect-ratio:16/9;display:block;overflow:hidden;padding:0;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.09);border-radius:14px;color:#fff;font-family:var(--sans);cursor:pointer;transition:transform .2s cubic-bezier(.4,0,.2,1),border-color .2s ease,background .2s ease,box-shadow .2s ease}
+.gcard.feat{grid-column:span 8;grid-row:span 2;aspect-ratio:auto}
+.gcard.band{grid-column:span 12;aspect-ratio:21/8}
+.g-grid.filtered .gcard{grid-column:span 4;grid-row:auto;aspect-ratio:16/9}
+.gcard[hidden]{display:none}
+/* the media sits inset, so the card border reads as a frame around it */
+.gcard img,.gcard video{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);object-fit:cover;border-radius:9px}
+.gcard video{opacity:0;transition:opacity .45s ease}
+.gcard.live video{opacity:1}
+.gcard::after{content:"";position:absolute;inset:6px;border-radius:9px;pointer-events:none;background:linear-gradient(to top,rgba(0,0,0,.86) 0%,rgba(0,0,0,.22) 46%,rgba(0,0,0,0) 76%)}
+.gcard:hover,.gcard:focus-visible{transform:translateY(-3px);background:rgba(143,227,255,.07);border-color:rgba(143,227,255,.42);box-shadow:0 16px 44px rgba(0,0,0,.6),0 4px 22px rgba(143,227,255,.1)}
+.gcard:focus-visible{outline:1px solid #8fe3ff;outline-offset:3px}
+.gc-cap{position:absolute;z-index:2;bottom:20px;inset-inline-start:24px;pointer-events:none}
+.gc-name{display:block;font-weight:100;font-size:20px;letter-spacing:.16em;text-transform:uppercase;text-shadow:0 1px 20px rgba(0,0,0,.9)}
+.gcard.feat .gc-name{font-size:clamp(23px,2.4vw,32px)}
+.gc-tag{display:block;margin-top:5px;font-size:11.5px;font-weight:300;letter-spacing:.04em;color:rgba(255,255,255,.6)}
+.gc-motion{position:absolute;z-index:2;top:18px;inset-inline-start:20px;display:flex;align-items:center;gap:7px;padding:5px 11px;border-radius:999px;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.12);font-size:10.5px;font-weight:300;letter-spacing:.04em;color:rgba(255,255,255,.88);pointer-events:none}
+.gc-motion::before{content:"";width:5px;height:5px;border-radius:50%;background:#8fe3ff;box-shadow:0 0 8px rgba(143,227,255,.9)}
+.gc-cue{position:absolute;z-index:2;bottom:20px;inset-inline-end:22px;padding:6px 14px;border-radius:999px;background:rgba(143,227,255,.16);backdrop-filter:blur(8px);border:1px solid rgba(143,227,255,.4);font-size:11px;letter-spacing:.04em;color:#d3f1ff;opacity:0;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease;pointer-events:none}
+.gcard:hover .gc-cue,.gcard:focus-visible .gc-cue{opacity:1;transform:none}
+
+.g-more{display:block;margin:26px auto 0;font-family:var(--sans);font-weight:300;font-size:13px;letter-spacing:.05em;color:rgba(255,255,255,.78);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:13px 30px;cursor:pointer;transition:color .18s ease,border-color .18s ease,background .18s ease}
+.g-more:hover{color:#fff;background:rgba(143,227,255,.1);border-color:rgba(143,227,255,.45)}
+.g-more:focus-visible{outline:1px solid #8fe3ff;outline-offset:3px}
+.g-more[hidden]{display:none}
+.g-note{margin-top:24px;color:var(--faint);font-size:13px;letter-spacing:.04em;text-align:center}
+
+/* ---------- gallery lightbox ---------- */
+.glb{position:fixed;inset:0;z-index:100;display:flex;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;padding:max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));opacity:0;pointer-events:none;transition:opacity .35s ease}
+.glb.open{opacity:1;pointer-events:auto}
+.glb-bd{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(10px)}
+/* the card is capped by height as well, so the 16/9 stage never gets cropped on short screens */
+.glb-card{position:relative;z-index:2;margin:auto;width:100%;max-width:min(1080px, calc((100vh - 230px) * 16 / 9));background:#0b0b0d;border:1px solid rgba(255,255,255,.11);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.75),0 6px 20px rgba(0,0,0,.5);transform:translateY(14px) scale(.99);transition:transform .28s cubic-bezier(.4,0,.2,1)}
+.glb.open .glb-card{transform:none}
+.glb-card:focus{outline:none}
+.glb-stage{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden;border-radius:15px 15px 0 0}
+.glb-stage img,.glb-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.glb-stage img[hidden],.glb-stage video[hidden]{display:none}
+.glb-info{display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px 30px;padding:24px 30px 28px;border-top:1px solid rgba(255,255,255,.08)}
+.glb-txt{flex:1 1 300px;min-width:0}
+.glb-tags{display:flex;align-items:center;gap:10px;font-size:11.5px;font-weight:300;letter-spacing:.04em;color:rgba(255,255,255,.45)}
+.glb-tags b{font-weight:300;padding:4px 11px;border-radius:999px;background:rgba(143,227,255,.12);border:1px solid rgba(143,227,255,.3);color:#bfe8ff}
+.glb-info h3{margin-top:11px;font-weight:100;font-size:clamp(25px,3.2vw,38px);letter-spacing:.14em;line-height:1.1;text-transform:uppercase}
+.glb-info p{margin-top:10px;color:rgba(255,255,255,.6);font-weight:200;font-size:15px;line-height:1.75;max-width:520px}
+.glb-cta{flex:0 0 auto;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.05);border-radius:999px;padding:15px 30px;font-size:13px;font-weight:300;letter-spacing:.04em;transition:background .18s ease,border-color .18s ease,color .18s ease}
+.glb-cta:hover{background:rgba(143,227,255,.14);border-color:rgba(143,227,255,.5);color:#d3f1ff}
+.glb-close{position:absolute;top:14px;inset-inline-end:14px;z-index:4;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.8);font-size:22px;font-weight:100;line-height:1;cursor:pointer;transition:color .18s ease,background .18s ease,border-color .18s ease}
+.glb-close:hover{color:#fff;background:rgba(0,0,0,.8);border-color:rgba(255,255,255,.3)}
+.glb-nav{position:absolute;top:50%;z-index:4;width:44px;height:44px;border-radius:50%;transform:translateY(-50%);background:rgba(0,0,0,.45);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:22px;font-weight:100;line-height:1;cursor:pointer;transition:background .18s ease,border-color .18s ease}
+.glb-nav:hover{background:rgba(143,227,255,.2);border-color:rgba(143,227,255,.55)}
+.glb-prev{inset-inline-start:14px}
+.glb-next{inset-inline-end:14px}
+.glb-nav:focus-visible,.glb-close:focus-visible,.glb-cta:focus-visible{outline:1px solid #8fe3ff;outline-offset:3px}
 /* ---------- process ---------- */
 .process{max-width:1280px;margin:0 auto;padding:120px 40px;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--brd);border-bottom:1px solid var(--brd)}
 .process .pcol{padding:16px 34px;border-right:1px solid var(--brd)}
@@ -191,7 +259,33 @@ nav a:hover{opacity:1}
 .statement h2{font-weight:100;font-size:clamp(38px,7vw,80px);letter-spacing:.08em;line-height:1.22;text-transform:none}
 .stprops{margin-top:34px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .stprops span{border:1px solid rgba(255,255,255,.22);padding:12px 24px;color:var(--dim);font-size:12px;letter-spacing:.2em}
-@media (max-width:860px){.mgrid{grid-template-columns:1fr}.mtile.wide{grid-column:span 1;aspect-ratio:16/9}.process{grid-template-columns:1fr}.process .pcol{border-right:none;border-top:1px solid var(--brd);padding:26px 6px}.process .pcol:first-child{border-top:none}.mosaic-sec{padding:90px 24px}}
+@media (max-width:860px){.process{grid-template-columns:1fr}.process .pcol{border-right:none;border-top:1px solid var(--brd);padding:26px 6px}.process .pcol:first-child{border-top:none}}
+@media (max-width:900px){
+  .g-grid{grid-template-columns:repeat(6,1fr)}
+  /* two columns: the oversized tiles become regular ones so the rows stay full */
+  .gcard,.gcard.feat,.g-grid.filtered .gcard{grid-column:span 3;grid-row:auto;aspect-ratio:16/9}
+  .gcard.band{grid-column:span 6;aspect-ratio:16/9}
+}
+@media (max-width:700px){
+  .gallery{padding:90px 24px}
+  .g-grid{grid-template-columns:1fr;gap:12px}
+  .gcard,.gcard.feat,.gcard.band,.g-grid.filtered .gcard{grid-column:span 1;aspect-ratio:16/9}
+  .gcard.feat .gc-name{font-size:19px}
+  .gc-name{font-size:18px;letter-spacing:.14em}
+  .gc-cap{bottom:16px;inset-inline-start:20px}
+  .gc-motion{top:14px;inset-inline-start:16px}
+  .gc-cue{bottom:16px;inset-inline-end:18px}
+  .g-chip{padding:9px 15px;font-size:12.5px}
+  .g-more{padding:12px 24px;margin-top:20px}
+  .glb{padding:14px}
+  .glb-card{max-width:none}
+  .glb-info{padding:20px 20px 24px;gap:16px}
+  .glb-cta{flex:1 1 100%;text-align:center;padding:14px 20px}
+  .glb-nav{width:38px;height:38px;font-size:20px}
+  .glb-prev{inset-inline-start:8px}
+  .glb-next{inset-inline-end:8px}
+  .glb-close{top:10px;inset-inline-end:10px;width:36px;height:36px;font-size:20px}
+}
 
 .venuecheck{padding:120px 34px;text-align:center;border-top:1px solid var(--brd);background:radial-gradient(ellipse 55% 60% at 50% 50%, rgba(139,123,255,.09), transparent 72%)}
 .venuecheck .vc-eyebrow{font-size:11px;font-weight:300;letter-spacing:.5em;text-transform:uppercase;color:var(--faint)}
@@ -232,7 +326,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   .lp-card .form{margin-top:22px;gap:15px}
   .lp-card .row2{gap:15px}
   .lp-card .form label{margin-bottom:5px}
-  .lp-card .form input,.lp-card .form select{padding:13px 12px}
+  .lp-card .form input:not([type=checkbox]),.lp-card .form select{padding:13px 12px}
   .lp-card .btn{padding-top:16px;padding-bottom:16px}
   .lp-card .note{margin-top:12px}
 }
@@ -263,7 +357,10 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 .social-dock a{width:50px;height:50px}
 .social-dock svg{width:25px;height:25px}
 .to-top{bottom:18px;right:18px;width:48px;height:48px}}
-@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none;transition:none}.scroll-cue::after,.grain{animation:none}}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none;transition:none}.scroll-cue::after,.grain{animation:none}
+.gcard img,.gcard video,.gcard,.gc-cue,.glb,.glb-card,.g-chip,.g-more{transition:none}
+.gcard:hover,.gcard:focus-visible{transform:none}
+.glb-card{transform:none}}
 </style>
 </head>
 <body>
@@ -330,8 +427,8 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     <p class="floor-sub">אותן אנימציות, על המסך של האולם, ברגע שכולם עולים לרקוד.</p>
   </div>
   <div class="fgrid rv d1">
-    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_205654_c36df9a6-abcb-411e-97f3-6ea80e4ed807.mp4" muted loop playsinline autoplay preload="metadata"></video></div>
-    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_210449_e9389f53-9883-4d2c-906c-0149c11fca55.mp4" muted loop playsinline autoplay preload="metadata"></video></div>
+    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_205654_c36df9a6-abcb-411e-97f3-6ea80e4ed807.mp4" poster="/videos/posters/floor1.jpg" muted loop playsinline preload="none"></video></div>
+    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_210449_e9389f53-9883-4d2c-906c-0149c11fca55.mp4" poster="/videos/posters/floor2.jpg" muted loop playsinline preload="none"></video></div>
   </div>
 </section>
 
@@ -342,7 +439,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 </div>
 
 <section class="world">
-  <video class="bgv plx" src="/videos/clip3.mp4" muted loop playsinline autoplay preload="metadata"></video>
+  <video class="bgv plx" src="/videos/clip3.mp4" poster="/videos/posters/deepviolet.jpg" muted loop playsinline preload="none"></video>
   <div class="shade"></div>
   <div class="content rv">
     <div class="idx">Signature</div>
@@ -355,18 +452,175 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   </div>
 </section>
 
-<!-- WORLD MOSAIC -->
-<div class="mosaic-sec">
-  <div class="mosaic-head rv">
-    <div class="sec-eyebrow">More Worlds</div>
+<!-- WORLD GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="g-head rv">
+    <div class="sec-eyebrow">The Gallery</div>
     <h2 class="sec-title">עוד עולמות לרחבה</h2>
+    <p class="g-sub">מבחר מהעבודות שלנו. סננו לפי האווירה שמדברת אליכם, ולחצו על כל אחד כדי לראות אותו בגדול.</p>
   </div>
-  <div class="mgrid rv d1">
-    <a class="mtile" href="#contact"><video src="/videos/clip2.mp4" muted loop playsinline autoplay preload="metadata"></video><span>Crimson</span></a>
-    <a class="mtile" href="#contact"><video src="/videos/clip5.mp4" muted loop playsinline autoplay preload="metadata"></video><span>Teal</span></a>
-    <a class="mtile wide" href="#contact"><video src="/videos/clip4.mp4" muted loop playsinline autoplay preload="metadata"></video><span>Indigo</span></a>
+
+  <div class="g-filters rv d1" role="group" aria-label="סינון לפי אווירה">
+    <button class="g-chip on" type="button" data-cat="all" aria-pressed="true">הכול <i>19</i></button>
+    <button class="g-chip" type="button" data-cat="dark" aria-pressed="false">אפל ועוצמתי <i>4</i></button>
+    <button class="g-chip" type="button" data-cat="neon" aria-pressed="false">ניאון וצבע <i>7</i></button>
+    <button class="g-chip" type="button" data-cat="soft" aria-pressed="false">רך ורומנטי <i>4</i></button>
+    <button class="g-chip" type="button" data-cat="gold" aria-pressed="false">זהב וחום <i>4</i></button>
   </div>
-  <p class="mosaic-note rv d2">כל עולם נבנה בהתאמה אישית לחתונה שלכם, לצבעים ולאווירה שאתם רוצים על הרחבה</p>
+
+  <div class="g-grid rv d2" id="gGrid">
+    <button class="gcard feat" type="button" data-cat="dark" data-title="Crimson" data-label="אפל ועוצמתי" data-desc="דמות עוטת גלימה על מסך עגול, ופיצוץ אור אדום שנפתח מאחוריה. העולם הכי דרמטי בסט, לרגע שהדיג'יי מפיל את הביט." data-src="/videos/clip2.mp4">
+      <img src="/videos/posters/crimson.jpg" alt="Crimson — דמות עוטת גלימה מול פיצוץ אור אדום" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Crimson</span><span class="gc-tag">אפל ועוצמתי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="neon" data-title="Teal" data-label="ניאון וצבע" data-desc="איל עם קרניים זוהרות בטורקיז וגופי אור שמרחפים סביבו. נקי, קר וקריא גם על מסך גדול מאוד." data-src="/videos/clip5.mp4">
+      <img src="/videos/posters/teal.jpg" alt="Teal — איל עם קרניים זוהרות בטורקיז" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Teal</span><span class="gc-tag">ניאון וצבע</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="neon" data-title="Aurora" data-label="ניאון וצבע" data-desc="דמות בנויה מקווי אור ציאן שעולה מתוך ערפל. אחד העולמות שהכי טוב לפתוח איתם את השלב המתקדם." data-src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_6a301df1-0118-47e5-bc51-252a614168a4.mp4">
+      <img src="/videos/posters/aurora.jpg" alt="Aurora — דמות בקווי אור ציאן עולה מתוך ערפל" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Aurora</span><span class="gc-tag">ניאון וצבע</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="soft" data-title="Indigo" data-label="רך ורומנטי" data-desc="שיער שנפרש כמו עשן כחול וסגול במים. עולם שקט יותר, מתאים לרגעים שבין הסטים." data-src="/videos/clip4.mp4">
+      <img src="/videos/posters/indigo.jpg" alt="Indigo — שיער שנפרש כעשן כחול וסגול במים" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Indigo</span><span class="gc-tag">רך ורומנטי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="neon" data-title="Abyss" data-label="ניאון וצבע" data-desc="כתר של קונכיות ומדוזות זוהרות בכחול עמוק. הרבה פרטים קטנים שמתגלים דווקא על מסך LED גדול." data-src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_836e2b5b-ed34-43e4-9a7b-000015ea300b.mp4">
+      <img src="/videos/posters/abyss.jpg" alt="Abyss — כתר קונכיות ומדוזות זוהרות בכחול עמוק" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Abyss</span><span class="gc-tag">ניאון וצבע</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="soft" data-title="Solstice" data-label="רך ורומנטי" data-desc="כתר קרניים ונטיפי אור, בין ורוד לטורקיז. הכי קרוב לאסתטיקה של חתונה, בלי לוותר על העוצמה." data-src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_764ff7ff-6101-45e3-9ed3-3707bf4b388c.mp4">
+      <img src="/videos/posters/solstice.jpg" alt="Solstice — כתר קרניים ונטיפי אור בוורוד וטורקיז" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Solstice</span><span class="gc-tag">רך ורומנטי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard band" type="button" data-cat="dark" data-title="Botanica" data-label="אפל ועוצמתי" data-desc="ורדים אדומים וזרימת אור ירוקה על גוף כהה. עולם שנבנה למסכים רחבים ולקירות LED מפוצלים." data-src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_ac159449-abaf-44fb-8f35-908eddf100d3.mp4">
+      <img src="/videos/posters/botanica.jpg" alt="Botanica — ורדים אדומים וזרימת אור ירוקה על גוף כהה" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Botanica</span><span class="gc-tag">אפל ועוצמתי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="neon" data-title="Voltage" data-label="ניאון וצבע" data-desc="ברקים לבנים שפורצים מהעיניים, בתוך טבעת ציאן ומגנטה. עולם חד ותוקפני, לרגעי השיא של הסט.">
+      <img src="/gallery/voltage.jpg" alt="Voltage — פנים עם ברקים לבנים בתוך טבעת ציאן ומגנטה" loading="lazy" decoding="async" width="1600" height="900">
+      <span class="gc-cap"><span class="gc-name">Voltage</span><span class="gc-tag">ניאון וצבע</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="soft" data-title="Onyx" data-label="רך ורומנטי" data-desc="דיוקן על רקע לבן, עם שיער שנפרש כמו דיו שחור במים. ניגוד חזק שנראה מצוין על מסך גדול.">
+      <img src="/gallery/onyx.jpg" alt="Onyx — דיוקן עם שיער כדיו שחור על רקע לבן" loading="lazy" decoding="async" width="1600" height="900">
+      <span class="gc-cap"><span class="gc-name">Onyx</span><span class="gc-tag">רך ורומנטי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="dark" data-title="Umbra" data-label="אפל ועוצמתי" data-desc="צללית של איל עם עין אחת זוהרת בחושך. מינימלי, מאיים, ועובד יפה כשהאולם חשוך לגמרי.">
+      <img src="/gallery/umbra.jpg" alt="Umbra — צללית איל עם עין זוהרת בחושך" loading="lazy" decoding="async" width="1600" height="900">
+      <span class="gc-cap"><span class="gc-name">Umbra</span><span class="gc-tag">אפל ועוצמתי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard feat" type="button" data-cat="neon" data-title="Monolith" data-label="ניאון וצבע" data-desc="דמות לבנה בתוך מסגרת כחולה מלבנית. נבנה במיוחד למסכים ישרים ולקירות LED, ולא למסך עגול.">
+      <img src="/gallery/monolith.jpg" alt="Monolith — דמות לבנה בתוך מסגרת כחולה מלבנית" loading="lazy" decoding="async" width="1600" height="900">
+      <span class="gc-cap"><span class="gc-name">Monolith</span><span class="gc-tag">ניאון וצבע</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="gold" data-title="Seraph" data-label="זהב וחום" data-desc="כנפיים זהובות שנפתחות מתוך עשן. העולם הכי חגיגי בסט, טוב לכניסה לרחבה.">
+      <img src="/gallery/seraph.jpg" alt="Seraph — כנפיים זהובות שנפתחות מתוך עשן" loading="lazy" decoding="async" width="1600" height="900">
+      <span class="gc-cap"><span class="gc-name">Seraph</span><span class="gc-tag">זהב וחום</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="gold" data-title="Solaris" data-label="זהב וחום" data-desc="פיצוץ של קווי אור כתומים סביב דמות. חם, רועש ומלא אנרגיה, ההפך הגמור מהעולמות הכחולים.">
+      <img src="/gallery/solaris.jpg" alt="Solaris — פיצוץ קווי אור כתומים סביב דמות" loading="lazy" decoding="async" width="1600" height="900">
+      <span class="gc-cap"><span class="gc-name">Solaris</span><span class="gc-tag">זהב וחום</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="gold" data-title="Halo" data-label="זהב וחום" data-desc="טבעת אור לבנה סביב דמות עם אור זהוב בחזה. נקי וסימטרי, יושב טוב במרכז מסך עגול.">
+      <img src="/gallery/halo.jpg" alt="Halo — טבעת אור לבנה סביב דמות עם אור זהוב בחזה" loading="lazy" decoding="async" width="1600" height="900">
+      <span class="gc-cap"><span class="gc-name">Halo</span><span class="gc-tag">זהב וחום</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="soft" data-title="Wraith" data-label="רך ורומנטי" data-desc="דמות לבנה שנמסה לתוך בד מתנופף, בתוך טבעת כחולה. שקט, אלגנטי, בלי צבעים צועקים.">
+      <img src="/gallery/wraith.jpg" alt="Wraith — דמות לבנה נמסה לתוך בד מתנופף בטבעת כחולה" loading="lazy" decoding="async" width="1600" height="900">
+      <span class="gc-cap"><span class="gc-name">Wraith</span><span class="gc-tag">רך ורומנטי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="neon" data-title="Verdant" data-label="ניאון וצבע" data-desc="דמות בתוך כדור טורקיז עם ברקים ירוקים שרצים על העור. אחד העולמות הכי קריאים ממרחק.">
+      <img src="/gallery/verdant.jpg" alt="Verdant — דמות בכדור טורקיז עם ברקים ירוקים" loading="lazy" decoding="async" width="1600" height="900">
+      <span class="gc-cap"><span class="gc-name">Verdant</span><span class="gc-tag">ניאון וצבע</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="neon" data-title="Glacier" data-label="ניאון וצבע" data-desc="גבישי קרח כחולים שמתפוצצים החוצה מדמות חיוורת. קר, חד ומאוד גרפי.">
+      <img src="/gallery/glacier.jpg" alt="Glacier — גבישי קרח כחולים מתפוצצים מדמות חיוורת" loading="lazy" decoding="async" width="1600" height="900">
+      <span class="gc-cap"><span class="gc-name">Glacier</span><span class="gc-tag">ניאון וצבע</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="gold" data-title="Relic" data-label="זהב וחום" data-desc="טבעת זהב עתיקה שמרחפת סביב דמות, עם שברי אבן באוויר. עולם עם תחושה של טקס.">
+      <img src="/gallery/relic.jpg" alt="Relic — טבעת זהב עתיקה ושברי אבן סביב דמות" loading="lazy" decoding="async" width="1600" height="900">
+      <span class="gc-cap"><span class="gc-name">Relic</span><span class="gc-tag">זהב וחום</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="dark" data-title="Eclipse" data-label="אפל ועוצמתי" data-desc="דמות עטופה בשחור עם נקודת אור לבנה אחת. הכי מינימלי בסט, ובדיוק בגלל זה חזק.">
+      <img src="/gallery/eclipse.jpg" alt="Eclipse — דמות עטופה בשחור עם נקודת אור לבנה" loading="lazy" decoding="async" width="1600" height="900">
+      <span class="gc-cap"><span class="gc-name">Eclipse</span><span class="gc-tag">אפל ועוצמתי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+  </div>
+
+  <button class="g-more rv d3" type="button" id="gMore" aria-controls="gGrid" aria-expanded="false"></button>
+  <p class="g-note rv d3">כל עולם נבנה בהתאמה אישית לחתונה שלכם, לצבעים ולאווירה שאתם רוצים על הרחבה</p>
+</section>
+
+<div class="glb" id="glb" role="dialog" aria-modal="true" aria-labelledby="glbTitle" aria-hidden="true">
+  <div class="glb-bd" id="glbBd"></div>
+  <div class="glb-card" id="glbCard" tabindex="-1">
+    <div class="glb-stage">
+      <img id="glbImg" alt="" hidden>
+      <video class="gv" id="glbV" muted loop playsinline preload="none" hidden></video>
+      <button class="glb-nav glb-prev" id="glbPrev" type="button" aria-label="העולם הקודם">&#8250;</button>
+      <button class="glb-nav glb-next" id="glbNext" type="button" aria-label="העולם הבא">&#8249;</button>
+    </div>
+    <button class="glb-close" id="glbClose" type="button" aria-label="סגירה">&#215;</button>
+    <div class="glb-info">
+      <div class="glb-txt">
+        <div class="glb-tags"><b id="glbLabel"></b><span id="glbIdx"></span></div>
+        <h3 id="glbTitle"></h3>
+        <p id="glbDesc"></p>
+      </div>
+      <a class="glb-cta" href="#contact" id="glbCta">רוצה עולם כזה</a>
+    </div>
+  </div>
 </div>
 
 <!-- OFFER -->
@@ -425,6 +679,10 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
         <option>אחר</option>
       </select></div>
       <div class="hp" aria-hidden="true"><label for="fCompany">אל תמלאו שדה זה</label><input type="text" id="fCompany" name="company" tabindex="-1" autocomplete="off"></div>
+      <div class="consent">
+        <input type="checkbox" id="fConsent" name="consent" required>
+        <label for="fConsent">קראתי ואני מאשר/ת את <a href="/legal.html#terms" target="_blank" rel="noopener">התקנון</a> ואת <a href="/legal.html#privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, ומסכים/ה שתיצרו איתי קשר בטלפון או בוואטסאפ.</label>
+      </div>
       <button class="btn" type="submit">אני רוצה את זה באירוע שלי</button>
       <p class="err" id="formErr" role="alert"></p>
     </form>
@@ -481,6 +739,10 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
         <option>אחר</option>
       </select></div>
       <div class="hp" aria-hidden="true"><label for="pCompany">אל תמלאו שדה זה</label><input type="text" id="pCompany" name="company" tabindex="-1" autocomplete="off"></div>
+      <div class="consent">
+        <input type="checkbox" id="pConsent" name="consent" required>
+        <label for="pConsent">קראתי ואני מאשר/ת את <a href="/legal.html#terms" target="_blank" rel="noopener">התקנון</a> ואת <a href="/legal.html#privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, ומסכים/ה שתיצרו איתי קשר בטלפון או בוואטסאפ.</label>
+      </div>
       <button class="btn" type="submit">שלחו לי הצעת מחיר</button>
       <p class="err" role="alert"></p>
     </form>
@@ -506,22 +768,33 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       if (e.isIntersecting) { if (v.id === 'heroB' || v.classList.contains('hid')) return; v.muted = true; v.play().catch(function(){}); }
     });
   }, {rootMargin: '600px 0px', threshold: 0});
-  document.querySelectorAll('video').forEach(function(v){
+  // play() downloads the whole clip, so it must stay tied to what is actually near the viewport
+  function nearViewport(v){
+    var r = v.getBoundingClientRect();
+    return r.bottom > -600 && r.top < innerHeight + 600;
+  }
+  document.querySelectorAll('video:not(.gv)').forEach(function(v){
     v.muted = true;
     v.setAttribute('playsinline','');
     vio.observe(v);
-    v.play().catch(function(){});
+    if (nearViewport(v)) v.play().catch(function(){});
   });
   function kickVideos(){
-    document.querySelectorAll('video').forEach(function(v){
+    document.querySelectorAll('video:not(.gv)').forEach(function(v){
       if (v.id === 'heroB' || v.classList.contains('hid')) return;
-      if (v.paused) { v.muted = true; v.play().catch(function(){}); }
+      if (v.paused && nearViewport(v)) { v.muted = true; v.play().catch(function(){}); }
     });
   }
   addEventListener('pointerdown', kickVideos, {passive:true});
   addEventListener('touchstart', kickVideos, {passive:true});
-  addEventListener('scroll', kickVideos, {passive:true, once:true});
   addEventListener('keydown', kickVideos);
+  // throttled and permanent: the clips now load lazily, so scrolling has to keep starting them
+  var kickPending = false;
+  addEventListener('scroll', function(){
+    if (kickPending) return;
+    kickPending = true;
+    setTimeout(function(){ kickPending = false; kickVideos(); }, 300);
+  }, {passive:true});
   document.addEventListener('visibilitychange', function(){ if (!document.hidden) kickVideos(); });
   setTimeout(kickVideos, 400); setTimeout(kickVideos, 1500); setTimeout(kickVideos, 4000);
 
@@ -634,6 +907,183 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     });
   })();
 
+  // ---------- world gallery: hover preview + filters + lightbox ----------
+  (function(){
+    var grid = document.getElementById('gGrid');
+    var lb = document.getElementById('glb');
+    if (!grid || !lb) return;
+
+    var cards = [].slice.call(grid.querySelectorAll('.gcard'));
+    var chips = [].slice.call(document.querySelectorAll('.g-chip'));
+    var lbCard = document.getElementById('glbCard');
+    var lbV = document.getElementById('glbV');
+    var lbImg = document.getElementById('glbImg');
+    var elIdx = document.getElementById('glbIdx');
+    var elTitle = document.getElementById('glbTitle');
+    var elDesc = document.getElementById('glbDesc');
+    var btnPrev = document.getElementById('glbPrev');
+    var btnNext = document.getElementById('glbNext');
+    var elLabel = document.getElementById('glbLabel');
+    var more = document.getElementById('gMore');
+    var hoverable = matchMedia('(hover:hover) and (pointer:fine)').matches;
+    var visible = cards.slice();
+    var cur = -1, lastFocus = null, gio = null;
+
+    // still designs have no data-src and stay as a plain image
+    function arm(card){
+      var v = card.querySelector('video');
+      if (!v) return;
+      if (!v.src) v.src = card.dataset.src;
+      v.muted = true;
+      var pr = v.play();
+      if (pr && pr.then) pr.then(function(){ card.classList.add('live'); }, function(){});
+      else card.classList.add('live');
+    }
+    function disarm(card){
+      var v = card.querySelector('video');
+      card.classList.remove('live');
+      if (v && v.src) v.pause();
+    }
+
+    if (hoverable) {
+      cards.forEach(function(card){
+        card.addEventListener('mouseenter', function(){ arm(card); });
+        card.addEventListener('focus', function(){ arm(card); });
+        card.addEventListener('mouseleave', function(){ disarm(card); });
+        card.addEventListener('blur', function(){ disarm(card); });
+      });
+    } else {
+      gio = new IntersectionObserver(function(es){
+        es.forEach(function(e){ if (e.isIntersecting) arm(e.target); else disarm(e.target); });
+      }, {threshold:.45});
+      cards.forEach(function(c){ gio.observe(c); });
+    }
+
+    // re-deliver the observer state after the grid or the lightbox changed what is on screen
+    function refresh(){
+      if (!gio) return;
+      cards.forEach(function(c){ gio.unobserve(c); gio.observe(c); });
+    }
+
+    // ---------- filters + collapsed view ----------
+    // collapsed shows the seven animated worlds, which is exactly four full grid rows
+    var LIMIT = 7;
+    var cat = 'all', expanded = false;
+
+    function render(){
+      var matching = cards.filter(function(c){ return cat === 'all' || c.dataset.cat === cat; });
+      var cap = expanded ? matching.length : Math.min(LIMIT, matching.length);
+      visible = matching.slice(0, cap);
+      cards.forEach(function(c){
+        var on = visible.indexOf(c) > -1;
+        c.hidden = !on;
+        if (!on) disarm(c);
+      });
+      grid.classList.toggle('filtered', cat !== 'all');
+      var rest = matching.length - cap;
+      more.hidden = (matching.length <= LIMIT);
+      more.textContent = expanded ? 'הצג פחות' : 'עוד ' + rest + ' עיצובים';
+      more.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      refresh();
+    }
+
+    chips.forEach(function(chip){
+      chip.addEventListener('click', function(){
+        chips.forEach(function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed','false'); });
+        chip.classList.add('on');
+        chip.setAttribute('aria-pressed','true');
+        cat = chip.dataset.cat;
+        expanded = false;
+        render();
+      });
+    });
+    more.addEventListener('click', function(){
+      expanded = !expanded;
+      render();
+      // collapsing shortens the grid, so pull the button back into view if it scrolled off
+      var r = more.getBoundingClientRect();
+      if (!expanded && (r.top < 0 || r.bottom > innerHeight)) more.scrollIntoView({block:'center', behavior:'smooth'});
+    });
+    render();
+
+    // ---------- lightbox ----------
+    function show(i){
+      if (!visible.length) return;
+      cur = (i + visible.length) % visible.length;
+      var card = visible[cur];
+      var pad = function(n){ return (n < 10 ? '0' : '') + n; };
+      elIdx.textContent = pad(cur + 1) + ' / ' + pad(visible.length);
+      elLabel.textContent = card.dataset.label;
+      elTitle.textContent = card.dataset.title;
+      elDesc.textContent = card.dataset.desc;
+      btnPrev.hidden = btnNext.hidden = (visible.length < 2);
+      if (card.dataset.src) {
+        lbImg.hidden = true;
+        lbV.hidden = false;
+        if (lbV.getAttribute('src') !== card.dataset.src) lbV.src = card.dataset.src;
+        lbV.muted = true;
+        lbV.play().catch(function(){});
+      } else {
+        lbV.pause();
+        lbV.hidden = true;
+        lbImg.hidden = false;
+        lbImg.src = card.querySelector('img').src;
+        lbImg.alt = card.querySelector('img').alt;
+      }
+    }
+    function open(card){
+      var i = visible.indexOf(card);
+      if (i < 0) return;
+      lastFocus = (document.activeElement && document.activeElement !== document.body) ? document.activeElement : card;
+      cards.forEach(disarm);
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+      show(i);
+      lbCard.focus({preventScroll:true});
+    }
+    function close(){
+      if (!lb.classList.contains('open')) return;
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+      lbV.pause();
+      cur = -1;
+      refresh();
+      if (lastFocus && lastFocus.focus) lastFocus.focus({preventScroll:true});
+    }
+
+    cards.forEach(function(card){
+      card.setAttribute('aria-label', card.dataset.title + ' — פתיחת תצוגה מלאה');
+      card.addEventListener('click', function(){ open(card); });
+    });
+    btnPrev.addEventListener('click', function(){ show(cur - 1); });
+    btnNext.addEventListener('click', function(){ show(cur + 1); });
+    document.getElementById('glbClose').addEventListener('click', close);
+    document.getElementById('glbBd').addEventListener('click', close);
+    document.getElementById('glbCta').addEventListener('click', close);
+
+    addEventListener('keydown', function(ev){
+      if (!lb.classList.contains('open')) return;
+      if (ev.key === 'Escape') { close(); return; }
+      // RTL: the left arrow moves forward, the right arrow moves back
+      if (ev.key === 'ArrowLeft') { ev.preventDefault(); show(cur + 1); return; }
+      if (ev.key === 'ArrowRight') { ev.preventDefault(); show(cur - 1); return; }
+      if (ev.key !== 'Tab') return;
+      var f = [].slice.call(lbCard.querySelectorAll('button:not([hidden]), a[href]'));
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+      else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+    });
+
+    document.addEventListener('visibilitychange', function(){
+      if (document.hidden) { cards.forEach(disarm); lbV.pause(); }
+      else if (lb.classList.contains('open')) { if (!lbV.hidden) lbV.play().catch(function(){}); }
+      else refresh();
+    });
+  })();
+
   // ---------- lead forms ----------
   var formShownAt = Date.now();
 
@@ -655,6 +1105,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     form.addEventListener('submit', function(ev){
       ev.preventDefault();
       var nameEl = form.elements['name'], phoneEl = form.elements['phone'];
+      var consentEl = form.elements['consent'];
       var n = nameEl.value.trim();
       var p = phoneEl.value.trim();
       var t = (form.elements['type'] ? form.elements['type'].value : '') + typeSuffix;
@@ -666,12 +1117,13 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       if (err) err.textContent = '';
       if (!n) { fail('נא למלא שם מלא', nameEl); return; }
       if (!validPhone(p)) { fail('נא למלא מספר טלפון ישראלי תקין', phoneEl); return; }
+      if (!consentEl.checked) { fail('צריך לאשר את התקנון ומדיניות הפרטיות', consentEl); return; }
       var original = btn ? btn.textContent : '';
       if (btn) { btn.disabled = true; btn.textContent = 'שולח...'; }
       fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: n, phone: p, type: t, company: hp, elapsed: Date.now() - formShownAt })
+        body: JSON.stringify({ name: n, phone: p, type: t, company: hp, consent: true, elapsed: Date.now() - formShownAt })
       }).then(function(r){
         if (r && r.ok) {
           console.log('[lead] forwarded to telegram');
