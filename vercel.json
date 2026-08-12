@@ -1,8 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "functions": {
-    "api/social-approve.mjs": { "maxDuration": 60 }
-  },
   "redirects": [
     {
       "source": "/videos/:path*",
