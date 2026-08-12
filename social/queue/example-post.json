@@ -1,0 +1,7 @@
+{
+  "id": "example-post",
+  "publishAt": "2099-01-01T19:30:00+02:00",
+  "type": "reel",
+  "media": "https://luminavisual.co.il/social/media/example.mp4",
+  "caption": "זה קובץ דוגמה. התאריך שלו הוא 2099 כדי שלעולם לא יישלח לאישור.\n\nהעתק אותו, תן לו שם חדש, ורשום את השם החדש ב-index.json."
+}
