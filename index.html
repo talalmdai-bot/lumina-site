@@ -772,7 +772,12 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
 
   // ---------- video play/pause management ----------
+  // the accessibility toolbar's "stop" has to win over every autoplay keeper below,
+  // otherwise the first scroll restarts what the user just stopped
+  function motionStopped(){ return document.documentElement.classList.contains('a11y-stop'); }
+
   var vio = new IntersectionObserver(function(es){
+    if (motionStopped()) return;
     es.forEach(function(e){
       var v = e.target;
       if (e.isIntersecting) { if (v.id === 'heroB' || v.classList.contains('hid')) return; v.muted = true; v.play().catch(function(){}); }
@@ -787,9 +792,10 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     v.muted = true;
     v.setAttribute('playsinline','');
     vio.observe(v);
-    if (nearViewport(v)) v.play().catch(function(){});
+    if (nearViewport(v) && !motionStopped()) v.play().catch(function(){});
   });
   function kickVideos(){
+    if (motionStopped()) return;
     document.querySelectorAll('video:not(.gv)').forEach(function(v){
       if (v.id === 'heroB' || v.classList.contains('hid')) return;
       if (v.paused && nearViewport(v)) { v.muted = true; v.play().catch(function(){}); }
@@ -1050,6 +1056,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     var front = a, i = 0, swapping = false, timer = null;
 
     function hardPlay(v){
+      if (motionStopped()) return;
       v.muted = true;
       v.setAttribute('muted','');
       v.setAttribute('playsinline','');
@@ -1077,7 +1084,9 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     }
 
     function swap(){
-      if (swapping || document.hidden) return;
+      if (swapping || document.hidden || motionStopped()) return;
+      // no point rotating a background nobody can see, and each swap decodes a full clip
+      if (a.getBoundingClientRect().bottom <= 0) return;
       var back = (front === a) ? b : a;
       // only swap if the next clip actually has enough data buffered
       if (back.readyState < 3) { preloadNext(); return; }
@@ -1134,6 +1143,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 
     // still designs have no data-src and stay as a plain image
     function arm(card){
+      if (motionStopped()) return;
       var v = card.querySelector('video');
       if (!v) return;
       if (!v.src) v.src = card.dataset.src;
