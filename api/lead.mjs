@@ -53,6 +53,11 @@ export default async function handler(req, res) {
     const name = clean(body.name, 100);
     const phone = clean(body.phone, 40);
     const type = clean(body.type, 60);
+    const venue = clean(body.venue, 120);
+    const world = clean(body.world, 60);
+    const rawDate = clean(body.eventDate, 20);
+    // the date input sends yyyy-mm-dd; the Telegram message reads better day-first
+    const eventDate = /^\d{4}-\d{2}-\d{2}$/.test(rawDate) ? rawDate.split('-').reverse().join('.') : rawDate;
     if (!name || phone.replace(/\D/g, '').length < 9) {
       res.status(400).json({ ok: false, error: 'missing fields' });
       return;
@@ -84,6 +89,9 @@ export default async function handler(req, res) {
       'שם: ' + name + '\n' +
       'טלפון: ' + phone + '\n' +
       (type ? 'סוג אירוע: ' + type + '\n' : '') +
+      (eventDate ? 'תאריך האירוע: ' + eventDate + '\n' : '') +
+      (venue ? 'אולם: ' + venue + '\n' : '') +
+      (world ? 'עולם שעניין אותו: ' + world + '\n' : '') +
       'זמן: ' + when + '\n' +
       'אישר תקנון ומדיניות פרטיות: כן\n\n' +
       'https://wa.me/' + wa;

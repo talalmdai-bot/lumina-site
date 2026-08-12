@@ -25,6 +25,23 @@
 <meta name="twitter:description" content="ויזואלים בתלת ממד בהתאמה אישית למסך של האולם. הצעת מחיר תוך 24 שעות.">
 <meta name="twitter:image" content="https://www.luminavisual.co.il/og-syncopate.jpg">
 <link rel="canonical" href="https://www.luminavisual.co.il/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "LUMINA VISUAL",
+  "url": "https://www.luminavisual.co.il/",
+  "image": "https://www.luminavisual.co.il/og-syncopate.jpg",
+  "description": "אנימציות טכנו בתלת ממד למסכי LED באולמות אירועים — עולמות ויזואליים בהתאמה אישית לחתונות ואירועים בישראל.",
+  "telephone": "+972-54-221-6690",
+  "areaServed": { "@type": "Country", "name": "Israel" },
+  "knowsLanguage": "he",
+  "sameAs": [
+    "https://instagram.com/luminavisual.il",
+    "https://tiktok.com/@lumina.visual.il"
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100;200;300;400;600&display=swap" rel="stylesheet">
@@ -160,6 +177,10 @@ nav a:hover{opacity:1}
 .form input::placeholder{color:rgba(255,255,255,.5)}
 .form select{color:#fff;appearance:none;background-image:linear-gradient(45deg, transparent 50%, rgba(255,255,255,.7) 50%),linear-gradient(135deg, rgba(255,255,255,.7) 50%, transparent 50%);background-position:calc(14px) 50%, calc(14px + 6px) 50%;background-size:6px 6px;background-repeat:no-repeat}
 .form input:focus,.form select:focus{border-color:rgba(255,255,255,.75);background:rgba(255,255,255,.07)}
+/* the native date picker inherits the dark scheme; the empty state stays as dim as a placeholder */
+.form input[type=date]{min-height:51px}
+.form input[type=date]:not(:focus):invalid,.form input[type=date]:not([value]):not(:focus){color:rgba(255,255,255,.5)}
+.form input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.6;cursor:pointer}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:26px}
 .btn{margin-top:10px;display:inline-block;width:100%;font-weight:300;font-size:13px;letter-spacing:.4em;padding:20px 40px;border:1px solid rgba(255,255,255,.85);background:transparent;color:#fff;cursor:pointer;text-transform:uppercase;font-family:var(--sans);transition:background .3s,color .3s;padding-right:calc(40px + .4em)}
 .btn:hover{background:#fff;color:#000}
@@ -652,6 +673,10 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       <div class="row2">
         <div><label for="fName">שם מלא</label><input type="text" id="fName" name="name" placeholder="ישראל ישראלי" required></div>
         <div><label for="fPhone">טלפון</label><input type="tel" id="fPhone" name="phone" placeholder="050 000 0000" required></div>
+      </div>
+      <div class="row2">
+        <div><label for="fVenue">אולם / עיר <span style="text-transform:none;letter-spacing:.02em">(לא חובה)</span></label><input type="text" id="fVenue" name="venue" placeholder="שם האולם, ונבדוק שהמסך מתאים"></div>
+        <div><label for="fDate">תאריך האירוע <span style="text-transform:none;letter-spacing:.02em">(לא חובה)</span></label><input type="date" id="fDate" name="date"></div>
       </div>
       <div style="text-align:right"><label for="fType">סוג האירוע</label><select id="fType" name="type">
         <option value="" disabled>סוג האירוע</option>
@@ -1248,7 +1273,10 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     btnNext.addEventListener('click', function(){ show(cur + 1); });
     document.getElementById('glbClose').addEventListener('click', close);
     document.getElementById('glbBd').addEventListener('click', close);
-    document.getElementById('glbCta').addEventListener('click', close);
+    document.getElementById('glbCta').addEventListener('click', function(){
+      lastWorldInterest = elTitle.textContent;
+      close();
+    });
 
     addEventListener('keydown', function(ev){
       if (!lb.classList.contains('open')) return;
@@ -1273,6 +1301,8 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 
   // ---------- lead forms ----------
   var formShownAt = Date.now();
+  // set when the lightbox CTA is clicked, so the Telegram message says which world sparked the lead
+  var lastWorldInterest = '';
 
   function popSeen(){ try { return sessionStorage.getItem('lumina_pop') === '1'; } catch(e){ return false; } }
   function markPopSeen(){ try { sessionStorage.setItem('lumina_pop','1'); } catch(e){} }
@@ -1297,6 +1327,9 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       var p = phoneEl.value.trim();
       var t = (form.elements['type'] ? form.elements['type'].value : '') + typeSuffix;
       var hp = form.elements['company'].value;
+      // the popup form deliberately stays short, so these exist only on the main form
+      var venue = form.elements['venue'] ? form.elements['venue'].value.trim() : '';
+      var eventDate = form.elements['date'] ? form.elements['date'].value : '';
       function fail(msg, focusEl){
         if (err) err.textContent = msg;
         if (focusEl) focusEl.focus();
@@ -1310,7 +1343,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: n, phone: p, type: t, company: hp, consent: true, elapsed: Date.now() - formShownAt })
+        body: JSON.stringify({ name: n, phone: p, type: t, venue: venue, eventDate: eventDate, world: lastWorldInterest, company: hp, consent: true, elapsed: Date.now() - formShownAt })
       }).then(function(r){
         if (r && r.ok) {
           console.log('[lead] forwarded to telegram');
@@ -1412,5 +1445,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 })();
 </script>
 <script src="/a11y.js"></script>
+<!-- Vercel Web Analytics: cookieless page counts. Served from our own domain, active only once Analytics is enabled in the Vercel dashboard -->
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

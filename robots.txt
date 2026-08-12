@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /videos/
+
+Sitemap: https://www.luminavisual.co.il/sitemap.xml
