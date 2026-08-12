@@ -129,24 +129,9 @@ nav a:hover{opacity:1}
 /* ---------- section headings are centred ---------- */
 .sec-eyebrow,.sec-title{text-align:center}
 .sec-desc,.floor-sub,.g-sub,.offer .lead-line{margin-inline:auto;text-align:center}
-.orb-copy,.w-intro,.floor-head,.g-head{text-align:center}
+.orb-copy,.floor-head,.g-head{text-align:center}
 .offer .sec-eyebrow,.offer h2{text-align:center}
-.world .content{text-align:center}
-.world .meta{margin-inline:auto}
 .g-filters{justify-content:center}
-
-/* ---------- worlds ---------- */
-.w-intro{max-width:1280px;margin:0 auto;padding:150px 40px 70px;border-top:1px solid var(--brd)}
-.world{position:relative;height:100svh;overflow:hidden;display:flex;align-items:flex-end;perspective:1200px}
-.world .bgv{position:absolute;inset:0;width:100%;height:116%;top:-8%;object-fit:cover;will-change:transform;transform-origin:50% 50%}
-.world .shade{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.18) 42%, rgba(0,0,0,.42) 100%)}
-.world .content{position:relative;z-index:3;width:100%;max-width:1280px;margin:0 auto;padding:0 40px 66px}
-.world .idx{font-size:11px;font-weight:300;letter-spacing:.5em;color:var(--dim);text-transform:uppercase}
-.world h3{margin-top:10px;font-weight:100;font-size:clamp(40px,7vw,96px);letter-spacing:.16em;line-height:1.06;text-transform:uppercase}
-.world .meta{margin-top:22px;display:flex;flex-wrap:wrap;border:1px solid var(--brd);max-width:640px}
-.world .meta div{flex:1 1 33%;min-width:150px;padding:14px 18px;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);font-weight:300;border-left:1px solid var(--brd)}
-.world .meta div:last-child{border-left:none}
-.world .meta b{display:block;color:#fff;font-weight:300;margin-top:3px;font-size:12px}
 
 /* ---------- offer grid ---------- */
 .offer{max-width:1280px;margin:0 auto;padding:160px 40px}
@@ -442,28 +427,8 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   </div>
 </section>
 
-<!-- FLAGSHIP WORLD -->
-<div class="w-intro" id="worlds">
-  <div class="sec-eyebrow rv">Signature World</div>
-  <h2 class="sec-title rv d1">העולם שפותח את הרחבה</h2>
-</div>
-
-<section class="world">
-  <video class="bgv plx" src="/videos/clip3.mp4" poster="/videos/posters/deepviolet.jpg" muted loop playsinline preload="none"></video>
-  <div class="shade"></div>
-  <div class="content rv">
-    <div class="idx">Signature</div>
-    <h3>Deep Violet</h3>
-    <div class="meta">
-      <div>אווירה<b>טכנו כהה</b></div>
-      <div>תנועה<b>מסלול מצלמה איטי</b></div>
-      <div>שיא<b>סדקים זוהרים</b></div>
-    </div>
-  </div>
-</section>
-
 <!-- WORLD GALLERY -->
-<section class="gallery" id="gallery">
+<section class="gallery" id="worlds">
   <div class="g-head rv">
     <div class="sec-eyebrow">The Gallery</div>
     <h2 class="sec-title">עוד עולמות לרחבה</h2>
@@ -471,10 +436,10 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   </div>
 
   <div class="g-filters rv d1" role="group" aria-label="סינון לפי אווירה">
-    <button class="g-chip on" type="button" data-cat="all" aria-pressed="true">הכול <i>19</i></button>
+    <button class="g-chip on" type="button" data-cat="all" aria-pressed="true">הכול <i>20</i></button>
     <button class="g-chip" type="button" data-cat="dark" aria-pressed="false">אפל ועוצמתי <i>4</i></button>
     <button class="g-chip" type="button" data-cat="neon" aria-pressed="false">ניאון וצבע <i>7</i></button>
-    <button class="g-chip" type="button" data-cat="soft" aria-pressed="false">רך ורומנטי <i>4</i></button>
+    <button class="g-chip" type="button" data-cat="soft" aria-pressed="false">רך ורומנטי <i>5</i></button>
     <button class="g-chip" type="button" data-cat="gold" aria-pressed="false">זהב וחום <i>4</i></button>
   </div>
 
@@ -550,6 +515,14 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     <button class="gcard" type="button" data-cat="dark" data-title="Umbra" data-label="אפל ועוצמתי" data-desc="צללית של איל עם עין אחת זוהרת בחושך. מינימלי, מאיים, ועובד יפה כשהאולם חשוך לגמרי.">
       <img src="/gallery/umbra.jpg" alt="Umbra — צללית איל עם עין זוהרת בחושך" loading="lazy" decoding="async" width="1600" height="900">
       <span class="gc-cap"><span class="gc-name">Umbra</span><span class="gc-tag">אפל ועוצמתי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard band" type="button" data-cat="soft" data-title="Deep Violet" data-label="רך ורומנטי" data-desc="דמות מכונפת שנפרשת בתוך טבעת אור, בסגול עמוק. גדול ושקט, לרגע שכל הרחבה מרימה את הראש למסך." data-src="/videos/clip3.mp4">
+      <img src="/videos/posters/deepviolet.jpg" alt="Deep Violet — דמות מכונפת בתוך טבעת אור סגולה" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Deep Violet</span><span class="gc-tag">רך ורומנטי</span></span>
       <span class="gc-cue">לצפייה</span>
     </button>
 
@@ -1179,7 +1152,8 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     }
 
     // ---------- filters + collapsed view ----------
-    // collapsed shows the seven animated worlds, which is exactly four full grid rows
+    // collapsed shows the first seven animated worlds, which is exactly four full grid rows.
+    // Deep Violet sits further down as a full-width break between the stills
     var LIMIT = 7;
     var cat = 'all', expanded = false;
 
