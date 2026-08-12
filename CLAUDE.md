@@ -39,6 +39,33 @@ LUMINA VISUAL מייצר אנימציות טכנו בתלת ממד למסכי LE
 
 כפתור הוואטסאפ הצף בפינה (`.social-dock`) הוא דבר נפרד ונשאר.
 
+## הגנה על המדיה — החלטה מכוונת
+
+כל הסרטונים והתמונות ב-`videos/` **כבר נושאים סימן מים צרוב** בפינה הימנית התחתונה (`LUMINA VISUAL` + `luminavisual.co.il`). אל תריץ עליהם שוב את פילטר ה-`drawtext` — זה יטביע סימן מים שני על גבי הראשון.
+
+המקורות הנקיים שמורים ב-`C:\Users\Tal Almdai\Projects\lumina-originals\`, מחוץ לריפו. כל עיבוד מחדש חייב לצאת משם, לא מ-`videos/`.
+
+הפילטר, אם צריך לייצר קובץ חדש:
+
+```
+drawtext=fontfile='C\:/Windows/Fonts/arialbd.ttf':text='L U M I N A   V I S U A L':fontsize=25:fontcolor=white@0.62:x=w-tw-46:y=h-th-64:shadowcolor=black@0.55:shadowx=1:shadowy=1,
+drawtext=fontfile='C\:/Windows/Fonts/arial.ttf':text='l u m i n a v i s u a l . c o . i l':fontsize=14:fontcolor=0x8fe3ff@0.58:x=w-tw-46:y=h-th-40:shadowcolor=black@0.55:shadowx=1:shadowy=1
+```
+
+הקידוד האחיד: `-c:v libx264 -crf 21 -preset slow -pix_fmt yuv420p -g 48 -keyint_min 48 -sc_threshold 0 -an -movflags +faststart`. כל הקליפים 720p, 24fps, בלי פס קול — האתר מנגן הכול מושתק ממילא.
+
+שאר ההגנות:
+
+- `vercel.json` מפנה כל בקשה ל-`/videos/*` שמגיעה בלי כותרת `referer` חזרה לדף הבית. זה חוסם הדבקת כתובת קובץ בשורת הכתובת. תגי ה-`<video>` של האתר תמיד שולחים referer, ולכן הם לא נפגעים.
+- בלוק "media guard" בתחתית ה-JS ב-`index.html` חוסם קליק ימני, גרירה ו-PiP על `img`/`video`/`canvas` בלבד. **הוא לא חוסם סימון והעתקה של טקסט** — זו החלטה מכוונת: חסימת טקסט מונעת מלקוח להעתיק את מספר הטלפון ועלולה להיחשב כשל נגישות לפי תקן 5568.
+- `X-Robots-Tag: noimageindex` על `/videos/` — הפוסטרים לא מופיעים ב-Google Images.
+
+אין HLS ואין הצפנה, וזה מכוון: הן דורשות ספרייה חיצונית באתר שבנוי בלי שום תלות, והן לא עוצרות כלי הורדה. סימן המים הוא ההגנה שמחזיקה.
+
+## אירוח המדיה
+
+כל הסרטונים מתארחים אצלנו ב-`videos/`. **אין יותר קישורים ל-CDN של HeyGen** (`d8j0ntlcm91z4.cloudfront.net`) — שישה קבצים הועברו משם, כי על CDN זר אי אפשר לצרוב סימן מים, אי אפשר לחסום hotlink, והקבצים עלולים להימחק בלי התראה. אל תחזיר קישור חיצוני לסרטון.
+
 ## שפה עיצובית
 
 רקע שחור, ציאן `#8fe3ff` כצבע מוביל, סגול `#8b7bff` משני.

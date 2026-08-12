@@ -25,8 +25,6 @@
 <meta name="twitter:description" content="ויזואלים בתלת ממד בהתאמה אישית למסך של האולם. הצעת מחיר תוך 24 שעות.">
 <meta name="twitter:image" content="https://www.luminavisual.co.il/og-syncopate.jpg">
 <link rel="canonical" href="https://www.luminavisual.co.il/">
-<link rel="preconnect" href="https://d8j0ntlcm91z4.cloudfront.net">
-<link rel="dns-prefetch" href="https://d8j0ntlcm91z4.cloudfront.net">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100;200;300;400;600&display=swap" rel="stylesheet">
@@ -43,6 +41,8 @@ html{background:#000;color-scheme:dark}
 body{background:#000;color:var(--ink);font-family:var(--sans);overflow-x:hidden;line-height:1.65;font-weight:300;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 video{display:block}
+/* the clips and stills are the product — they must not be draggable or long-pressed out of the page. text stays selectable on purpose */
+img,video,canvas{-webkit-user-drag:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 ::selection{background:#fff;color:#000}
 
 /* grain */
@@ -402,7 +402,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 
 <!-- HERO -->
 <section class="hero">
-  <video class="bgv" id="heroA" src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_6a301df1-0118-47e5-bc51-252a614168a4.mp4" muted loop playsinline autoplay preload="auto"></video>
+  <video class="bgv" id="heroA" src="/videos/aurora.mp4" muted loop playsinline autoplay preload="auto"></video>
   <video class="bgv hid" id="heroB" muted loop playsinline preload="none"></video>
   <div class="shade"></div>
   <canvas id="dust"></canvas>
@@ -437,8 +437,8 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     <p class="floor-sub">אותן אנימציות, על המסך של האולם, ברגע שכולם עולים לרקוד.</p>
   </div>
   <div class="fgrid rv d1">
-    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_205654_c36df9a6-abcb-411e-97f3-6ea80e4ed807.mp4" poster="/videos/posters/floor1.jpg" muted loop playsinline preload="none"></video></div>
-    <div class="ftile"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_210449_e9389f53-9883-4d2c-906c-0149c11fca55.mp4" poster="/videos/posters/floor2.jpg" muted loop playsinline preload="none"></video></div>
+    <div class="ftile"><video src="/videos/floor1.mp4" poster="/videos/posters/floor1.jpg" muted loop playsinline preload="none"></video></div>
+    <div class="ftile"><video src="/videos/floor2.mp4" poster="/videos/posters/floor2.jpg" muted loop playsinline preload="none"></video></div>
   </div>
 </section>
 
@@ -495,7 +495,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       <span class="gc-cue">לצפייה</span>
     </button>
 
-    <button class="gcard" type="button" data-cat="neon" data-title="Aurora" data-label="ניאון וצבע" data-desc="דמות בנויה מקווי אור ציאן שעולה מתוך ערפל. אחד העולמות שהכי טוב לפתוח איתם את השלב המתקדם." data-src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_6a301df1-0118-47e5-bc51-252a614168a4.mp4">
+    <button class="gcard" type="button" data-cat="neon" data-title="Aurora" data-label="ניאון וצבע" data-desc="דמות בנויה מקווי אור ציאן שעולה מתוך ערפל. אחד העולמות שהכי טוב לפתוח איתם את השלב המתקדם." data-src="/videos/aurora.mp4">
       <img src="/videos/posters/aurora.jpg" alt="Aurora — דמות בקווי אור ציאן עולה מתוך ערפל" loading="lazy" decoding="async" width="1280" height="720">
       <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
       <span class="gc-motion">מונפש</span>
@@ -511,7 +511,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       <span class="gc-cue">לצפייה</span>
     </button>
 
-    <button class="gcard" type="button" data-cat="neon" data-title="Abyss" data-label="ניאון וצבע" data-desc="כתר של קונכיות ומדוזות זוהרות בכחול עמוק. הרבה פרטים קטנים שמתגלים דווקא על מסך LED גדול." data-src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_836e2b5b-ed34-43e4-9a7b-000015ea300b.mp4">
+    <button class="gcard" type="button" data-cat="neon" data-title="Abyss" data-label="ניאון וצבע" data-desc="כתר של קונכיות ומדוזות זוהרות בכחול עמוק. הרבה פרטים קטנים שמתגלים דווקא על מסך LED גדול." data-src="/videos/abyss.mp4">
       <img src="/videos/posters/abyss.jpg" alt="Abyss — כתר קונכיות ומדוזות זוהרות בכחול עמוק" loading="lazy" decoding="async" width="1280" height="720">
       <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
       <span class="gc-motion">מונפש</span>
@@ -519,7 +519,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       <span class="gc-cue">לצפייה</span>
     </button>
 
-    <button class="gcard" type="button" data-cat="soft" data-title="Solstice" data-label="רך ורומנטי" data-desc="כתר קרניים ונטיפי אור, בין ורוד לטורקיז. הכי קרוב לאסתטיקה של חתונה, בלי לוותר על העוצמה." data-src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_764ff7ff-6101-45e3-9ed3-3707bf4b388c.mp4">
+    <button class="gcard" type="button" data-cat="soft" data-title="Solstice" data-label="רך ורומנטי" data-desc="כתר קרניים ונטיפי אור, בין ורוד לטורקיז. הכי קרוב לאסתטיקה של חתונה, בלי לוותר על העוצמה." data-src="/videos/solstice.mp4">
       <img src="/videos/posters/solstice.jpg" alt="Solstice — כתר קרניים ונטיפי אור בוורוד וטורקיז" loading="lazy" decoding="async" width="1280" height="720">
       <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
       <span class="gc-motion">מונפש</span>
@@ -527,7 +527,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       <span class="gc-cue">לצפייה</span>
     </button>
 
-    <button class="gcard band" type="button" data-cat="dark" data-title="Botanica" data-label="אפל ועוצמתי" data-desc="ורדים אדומים וזרימת אור ירוקה על גוף כהה. עולם שנבנה למסכים רחבים ולקירות LED מפוצלים." data-src="https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/hf_20260807_180419_ac159449-abaf-44fb-8f35-908eddf100d3.mp4">
+    <button class="gcard band" type="button" data-cat="dark" data-title="Botanica" data-label="אפל ועוצמתי" data-desc="ורדים אדומים וזרימת אור ירוקה על גוף כהה. עולם שנבנה למסכים רחבים ולקירות LED מפוצלים." data-src="/videos/botanica.mp4">
       <img src="/videos/posters/botanica.jpg" alt="Botanica — ורדים אדומים וזרימת אור ירוקה על גוף כהה" loading="lazy" decoding="async" width="1280" height="720">
       <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
       <span class="gc-motion">מונפש</span>
@@ -1038,12 +1038,11 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 
   // ---------- hero rotation: preload next, swap only when ready ----------
   (function(){
-    var BASE = 'https://d8j0ntlcm91z4.cloudfront.net/user_3DJo6UExkcUJr8PXYy4w55qekzC/';
     var srcs = [
-      BASE + 'hf_20260807_180419_6a301df1-0118-47e5-bc51-252a614168a4.mp4',
-      BASE + 'hf_20260807_180419_836e2b5b-ed34-43e4-9a7b-000015ea300b.mp4',
-      BASE + 'hf_20260807_180419_764ff7ff-6101-45e3-9ed3-3707bf4b388c.mp4',
-      BASE + 'hf_20260807_180419_ac159449-abaf-44fb-8f35-908eddf100d3.mp4'
+      '/videos/aurora.mp4',
+      '/videos/abyss.mp4',
+      '/videos/solstice.mp4',
+      '/videos/botanica.mp4'
     ];
     var a = document.getElementById('heroA'), b = document.getElementById('heroB');
     if (!a || !b) return;
@@ -1403,6 +1402,29 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       pending = setTimeout(open, 600);
     }, {passive:true});
   })();
+})();
+
+// ---------- media guard ----------
+// a speed bump, not a lock: it closes the save-as / drag / picture-in-picture routes.
+// anyone determined still reaches the file, which is why the clips carry a burnt-in watermark.
+(function(){
+  document.addEventListener('contextmenu', function(e){
+    if (e.target.closest('img,video,canvas')) e.preventDefault();
+  });
+  document.addEventListener('dragstart', function(e){
+    if (e.target.closest('img,video,canvas')) e.preventDefault();
+  });
+  function harden(){
+    document.querySelectorAll('img').forEach(function(el){ el.draggable = false; });
+    document.querySelectorAll('video').forEach(function(v){
+      v.setAttribute('controlsList','nodownload noplaybackrate noremoteplayback');
+      v.disablePictureInPicture = true;
+      v.disableRemotePlayback = true;
+    });
+  }
+  harden();
+  // the gallery swaps cards in and out, so late nodes have to be covered too
+  new MutationObserver(harden).observe(document.body, {childList:true, subtree:true});
 })();
 </script>
 <script src="/a11y.js"></script>
