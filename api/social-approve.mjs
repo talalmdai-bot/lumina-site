@@ -47,8 +47,9 @@ async function findPost(id) {
 }
 
 // Instagram encodes video asynchronously; the container is only publishable once FINISHED.
-async function waitForContainer(id) {
-  const deadline = Date.now() + POLL_BUDGET_MS;
+// The deadline is shared across a whole publish, so a ten-slide carousel cannot
+// spend the budget ten times over and leave Telegram waiting past its timeout.
+async function waitForContainer(id, deadline) {
   while (Date.now() < deadline) {
     const res = await fetch(GRAPH + '/' + id + '?fields=status_code', {
       headers: { Authorization: 'Bearer ' + process.env.IG_ACCESS_TOKEN }
@@ -71,26 +72,64 @@ async function alreadyOut(caption) {
     .some(function (m) { return (m.caption || '').trim() === (caption || '').trim(); });
 }
 
+// A carousel is assembled slide by slide: every slide becomes its own container,
+// then one parent container ties them together under a single caption. Only the
+// parent carries the caption — a caption on a child is silently dropped.
+async function buildCarousel(post, deadline) {
+  const slides = post.media;
+  if (!Array.isArray(slides) || slides.length < 2 || slides.length > 10) {
+    throw new Error('קרוסלה צריכה בין 2 ל-10 שקופיות במערך media');
+  }
+  const children = [];
+  for (const url of slides) {
+    const params = { is_carousel_item: true };
+    if (/\.mp4($|\?)/i.test(url)) {
+      params.media_type = 'VIDEO';
+      params.video_url = url;
+    } else {
+      params.image_url = url;
+    }
+    const child = await graph('/media', params);
+    // Stills report FINISHED on the first check, so this is nearly free for them.
+    if (!(await waitForContainer(child.id, deadline))) {
+      throw new Error('שקופית לא סיימה להתקודד בזמן: ' + url);
+    }
+    children.push(child.id);
+  }
+  const parent = await graph('/media', {
+    media_type: 'CAROUSEL',
+    children: children.join(','),
+    caption: post.caption
+  });
+  return parent.id;
+}
+
 async function publish(post) {
   if (await alreadyOut(post.caption)) {
     await tell('"' + post.id + '" כבר פורסם. לא עשיתי כלום.');
     return;
   }
-  const isVideo = (post.type || 'reel') !== 'image';
-  const params = { caption: post.caption };
-  if (isVideo) {
-    params.media_type = 'REELS';
-    params.video_url = post.media;
+  const deadline = Date.now() + POLL_BUDGET_MS;
+  const type = post.type || 'reel';
+  let containerId;
+  if (type === 'carousel') {
+    containerId = await buildCarousel(post, deadline);
   } else {
-    params.image_url = post.media;
+    const params = { caption: post.caption };
+    if (type === 'image') {
+      params.image_url = post.media;
+    } else {
+      params.media_type = 'REELS';
+      params.video_url = post.media;
+    }
+    containerId = (await graph('/media', params)).id;
   }
-  const container = await graph('/media', params);
-  if (!(await waitForContainer(container.id))) {
-    await tell('הווידאו של "' + post.id + '" עדיין מקודד אצל אינסטגרם. לחץ כדי להשלים.',
-      [{ text: 'השלם פרסום', callback_data: 'fin:' + container.id }]);
+  if (!(await waitForContainer(containerId, deadline))) {
+    await tell('"' + post.id + '" עדיין מקודד אצל אינסטגרם. לחץ כדי להשלים.',
+      [{ text: 'השלם פרסום', callback_data: 'fin:' + containerId }]);
     return;
   }
-  const published = await graph('/media_publish', { creation_id: container.id });
+  const published = await graph('/media_publish', { creation_id: containerId });
   await tell('פורסם. מזהה מדיה: ' + published.id);
 }
 

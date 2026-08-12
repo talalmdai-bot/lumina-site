@@ -31,6 +31,14 @@ async function publishedCaptions() {
   return ((await res.json()).data || []).map(function (m) { return (m.caption || '').trim(); });
 }
 
+// A carousel holds an array, so list the slides in order rather than letting
+// the array stringify itself into one unreadable comma-joined line.
+function describeMedia(media) {
+  if (!Array.isArray(media)) return media;
+  return media.length + ' שקופיות\n' +
+    media.map(function (url, i) { return '  ' + (i + 1) + '. ' + url; }).join('\n');
+}
+
 async function askApproval(post) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const due = new Date(post.publishAt).toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' });
@@ -39,7 +47,7 @@ async function askApproval(post) {
     'מזהה: ' + post.id + '\n' +
     'זמן שנקבע: ' + due + '\n' +
     'סוג: ' + (post.type || 'reel') + '\n' +
-    'מדיה: ' + post.media + '\n\n' +
+    'מדיה: ' + describeMedia(post.media) + '\n\n' +
     '--- הכיתוב ---\n' + post.caption;
   const res = await fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
     method: 'POST',
