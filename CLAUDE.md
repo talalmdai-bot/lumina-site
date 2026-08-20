@@ -10,7 +10,7 @@ LUMINA VISUAL מייצר אנימציות טכנו בתלת ממד למסכי LE
 
 דומיין: `luminavisual.co.il` (נרשם ב-LiveDNS, DNS מצביע ל-Vercel)
 אינסטגרם: `@luminavisual.il` · טיקטוק: `@lumina.visual.il`
-וואטסאפ: `972542216690` — מופיע ב-`index.html`, ב-`legal.html` ובקבצי הפלייר
+וואטסאפ: `972544626646` — מופיע ב-`index.html`, ב-`legal.html` ובקבצי הפלייר
 
 ## סטאק
 

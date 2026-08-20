@@ -135,9 +135,9 @@ video wall aesthetic. No text.
 
 ```
 LUMINA VISUAL
-054-2216690
+054-4626646
 LuminaVisual.co.il
-wa.me/972542216690
+wa.me/972544626646
 ```
 
 לוגו: Playfair Display, LUMINA בלבן, VISUAL בתכלת מתחת עם ריווח אותיות רחב, קו מפריד, ואז המספר והדומיין.
