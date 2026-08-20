@@ -320,7 +320,7 @@ nav a:hover{opacity:1}
 .live-tag::before{content:"";width:6px;height:6px;border-radius:50%;background:#8fe3ff;box-shadow:0 0 9px rgba(143,227,255,.95);animation:livepulse 2.4s ease-in-out infinite}
 @keyframes livepulse{0%,100%{opacity:1}50%{opacity:.3}}
 .lband{position:relative;overflow:hidden;margin-top:22px;aspect-ratio:1280/548;border:1px solid rgba(255,255,255,.12)}
-.lgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:960px;margin:14px auto 0}
+.lgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1100px;margin:14px auto 0}
 .ltile{position:relative;overflow:hidden;aspect-ratio:9/16;border:1px solid rgba(255,255,255,.12);transition:transform .25s cubic-bezier(.4,0,.2,1),border-color .25s ease,box-shadow .25s ease}
 .lband video,.ltile video{display:block;width:100%;height:100%;object-fit:cover}
 .ltile:hover{transform:translateY(-4px);border-color:rgba(143,227,255,.45);box-shadow:0 16px 44px rgba(0,0,0,.6)}
@@ -461,6 +461,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     <span class="live-tag">צולם באולם</span>
     <div class="lband"><video src="/videos/live-floor.mp4" poster="/videos/posters/live-floor.jpg" muted loop playsinline preload="none"></video></div>
     <div class="lgrid">
+      <div class="ltile"><video src="/videos/live-gown.mp4" poster="/videos/posters/live-gown.jpg" muted loop playsinline preload="none"></video></div>
       <div class="ltile"><video src="/videos/live-hall.mp4" poster="/videos/posters/live-hall.jpg" muted loop playsinline preload="none"></video></div>
       <div class="ltile"><video src="/videos/live-crowd.mp4" poster="/videos/posters/live-crowd.jpg" muted loop playsinline preload="none"></video></div>
       <div class="ltile"><video src="/videos/live-beam.mp4" poster="/videos/posters/live-beam.jpg" muted loop playsinline preload="none"></video></div>
