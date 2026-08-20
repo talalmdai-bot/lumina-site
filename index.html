@@ -314,10 +314,25 @@ nav a:hover{opacity:1}
 .floor{max-width:1280px;margin:0 auto;padding:140px 40px 40px}
 .floor-head{margin-bottom:40px}
 .floor-sub{margin-top:16px;color:var(--dim);font-weight:200;font-size:16.5px;max-width:460px}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.ftile{position:relative;overflow:hidden;aspect-ratio:16/9;border:1px solid rgba(255,255,255,.12)}
-.ftile video{width:100%;height:100%;object-fit:cover}
-@media (max-width:860px){.fgrid{grid-template-columns:1fr}.floor{padding:90px 24px 30px}}
+/* the whole section is footage shot at a real venue — no renders here */
+.live{text-align:center}
+.live-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 15px;border-radius:999px;background:rgba(143,227,255,.1);border:1px solid rgba(143,227,255,.34);font-size:11.5px;font-weight:300;letter-spacing:.05em;color:#d3f1ff}
+.live-tag::before{content:"";width:6px;height:6px;border-radius:50%;background:#8fe3ff;box-shadow:0 0 9px rgba(143,227,255,.95);animation:livepulse 2.4s ease-in-out infinite}
+@keyframes livepulse{0%,100%{opacity:1}50%{opacity:.3}}
+.lband{position:relative;overflow:hidden;margin-top:22px;aspect-ratio:1280/548;border:1px solid rgba(255,255,255,.12)}
+.lgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:960px;margin:14px auto 0}
+.ltile{position:relative;overflow:hidden;aspect-ratio:9/16;border:1px solid rgba(255,255,255,.12);transition:transform .25s cubic-bezier(.4,0,.2,1),border-color .25s ease,box-shadow .25s ease}
+.lband video,.ltile video{display:block;width:100%;height:100%;object-fit:cover}
+.ltile:hover{transform:translateY(-4px);border-color:rgba(143,227,255,.45);box-shadow:0 16px 44px rgba(0,0,0,.6)}
+
+@media (max-width:860px){.floor{padding:90px 24px 30px}.lband{aspect-ratio:16/9}}
+/* portrait tiles get too narrow to read on a phone, so they become a swipeable strip */
+@media (max-width:640px){
+  .lgrid{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .lgrid::-webkit-scrollbar{display:none}
+  .ltile{flex:0 0 62%;scroll-snap-align:center}
+}
+@media (prefers-reduced-motion:reduce){.live-tag::before{animation:none}.ltile{transition:none}}
 
 footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter-spacing:.4em;border-top:1px solid var(--brd);text-transform:uppercase;font-weight:300}
 
@@ -442,9 +457,14 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     <h2 class="sec-title">ככה זה נראה על הרחבה שלכם</h2>
     <p class="floor-sub">אותן אנימציות, על המסך של האולם, ברגע שכולם עולים לרקוד.</p>
   </div>
-  <div class="fgrid rv d1">
-    <div class="ftile"><video src="/videos/floor1.mp4" poster="/videos/posters/floor1.jpg" muted loop playsinline preload="none"></video></div>
-    <div class="ftile"><video src="/videos/floor2.mp4" poster="/videos/posters/floor2.jpg" muted loop playsinline preload="none"></video></div>
+  <div class="live rv d1">
+    <span class="live-tag">צולם באולם</span>
+    <div class="lband"><video src="/videos/live-floor.mp4" poster="/videos/posters/live-floor.jpg" muted loop playsinline preload="none"></video></div>
+    <div class="lgrid">
+      <div class="ltile"><video src="/videos/live-hall.mp4" poster="/videos/posters/live-hall.jpg" muted loop playsinline preload="none"></video></div>
+      <div class="ltile"><video src="/videos/live-crowd.mp4" poster="/videos/posters/live-crowd.jpg" muted loop playsinline preload="none"></video></div>
+      <div class="ltile"><video src="/videos/live-beam.mp4" poster="/videos/posters/live-beam.jpg" muted loop playsinline preload="none"></video></div>
+    </div>
   </div>
 </section>
 
