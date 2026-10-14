@@ -32,7 +32,7 @@
     'html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Cpath d=\'M6 2 L6 32 L14 25 L19 36 L25 33 L20 22 L31 22 Z\' fill=\'%23fff\' stroke=\'%23000\' stroke-width=\'2\'/%3E%3C/svg%3E") 4 2, auto!important}',
     '.skip-link{position:absolute;right:-9999px;top:0;z-index:200;background:#fff;color:#000;padding:12px 22px;font-size:14px}',
     '.skip-link:focus{right:12px;top:12px}',
-    '.cookie-bar{position:fixed;bottom:0;right:0;left:0;z-index:95;background:rgba(6,6,12,.97);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.16);padding:16px 22px;display:none;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font-family:Heebo,sans-serif}',
+    '.cookie-bar{position:fixed;bottom:0;right:0;left:0;z-index:95;background:rgba(6,6,12,.97);border-top:1px solid rgba(255,255,255,.16);padding:16px 22px;display:none;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font-family:Heebo,sans-serif}',
     '.cookie-bar.show{display:flex}',
     '.cookie-bar p{color:#c9c9d6;font-size:13px;font-weight:300;max-width:560px;line-height:1.7}',
     '.cookie-bar a{color:#8b7bff}',

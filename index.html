@@ -42,6 +42,7 @@
   ]
 }
 </script>
+<link rel="preload" as="image" href="/videos/posters/aurora.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100;200;300;400;600&display=swap" rel="stylesheet">
@@ -487,7 +488,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 
 <!-- HERO -->
 <section class="hero">
-  <video class="bgv" id="heroA" src="/videos/aurora.mp4" muted loop playsinline autoplay preload="auto"></video>
+  <video class="bgv" id="heroA" src="/videos/aurora.mp4" poster="/videos/posters/aurora.jpg" muted loop playsinline autoplay preload="auto"></video>
   <video class="bgv hid" id="heroB" muted loop playsinline preload="none"></video>
   <div class="shade"></div>
   <canvas id="dust"></canvas>
@@ -862,7 +863,6 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   </div>
 </div>
 
-<script src="/js/three.min.js"></script>
 <script>
 (function(){
   'use strict';
@@ -919,140 +919,151 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   // ---------- 3D particle orb: the section claims real-time rendering, so it has to be real ----------
   (function(){
     var canvas = document.getElementById('orb');
-    if (!canvas || typeof THREE === 'undefined') return;
-    var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+    if (!canvas) return;
+    // three.js is ~650KB; as a blocking tag it held back this whole script, hero reveal included,
+    // so it now loads after the page itself has finished loading
+    addEventListener('load', function(){
+      var s = document.createElement('script');
+      s.src = '/js/three.min.js';
+      s.onload = initOrb;
+      document.head.appendChild(s);
+    });
 
-    var renderer;
-    try {
-      renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true, powerPreference: 'low-power' });
-    } catch (e) { return; }
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(46, 1, 0.1, 100);
-    camera.position.z = 3.15;
-    var group = new THREE.Group();
-    scene.add(group);
+    function initOrb(){
+      var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-    // a soft radial sprite, otherwise every particle renders as a hard square
-    var tex = (function(){
-      var c = document.createElement('canvas');
-      c.width = c.height = 64;
-      var g = c.getContext('2d');
-      var grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-      grd.addColorStop(0, 'rgba(255,255,255,1)');
-      grd.addColorStop(.35, 'rgba(255,255,255,.6)');
-      grd.addColorStop(1, 'rgba(255,255,255,0)');
-      g.fillStyle = grd;
-      g.fillRect(0, 0, 64, 64);
-      return new THREE.CanvasTexture(c);
-    })();
+      var renderer;
+      try {
+        renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true, powerPreference: 'low-power' });
+      } catch (e) { return; }
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(46, 1, 0.1, 100);
+      camera.position.z = 3.15;
+      var group = new THREE.Group();
+      scene.add(group);
 
-    var CYAN = new THREE.Color(0x8fe3ff), VIOLET = new THREE.Color(0x8b7bff);
+      // a soft radial sprite, otherwise every particle renders as a hard square
+      var tex = (function(){
+        var c = document.createElement('canvas');
+        c.width = c.height = 64;
+        var g = c.getContext('2d');
+        var grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+        grd.addColorStop(0, 'rgba(255,255,255,1)');
+        grd.addColorStop(.35, 'rgba(255,255,255,.6)');
+        grd.addColorStop(1, 'rgba(255,255,255,0)');
+        g.fillStyle = grd;
+        g.fillRect(0, 0, 64, 64);
+        return new THREE.CanvasTexture(c);
+      })();
 
-    // fibonacci placement spreads the points evenly instead of clumping them at the poles
-    function shell(count, radius, size, opacity){
-      var pos = new Float32Array(count * 3), col = new Float32Array(count * 3);
-      var base = new Float32Array(count * 3), phase = new Float32Array(count);
-      var golden = Math.PI * (3 - Math.sqrt(5));
-      var mix = new THREE.Color();
-      for (var i = 0; i < count; i++){
-        var y = 1 - (i / (count - 1)) * 2;
-        var ring = Math.sqrt(Math.max(0, 1 - y * y));
-        var th = golden * i;
-        var x = Math.cos(th) * ring, z = Math.sin(th) * ring;
-        base[i*3] = x * radius; base[i*3+1] = y * radius; base[i*3+2] = z * radius;
-        pos[i*3] = base[i*3]; pos[i*3+1] = base[i*3+1]; pos[i*3+2] = base[i*3+2];
-        mix.copy(VIOLET).lerp(CYAN, (y + 1) / 2);
-        col[i*3] = mix.r; col[i*3+1] = mix.g; col[i*3+2] = mix.b;
-        phase[i] = Math.random() * Math.PI * 2;
+      var CYAN = new THREE.Color(0x8fe3ff), VIOLET = new THREE.Color(0x8b7bff);
+
+      // fibonacci placement spreads the points evenly instead of clumping them at the poles
+      function shell(count, radius, size, opacity){
+        var pos = new Float32Array(count * 3), col = new Float32Array(count * 3);
+        var base = new Float32Array(count * 3), phase = new Float32Array(count);
+        var golden = Math.PI * (3 - Math.sqrt(5));
+        var mix = new THREE.Color();
+        for (var i = 0; i < count; i++){
+          var y = 1 - (i / (count - 1)) * 2;
+          var ring = Math.sqrt(Math.max(0, 1 - y * y));
+          var th = golden * i;
+          var x = Math.cos(th) * ring, z = Math.sin(th) * ring;
+          base[i*3] = x * radius; base[i*3+1] = y * radius; base[i*3+2] = z * radius;
+          pos[i*3] = base[i*3]; pos[i*3+1] = base[i*3+1]; pos[i*3+2] = base[i*3+2];
+          mix.copy(VIOLET).lerp(CYAN, (y + 1) / 2);
+          col[i*3] = mix.r; col[i*3+1] = mix.g; col[i*3+2] = mix.b;
+          phase[i] = Math.random() * Math.PI * 2;
+        }
+        var geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+        geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+        var pts = new THREE.Points(geo, new THREE.PointsMaterial({
+          size: size, map: tex, vertexColors: true, transparent: true, opacity: opacity,
+          depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true
+        }));
+        pts.userData = { base: base, phase: phase, count: count };
+        group.add(pts);
+        return pts;
       }
-      var geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-      geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
-      var pts = new THREE.Points(geo, new THREE.PointsMaterial({
-        size: size, map: tex, vertexColors: true, transparent: true, opacity: opacity,
-        depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true
-      }));
-      pts.userData = { base: base, phase: phase, count: count };
-      group.add(pts);
-      return pts;
-    }
 
-    var core = shell(4200, 1, .021, .95);
-    var halo = shell(1100, 1.44, .013, .4);
+      var core = shell(4200, 1, .021, .95);
+      var halo = shell(1100, 1.44, .013, .4);
 
-    function wave(pts, t, amp, speed){
-      var p = pts.geometry.attributes.position.array;
-      var b = pts.userData.base, ph = pts.userData.phase, n = pts.userData.count;
-      for (var i = 0; i < n; i++){
-        var k = 1 + Math.sin(t * speed + ph[i]) * amp;
-        p[i*3] = b[i*3] * k; p[i*3+1] = b[i*3+1] * k; p[i*3+2] = b[i*3+2] * k;
+      function wave(pts, t, amp, speed){
+        var p = pts.geometry.attributes.position.array;
+        var b = pts.userData.base, ph = pts.userData.phase, n = pts.userData.count;
+        for (var i = 0; i < n; i++){
+          var k = 1 + Math.sin(t * speed + ph[i]) * amp;
+          p[i*3] = b[i*3] * k; p[i*3+1] = b[i*3+1] * k; p[i*3+2] = b[i*3+2] * k;
+        }
+        pts.geometry.attributes.position.needsUpdate = true;
       }
-      pts.geometry.attributes.position.needsUpdate = true;
+
+      var tx = 0, ty = 0, mx = 0, my = 0;
+      addEventListener('pointermove', function(e){
+        tx = e.clientX / innerWidth - .5;
+        ty = e.clientY / innerHeight - .5;
+      }, {passive:true});
+
+      // the core shell plus its wave. The halo is deliberately excluded: it is sparse
+      // and dim, and letting it bleed off frame keeps the core from shrinking away
+      var REACH = 1.12;
+
+      function resize(){
+        var r = canvas.getBoundingClientRect();
+        if (!r.width || !r.height) return;
+        renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+        renderer.setSize(r.width, r.height, false);
+        camera.aspect = r.width / r.height;
+        // pull the camera back until the orb fits the tighter axis, so a tall phone
+        // canvas never slices the shell the way a fixed distance did
+        var fill = r.width > 860 ? .72 : .88;
+        var visH = (2 * REACH / fill) * Math.max(1, 1 / camera.aspect);
+        camera.position.z = visH / (2 * Math.tan(camera.fov * Math.PI / 360));
+        camera.updateProjectionMatrix();
+        renderer.render(scene, camera);
+      }
+
+      var raf = null, elapsed = 0, last = 0;
+      function frame(now){
+        raf = requestAnimationFrame(frame);
+        if (!last) last = now;
+        elapsed += Math.min((now - last) / 1000, .05);
+        last = now;
+        wave(core, elapsed, .055, .9);
+        wave(halo, elapsed, .03, .55);
+        core.rotation.y = elapsed * .075;
+        halo.rotation.y = elapsed * -.045;
+        mx += (tx - mx) * .045;
+        my += (ty - my) * .045;
+        group.rotation.y = mx * .5;
+        group.rotation.x = my * .35;
+        renderer.render(scene, camera);
+      }
+      function start(){ if (raf || reduce) return; last = 0; raf = requestAnimationFrame(frame); }
+      function stop(){ if (raf) cancelAnimationFrame(raf); raf = null; last = 0; }
+
+      // rendering costs GPU, so it only runs while the section is actually on screen
+      function onScreen(){
+        if (document.hidden) return false;
+        var r = canvas.getBoundingClientRect();
+        return r.bottom > -100 && r.top < innerHeight + 100;
+      }
+      function sync(){ onScreen() ? start() : stop(); }
+
+      var pending = false;
+      addEventListener('scroll', function(){
+        if (pending) return;
+        pending = true;
+        setTimeout(function(){ pending = false; sync(); }, 200);
+      }, {passive:true});
+      addEventListener('resize', function(){ resize(); sync(); }, {passive:true});
+      document.addEventListener('visibilitychange', sync);
+
+      resize();
+      sync();
     }
-
-    var tx = 0, ty = 0, mx = 0, my = 0;
-    addEventListener('pointermove', function(e){
-      tx = e.clientX / innerWidth - .5;
-      ty = e.clientY / innerHeight - .5;
-    }, {passive:true});
-
-    // the core shell plus its wave. The halo is deliberately excluded: it is sparse
-    // and dim, and letting it bleed off frame keeps the core from shrinking away
-    var REACH = 1.12;
-
-    function resize(){
-      var r = canvas.getBoundingClientRect();
-      if (!r.width || !r.height) return;
-      renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
-      renderer.setSize(r.width, r.height, false);
-      camera.aspect = r.width / r.height;
-      // pull the camera back until the orb fits the tighter axis, so a tall phone
-      // canvas never slices the shell the way a fixed distance did
-      var fill = r.width > 860 ? .72 : .88;
-      var visH = (2 * REACH / fill) * Math.max(1, 1 / camera.aspect);
-      camera.position.z = visH / (2 * Math.tan(camera.fov * Math.PI / 360));
-      camera.updateProjectionMatrix();
-      renderer.render(scene, camera);
-    }
-
-    var raf = null, elapsed = 0, last = 0;
-    function frame(now){
-      raf = requestAnimationFrame(frame);
-      if (!last) last = now;
-      elapsed += Math.min((now - last) / 1000, .05);
-      last = now;
-      wave(core, elapsed, .055, .9);
-      wave(halo, elapsed, .03, .55);
-      core.rotation.y = elapsed * .075;
-      halo.rotation.y = elapsed * -.045;
-      mx += (tx - mx) * .045;
-      my += (ty - my) * .045;
-      group.rotation.y = mx * .5;
-      group.rotation.x = my * .35;
-      renderer.render(scene, camera);
-    }
-    function start(){ if (raf || reduce) return; last = 0; raf = requestAnimationFrame(frame); }
-    function stop(){ if (raf) cancelAnimationFrame(raf); raf = null; last = 0; }
-
-    // rendering costs GPU, so it only runs while the section is actually on screen
-    function onScreen(){
-      if (document.hidden) return false;
-      var r = canvas.getBoundingClientRect();
-      return r.bottom > -100 && r.top < innerHeight + 100;
-    }
-    function sync(){ onScreen() ? start() : stop(); }
-
-    var pending = false;
-    addEventListener('scroll', function(){
-      if (pending) return;
-      pending = true;
-      setTimeout(function(){ pending = false; sync(); }, 200);
-    }, {passive:true});
-    addEventListener('resize', function(){ resize(); sync(); }, {passive:true});
-    document.addEventListener('visibilitychange', sync);
-
-    resize();
-    sync();
   })();
 
   // ---------- hero dust: the second canvas the markup already carried ----------
