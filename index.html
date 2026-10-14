@@ -49,7 +49,7 @@
 :root{
   --ink:#ffffff;
   --dim:rgba(255,255,255,.62);
-  --faint:rgba(255,255,255,.34);
+  --faint:rgba(255,255,255,.5);
   --brd:rgba(255,255,255,.1);
   --sans:"Heebo", system-ui, sans-serif;
 }
@@ -111,10 +111,10 @@ nav a:hover{opacity:1}
 .hero .eyebrow{font-size:11px;font-weight:400;letter-spacing:.6em;color:rgba(255,255,255,.9);text-transform:uppercase;padding-right:.6em;text-shadow:0 1px 6px rgba(0,0,0,.9), 0 2px 22px rgba(0,0,0,.8)}
 .hero h1{margin-top:26px;font-weight:100;font-size:clamp(58px,14vw,200px);letter-spacing:.32em;padding-right:.32em;line-height:1;text-transform:uppercase;color:#fff}
 .hero .tag{margin-top:30px;font-size:clamp(17px,2.4vw,24px);font-weight:300;letter-spacing:0;text-wrap:balance;color:rgba(255,255,255,.97);text-shadow:0 1px 6px rgba(0,0,0,.9), 0 2px 26px rgba(0,0,0,.85)}
-.hero-cta{display:inline-block;margin-top:30px;padding:18px 46px;border:1px solid rgba(139,123,255,.9);background:rgba(139,123,255,.16);color:#fff;font-weight:400;font-size:clamp(16px,2vw,19px);box-shadow:0 0 32px rgba(139,123,255,.18);transition:background .2s ease,transform .2s ease}
-.hero-cta:hover{background:rgba(139,123,255,.32)}
+.cta-glow{display:inline-block;margin-top:30px;padding:18px 46px;border:1px solid rgba(139,123,255,.9);background:rgba(139,123,255,.16);color:#fff;font-weight:400;font-size:clamp(16px,2vw,19px);box-shadow:0 0 32px rgba(139,123,255,.18);transition:background .2s ease,transform .2s ease}
+.cta-glow:hover{background:rgba(139,123,255,.32)}
 .hero-promise{margin-top:14px;font-size:13.5px;font-weight:300;color:rgba(255,255,255,.72);text-shadow:0 1px 6px rgba(0,0,0,.9)}
-@media (max-width:760px){.hero-cta{padding:16px 34px;font-size:16px}}
+@media (max-width:760px){.cta-glow{padding:16px 34px;font-size:16px}}
 .hero .meta-line{margin:44px auto 0;display:flex;align-items:center;justify-content:center;gap:26px;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.72);font-weight:300;text-shadow:0 1px 6px rgba(0,0,0,.9), 0 2px 20px rgba(0,0,0,.8)}
 .hero .meta-line span{padding:0 4px}
 .hero .meta-line i{display:block;width:34px;height:1px;background:var(--brd)}
@@ -158,19 +158,54 @@ nav a:hover{opacity:1}
 .offer{max-width:1280px;margin:0 auto;padding:160px 40px}
 .offer h2{margin-top:16px;font-weight:100;font-size:clamp(36px,6vw,84px);letter-spacing:-.01em;line-height:1.14;text-transform:uppercase}
 .offer .lead-line{margin-top:18px;color:var(--dim);font-weight:300;font-size:17px;max-width:520px}
-.ogrid{margin-top:60px;display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--brd)}
-.ocell{padding:40px 32px;border-left:1px solid var(--brd);border-top:1px solid var(--brd)}
-.ocell:nth-child(-n+3){border-top:none}
-.ocell:nth-child(3n+1){border-left:none}
-[dir="rtl"] .ocell{border-left:none;border-right:1px solid var(--brd)}
-[dir="rtl"] .ocell:nth-child(3n+1){border-right:none}
-.ocell .n{font-weight:100;font-size:13px;letter-spacing:.4em;color:var(--faint)}
-.ocell h4{margin-top:14px;font-weight:300;font-size:19px;letter-spacing:0}
-.ocell p{margin-top:8px;color:var(--dim);font-weight:300;font-size:14.5px}
-@media (max-width:860px){.ogrid{grid-template-columns:1fr}.ocell{border-left:none!important;border-right:none!important;border-top:1px solid var(--brd)!important}.ocell:first-child{border-top:none!important}}
+/* every card carries a world render, so the section shows the product instead of only describing it */
+.obento{margin-top:60px;display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.ocard{position:relative;isolation:isolate;overflow:hidden;grid-column:span 3;display:flex;flex-direction:column;justify-content:flex-end;min-height:300px;padding:26px 24px;background:#060608;border:1px solid rgba(255,255,255,.09);border-radius:16px;transition:border-color .3s ease,box-shadow .3s ease}
+.ocard.big{grid-column:span 8;grid-row:span 2;min-height:560px;padding:40px 38px}
+.ocard.map{grid-column:span 4;grid-row:span 2;background:radial-gradient(ellipse 80% 55% at 50% 38%,rgba(143,227,255,.08),transparent 70%),#060608}
+.ocard>img,.ocard>video{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;opacity:.62;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .4s ease}
+.ocard::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,#000 6%,rgba(0,0,0,.74) 42%,rgba(0,0,0,.08) 100%)}
+.ocard.map::before{display:none}
+.ocard:hover{border-color:rgba(143,227,255,.38);box-shadow:0 18px 50px rgba(0,0,0,.6),0 0 34px rgba(143,227,255,.08)}
+.ocard:hover>img,.ocard:hover>video{transform:scale(1.04);opacity:.8}
+.ocard .n{font-weight:300;font-size:12px;letter-spacing:.3em;color:#8fe3ff}
+.ocard h4{margin-top:10px;font-weight:300;font-size:20px;line-height:1.35}
+.ocard.big h4{font-weight:200;font-size:clamp(26px,3vw,40px);line-height:1.25}
+.ocard p{margin-top:8px;max-width:460px;color:rgba(255,255,255,.74);font-weight:300;font-size:14.5px;line-height:1.7}
+.ocard.big p{font-size:16px}
+/* one world, cut to three screen shapes: the mapping claim, shown */
+.oscreens{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:8px 0 26px}
+.sc{background:url(/gallery/solaris.jpg) center/cover;box-shadow:0 0 0 1px rgba(143,227,255,.3),0 0 30px rgba(143,227,255,.14)}
+.sc-round{width:128px;height:128px;border-radius:50%}
+.sc-wall{width:min(100%,270px);aspect-ratio:21/8;border-radius:4px}
+.sc-split{display:flex;gap:7px;width:min(100%,270px);aspect-ratio:21/7;background:none;box-shadow:none}
+.sc-split i{flex:1;border-radius:3px;background:url(/gallery/solaris.jpg) 0 50%/300% auto no-repeat;box-shadow:0 0 0 1px rgba(143,227,255,.3),0 0 22px rgba(143,227,255,.12)}
+.sc-split i:nth-child(2){background-position:50% 50%}
+.sc-split i:nth-child(3){background-position:100% 50%}
+.sc-cap{font-size:12px;font-weight:300;letter-spacing:.02em;color:rgba(255,255,255,.5)}
+/* four across gets too narrow for the copy below ~1100px, so the small cards pair up */
+@media (max-width:1100px){.ocard{grid-column:span 6;min-height:260px}}
+@media (max-width:860px){
+  .offer{padding:110px 24px}
+  .obento{grid-template-columns:1fr 1fr}
+  .ocard{grid-column:span 1;min-height:260px}
+  .ocard.big,.ocard.map{grid-column:span 2;grid-row:auto}
+  .ocard.big{min-height:440px;padding:30px 26px}
+}
+@media (max-width:560px){
+  .obento{grid-template-columns:1fr;gap:12px}
+  .ocard,.ocard.big,.ocard.map{grid-column:span 1}
+  .ocard{min-height:230px}
+  .ocard.big{min-height:400px}
+  .oscreens{gap:14px}
+  .sc-round{width:96px;height:96px}
+}
+@media (prefers-reduced-motion:reduce){.ocard>img,.ocard>video{transition:none}.ocard:hover>img,.ocard:hover>video{transform:none}}
 
 /* ---------- contact ---------- */
 .contact{position:relative;overflow:hidden;border-top:1px solid var(--brd)}
+/* a faint world behind the form, so the page ends inside the show rather than on a blank sheet */
+.contact-bg{position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 50% 40% at 50% 30%,rgba(139,123,255,.16),transparent 70%),url(/gallery/seraph.jpg) center 12%/cover no-repeat;opacity:.34;-webkit-mask-image:linear-gradient(#000 0%,rgba(0,0,0,.55) 38%,transparent 78%);mask-image:linear-gradient(#000 0%,rgba(0,0,0,.55) 38%,transparent 78%)}
 .contact .inner{max-width:640px;margin:0 auto;padding:150px 32px;text-align:center;position:relative;z-index:2}
 .contact h2{font-weight:100;font-size:clamp(34px,5.6vw,70px);letter-spacing:-.01em;line-height:1.2;text-transform:uppercase}
 .contact p{margin:18px auto 0;color:var(--dim);font-weight:300;font-size:16.5px;max-width:420px}
@@ -275,10 +310,15 @@ nav a:hover{opacity:1}
 .process h4{margin-top:10px;font-weight:300;font-size:18px;letter-spacing:0}
 .process .pcol p:last-child{margin-top:8px;color:var(--dim);font-weight:300;font-size:14px;line-height:1.8}
 /* ---------- statement ---------- */
-.statement{min-height:64svh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 30px}
-.statement h2{font-weight:100;font-size:clamp(38px,7vw,80px);letter-spacing:-.01em;line-height:1.22;text-transform:none}
-.stprops{margin-top:34px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.stprops span{border:1px solid rgba(255,255,255,.22);padding:12px 24px;color:var(--dim);font-size:13.5px;letter-spacing:.02em}
+.statement{position:relative;isolation:isolate;overflow:hidden;min-height:80svh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 30px}
+.st-bg{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;opacity:.75}
+.statement::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(#000,transparent 22%,transparent 78%,#000),radial-gradient(ellipse 55% 50% at 50% 50%,rgba(0,0,0,.62),rgba(0,0,0,.88) 75%)}
+.statement h2{margin-top:16px;font-weight:100;font-size:clamp(38px,7vw,80px);letter-spacing:-.01em;line-height:1.22;text-transform:none;text-shadow:0 2px 30px rgba(0,0,0,.8)}
+.stprops{margin-top:28px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px 0;color:rgba(255,255,255,.8);font-size:14.5px;font-weight:300}
+.stprops span+span::before{content:"\00b7";margin:0 14px;color:#8fe3ff}
+.statement .cta-glow{margin-top:36px}
+/* on a phone the row wraps and strands a separator at a line start, so the items stack instead */
+@media (max-width:560px){.stprops{flex-direction:column;gap:6px}.stprops span+span::before{display:none}}
 @media (max-width:860px){.process{grid-template-columns:1fr}.process .pcol{border-right:none;border-top:1px solid var(--brd);padding:26px 6px}.process .pcol:first-child{border-top:none}}
 @media (max-width:900px){
   .g-grid{grid-template-columns:repeat(6,1fr)}
@@ -307,12 +347,27 @@ nav a:hover{opacity:1}
   .glb-close{top:10px;inset-inline-end:10px;width:36px;height:36px;font-size:20px}
 }
 
-.venuecheck{padding:120px 34px;text-align:center;border-top:1px solid var(--brd);background:radial-gradient(ellipse 55% 60% at 50% 50%, rgba(139,123,255,.09), transparent 72%)}
+.venuecheck{padding:130px 40px;border-top:1px solid var(--brd);background:radial-gradient(ellipse 50% 60% at 30% 50%, rgba(143,227,255,.06), transparent 72%)}
+.vc-wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1.15fr;gap:70px;align-items:center}
 .venuecheck .vc-eyebrow{font-size:12px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
-.venuecheck h3{margin-top:16px;font-weight:100;font-size:clamp(26px,4.2vw,46px);letter-spacing:0;line-height:1.3}
-.venuecheck .vc-p{margin:18px auto 0;max-width:520px;color:var(--dim);font-weight:300;font-size:16px;line-height:1.85}
-.venuecheck .vc-btn{display:inline-block;margin-top:30px;border:1px solid rgba(255,255,255,.8);padding:16px 38px;font-size:14px;letter-spacing:.04em;color:#fff;transition:background .3s,color .3s}
+.venuecheck h3{margin-top:16px;font-weight:100;font-size:clamp(28px,3.6vw,46px);letter-spacing:0;line-height:1.3}
+.venuecheck .vc-p{margin-top:18px;max-width:480px;color:var(--dim);font-weight:300;font-size:16px;line-height:1.85}
+.vc-shapes{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px 28px;list-style:none}
+.vc-shapes li{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:300;color:rgba(255,255,255,.75)}
+.vc-shapes svg{width:30px;height:22px;fill:none;stroke:#8fe3ff;stroke-width:1.2}
+.venuecheck .vc-btn{display:inline-block;margin-top:34px;border:1px solid rgba(255,255,255,.8);padding:16px 38px;font-size:14px;letter-spacing:.04em;color:#fff;transition:background .3s,color .3s}
 .venuecheck .vc-btn:hover{background:#fff;color:#000}
+/* a render dressed as an LED panel: dot-matrix overlay, glow, a slight turn toward the copy */
+.vc-screen{position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:10px;border:1px solid rgba(143,227,255,.22);box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 70px rgba(143,227,255,.14);transform:perspective(1400px) rotateY(9deg)}
+.vc-screen img{display:block;width:100%;height:100%;object-fit:cover}
+.vc-screen::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,transparent 52%,rgba(0,0,0,.5) 62%) 0 0/4px 4px}
+@media (max-width:860px){
+  .venuecheck{padding:90px 24px}
+  .vc-wrap{grid-template-columns:1fr;gap:44px;text-align:center}
+  .vc-screen{order:-1;transform:none}
+  .venuecheck .vc-p{margin-inline:auto}
+  .vc-shapes{justify-content:center}
+}
 
 /* ---------- on the dance floor ---------- */
 .floor{max-width:1280px;margin:0 auto;padding:140px 40px 40px}
@@ -393,7 +448,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 .social-dock svg{width:25px;height:25px}
 .to-top{bottom:calc(18px + var(--ck-h, 0px));right:18px;width:48px;height:48px}}
 /* press feedback lands on pointer-down, before the click resolves */
-.hero-cta:active,.btn:active,.vc-btn:active,.glb-cta:active,.g-chip:active,.g-more:active,.m-cta:active,.to-top.show:active,.glb-close:active{transform:scale(.97);transition:transform 80ms ease-out}
+.cta-glow:active,.btn:active,.vc-btn:active,.glb-cta:active,.g-chip:active,.g-more:active,.m-cta:active,.to-top.show:active,.glb-close:active{transform:scale(.97);transition:transform 80ms ease-out}
 .social-dock a:active{transform:scale(.94);transition:transform 80ms ease-out}
 .glb-nav:active{transform:translateY(-50%) scale(.94);transition:transform 80ms ease-out}
 .gcard:active{transform:scale(.985);transition:transform 80ms ease-out}
@@ -441,7 +496,7 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     <div class="eyebrow rv">Techno Visuals for Weddings</div>
     <h1 class="rv d1">Lumina</h1>
     <p class="tag rv d2">האפקט שהופך את האירוע שלכם למסיבה</p>
-    <div class="rv d2"><a class="hero-cta" href="#contact">לקבלת הצעת מחיר</a><p class="hero-promise">מתחייבים למחיר הטוב בישראל</p></div>
+    <div class="rv d2"><a class="cta-glow" href="#contact">לקבלת הצעת מחיר</a><p class="hero-promise">מתחייבים למחיר הטוב בישראל</p></div>
     <div class="meta-line rv d3"><i></i><span>3D Techno</span><i></i><span>Custom Worlds</span><i></i><span>Any Screen</span><i></i></div>
    </div>
   </div>
@@ -661,40 +716,59 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
 <div class="offer" id="offer">
   <div class="sec-eyebrow rv">The Offer</div>
   <h2 class="rv d1" style="margin-top:16px;font-weight:100;font-size:clamp(32px,5vw,64px);letter-spacing:-.01em;line-height:1.15;text-transform:uppercase">מה נכנס לחבילה</h2>
-  <div class="ogrid rv d2">
-    <div class="ocell"><div class="n">01</div><h4>סט אנימציות לרחבה</h4><p>עולמות טכנו בתלת ממד שנבנים במיוחד לחתונה שלכם, בצבעים ובאווירה שאתם בוחרים. לא תבנית מוכנה ולא לופ שהורדתם מהאינטרנט.</p></div>
-    <div class="ocell"><div class="n">02</div><h4>מיפוי מדויק לכל מסך</h4><p>מסך עגול, קיר LED או מבנה מפוצל. אנחנו עובדים לפי המידות והרזולוציה של האולם, פיקסל מול פיקסל, בלי מתיחות ובלי חיתוכים.</p></div>
-    <div class="ocell"><div class="n">03</div><h4>בנוי לשלב המתקדם</h4><p>מהרגע שהדיג'יי מעלה הילוך ועד סוף הערב. עוצמה שמחזיקה רחבה מלאה, ולא רקע יפה שאף אחד לא מסתכל עליו.</p></div>
-    <div class="ocell"><div class="n">04</div><h4>מדברים ישירות עם האולם והדיג'יי</h4><p>אתם לא צריכים להבין בטכנולוגיה. אנחנו מתאמים מולם את הפורמט, מוודאים שהכול רץ, ונשארים זמינים ביום החתונה.</p></div>
-    <div class="ocell"><div class="n">05</div><h4>לוחות זמנים מחייבים</h4><p>הצעת מחיר תוך 24 שעות ואספקה תוך ימים ספורים. גם אם החתונה כבר בשבוע הבא, יש לנו ערוץ מהיר.</p></div>
-    <div class="ocell"><div class="n">06</div><h4>סבבי תיקונים כלולים</h4><p>מדייקים עד שזה בדיוק מה שדמיינתם. בלי לספור גרסאות ובלי הפתעות בהצעה.</p></div>
+  <div class="obento rv d2">
+    <div class="ocard big">
+      <video src="/videos/clip3.mp4" poster="/videos/posters/deepviolet.jpg" muted loop playsinline preload="none" aria-hidden="true"></video>
+      <div class="n">01</div><h4>סט אנימציות לרחבה</h4><p>עולמות טכנו בתלת ממד שנבנים במיוחד לחתונה שלכם, בצבעים ובאווירה שאתם בוחרים. לא תבנית מוכנה ולא לופ שהורדתם מהאינטרנט.</p>
+    </div>
+    <div class="ocard map">
+      <div class="oscreens" aria-hidden="true">
+        <span class="sc sc-round"></span>
+        <span class="sc sc-wall"></span>
+        <span class="sc sc-split"><i></i><i></i><i></i></span>
+        <span class="sc-cap">אותו עולם, שלוש צורות מסך</span>
+      </div>
+      <div class="n">02</div><h4>מיפוי מדויק לכל מסך</h4><p>מסך עגול, קיר LED או מבנה מפוצל. אנחנו עובדים לפי המידות והרזולוציה של האולם, פיקסל מול פיקסל, בלי מתיחות ובלי חיתוכים.</p>
+    </div>
+    <div class="ocard"><img src="/videos/posters/crimson.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720"><div class="n">03</div><h4>בנוי לשלב המתקדם</h4><p>מהרגע שהדיג'יי מעלה הילוך ועד סוף הערב. עוצמה שמחזיקה רחבה מלאה, ולא רקע יפה שאף אחד לא מסתכל עליו.</p></div>
+    <div class="ocard"><img src="/gallery/halo.jpg" alt="" loading="lazy" decoding="async" width="1600" height="900"><div class="n">04</div><h4>מדברים ישירות עם האולם והדיג'יי</h4><p>אתם לא צריכים להבין בטכנולוגיה. אנחנו מתאמים מולם את הפורמט, מוודאים שהכול רץ, ונשארים זמינים ביום החתונה.</p></div>
+    <div class="ocard"><img src="/gallery/voltage.jpg" alt="" loading="lazy" decoding="async" width="1600" height="900"><div class="n">05</div><h4>לוחות זמנים מחייבים</h4><p>הצעת מחיר תוך 24 שעות ואספקה תוך ימים ספורים. גם אם החתונה כבר בשבוע הבא, יש לנו ערוץ מהיר.</p></div>
+    <div class="ocard"><img src="/videos/posters/indigo.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720"><div class="n">06</div><h4>סבבי תיקונים כלולים</h4><p>מדייקים עד שזה בדיוק מה שדמיינתם. בלי לספור גרסאות ובלי הפתעות בהצעה.</p></div>
   </div>
 </div>
 
 <!-- PRICE STATEMENT -->
 <section class="statement">
+  <video class="st-bg" src="/videos/clip3.mp4" poster="/videos/posters/deepviolet.jpg" muted loop playsinline preload="none" aria-hidden="true"></video>
   <div class="rv">
+    <div class="sec-eyebrow">Launch Pricing</div>
     <h2>מחיר השקה.<br>עד סוף 2026.</h2>
-    <div class="stprops">
-      <span>ללא הגבלת גרסאות</span>
-      <span>מותאם לכל מסך</span>
-      <span>הצעת מחיר תוך 24 שעות</span>
-    </div>
+    <p class="stprops"><span>ללא הגבלת גרסאות</span><span>מותאם לכל מסך</span><span>הצעת מחיר תוך 24 שעות</span></p>
+    <a class="cta-glow" href="#contact">לקבלת הצעת מחיר</a>
   </div>
 </section>
 
 <!-- VENUE CHECK -->
 <section class="venuecheck">
-  <div class="rv">
-    <p class="vc-eyebrow">בדיקת התאמה</p>
-    <h3>לא בטוחים שהמסך באולם שלכם מתאים?</h3>
-    <p class="vc-p">שלחו לנו את שם האולם ואנחנו בודקים בשבילכם, בלי עלות ובלי התחייבות. רוב האולמות בישראל כבר מגיעים עם מסך, הוא רק צריך תוכן ששווה להדליק אותו בשבילו.</p>
-    <a class="vc-btn" href="#contact">בדיקת האולם שלי</a>
+  <div class="vc-wrap">
+    <div class="vc-copy rv">
+      <p class="vc-eyebrow">בדיקת התאמה</p>
+      <h3>לא בטוחים שהמסך באולם שלכם מתאים?</h3>
+      <p class="vc-p">שלחו לנו את שם האולם ואנחנו בודקים בשבילכם, בלי עלות ובלי התחייבות. רוב האולמות בישראל כבר מגיעים עם מסך, הוא רק צריך תוכן ששווה להדליק אותו בשבילו.</p>
+      <ul class="vc-shapes">
+        <li><svg viewBox="0 0 30 22" aria-hidden="true"><circle cx="15" cy="11" r="9.5"/></svg>מסך עגול</li>
+        <li><svg viewBox="0 0 30 22" aria-hidden="true"><rect x="1" y="4" width="28" height="14" rx="1"/></svg>קיר LED</li>
+        <li><svg viewBox="0 0 30 22" aria-hidden="true"><rect x="1" y="4" width="8" height="14" rx="1"/><rect x="11" y="4" width="8" height="14" rx="1"/><rect x="21" y="4" width="8" height="14" rx="1"/></svg>מבנה מפוצל</li>
+      </ul>
+      <a class="vc-btn" href="#contact">בדיקת האולם שלי</a>
+    </div>
+    <div class="vc-screen rv d1" aria-hidden="true"><img src="/videos/posters/teal.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720"></div>
   </div>
 </section>
 
 <!-- CONTACT -->
 <section class="contact" id="contact">
+  <div class="contact-bg" aria-hidden="true"></div>
   <div class="inner rv">
     <div class="sec-eyebrow">Contact</div>
     <h2 style="margin-top:16px">בואו נדליק את הרחבה שלכם</h2>
