@@ -123,7 +123,10 @@
         '<p>האתר עושה שימוש בעוגיות לצרכים טכניים ולשיפור חוויית הגלישה. פרטים נוספים ב<a href="/legal.html#privacy">מדיניות הפרטיות</a>.</p>' +
         '<button class="ok">אישור</button><button class="no">דחייה</button>';
       document.body.appendChild(bar);
-      function close(v){ try { localStorage.setItem(CK, v); } catch(e){} bar.classList.remove('show'); }
+      // the page lifts its floating buttons by this much, so the bar never covers WhatsApp
+      var root = document.documentElement;
+      root.style.setProperty('--ck-h', bar.offsetHeight + 'px');
+      function close(v){ try { localStorage.setItem(CK, v); } catch(e){} bar.classList.remove('show'); root.style.removeProperty('--ck-h'); }
       bar.querySelector('.ok').addEventListener('click', function(){ close('accepted'); });
       bar.querySelector('.no').addEventListener('click', function(){ close('declined'); });
     }
