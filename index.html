@@ -322,7 +322,8 @@ nav a:hover{opacity:1}
 @media (max-width:560px){.stprops{flex-direction:column;gap:6px}.stprops span+span::before{display:none}}
 @media (max-width:860px){.process{grid-template-columns:1fr}.process .pcol{border-right:none;border-top:1px solid var(--brd);padding:26px 6px}.process .pcol:first-child{border-top:none}}
 @media (max-width:900px){
-  .g-grid{grid-template-columns:repeat(6,1fr)}
+  /* an odd run of cards before a full-width band would leave a hole; dense lets the next card fill it */
+  .g-grid{grid-template-columns:repeat(6,1fr);grid-auto-flow:dense}
   /* two columns: the oversized tiles become regular ones so the rows stay full */
   .gcard,.gcard.feat,.g-grid.filtered .gcard{grid-column:span 3;grid-row:auto;aspect-ratio:16/9}
   .gcard.band{grid-column:span 6;aspect-ratio:16/9}
@@ -543,27 +544,27 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
   </div>
 
   <div class="g-filters rv d1" role="group" aria-label="סינון לפי אווירה">
-    <button class="g-chip on" type="button" data-cat="all" aria-pressed="true">הכול <i>20</i></button>
-    <button class="g-chip" type="button" data-cat="dark" aria-pressed="false">אפל ועוצמתי <i>4</i></button>
-    <button class="g-chip" type="button" data-cat="neon" aria-pressed="false">ניאון וצבע <i>7</i></button>
-    <button class="g-chip" type="button" data-cat="soft" aria-pressed="false">רך ורומנטי <i>5</i></button>
-    <button class="g-chip" type="button" data-cat="gold" aria-pressed="false">זהב וחום <i>4</i></button>
+    <button class="g-chip on" type="button" data-cat="all" aria-pressed="true">הכול <i>37</i></button>
+    <button class="g-chip" type="button" data-cat="dark" aria-pressed="false">אפל ועוצמתי <i>7</i></button>
+    <button class="g-chip" type="button" data-cat="neon" aria-pressed="false">ניאון וצבע <i>11</i></button>
+    <button class="g-chip" type="button" data-cat="soft" aria-pressed="false">רך ורומנטי <i>9</i></button>
+    <button class="g-chip" type="button" data-cat="gold" aria-pressed="false">זהב וחום <i>10</i></button>
   </div>
 
   <div class="g-grid rv d2" id="gGrid">
-    <button class="gcard feat" type="button" data-cat="dark" data-title="Crimson" data-label="אפל ועוצמתי" data-desc="דמות עוטת גלימה על מסך עגול, ופיצוץ אור אדום שנפתח מאחוריה. העולם הכי דרמטי בסט, לרגע שהדיג'יי מפיל את הביט." data-src="/videos/clip2.mp4">
+    <button class="gcard feat" type="button" data-cat="neon" data-title="Iris" data-label="ניאון וצבע" data-desc="עין ענקית שבנויה מלוחות ניאון בכחול וסגול, עם אישון שמסתחרר לעומק. עולם היפנוטי שמושך את כל הרחבה להסתכל למסך." data-src="/videos/worlds/eye.mp4">
+      <img src="/videos/worlds/eye.jpg" alt="Iris — עין ניאון ענקית עם אישון מסתחרר" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Iris</span><span class="gc-tag">ניאון וצבע</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="dark" data-title="Crimson" data-label="אפל ועוצמתי" data-desc="דמות עוטת גלימה על מסך עגול, ופיצוץ אור אדום שנפתח מאחוריה. העולם הכי דרמטי בסט, לרגע שהדיג'יי מפיל את הביט." data-src="/videos/clip2.mp4">
       <img src="/videos/posters/crimson.jpg" alt="Crimson — דמות עוטת גלימה מול פיצוץ אור אדום" loading="lazy" decoding="async" width="1280" height="720">
       <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
       <span class="gc-motion">מונפש</span>
       <span class="gc-cap"><span class="gc-name">Crimson</span><span class="gc-tag">אפל ועוצמתי</span></span>
-      <span class="gc-cue">לצפייה</span>
-    </button>
-
-    <button class="gcard" type="button" data-cat="neon" data-title="Teal" data-label="ניאון וצבע" data-desc="איל עם קרניים זוהרות בטורקיז וגופי אור שמרחפים סביבו. נקי, קר וקריא גם על מסך גדול מאוד." data-src="/videos/clip5.mp4">
-      <img src="/videos/posters/teal.jpg" alt="Teal — איל עם קרניים זוהרות בטורקיז" loading="lazy" decoding="async" width="1280" height="720">
-      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
-      <span class="gc-motion">מונפש</span>
-      <span class="gc-cap"><span class="gc-name">Teal</span><span class="gc-tag">ניאון וצבע</span></span>
       <span class="gc-cue">לצפייה</span>
     </button>
 
@@ -575,11 +576,55 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       <span class="gc-cue">לצפייה</span>
     </button>
 
+    <button class="gcard" type="button" data-cat="gold" data-title="Pharaoh" data-label="זהב וחום" data-desc="שני פרעונים מוזהבים משני צדי פירמידה של קווי ציאן, בתוך אבק זהב. עולם עם נוכחות של טקס גדול." data-src="/videos/worlds/pharaohs.mp4">
+      <img src="/videos/worlds/pharaohs.jpg" alt="Pharaoh — שני פרעונים מוזהבים ופירמידה של קווי ציאן" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Pharaoh</span><span class="gc-tag">זהב וחום</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="neon" data-title="Teal" data-label="ניאון וצבע" data-desc="איל עם קרניים זוהרות בטורקיז וגופי אור שמרחפים סביבו. נקי, קר וקריא גם על מסך גדול מאוד." data-src="/videos/clip5.mp4">
+      <img src="/videos/posters/teal.jpg" alt="Teal — איל עם קרניים זוהרות בטורקיז" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Teal</span><span class="gc-tag">ניאון וצבע</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="dark" data-title="Nebula" data-label="אפל ועוצמתי" data-desc="ראש אבן סדוק שאור ציאן פורץ מתוכו ונשבר לרסיסים בתוך ערפילית כתומה וסגולה. דרמטי, לרגע שהביט נוחת." data-src="/videos/worlds/nebula.mp4">
+      <img src="/videos/worlds/nebula.jpg" alt="Nebula — ראש אבן סדוק עם אור ציאן בתוך ערפילית" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Nebula</span><span class="gc-tag">אפל ועוצמתי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard band" type="button" data-cat="gold" data-title="Cathedral" data-label="זהב וחום" data-desc="חזית קתדרלה גותית שחלון הוורדים שלה נדלק בזהב. רחב ומונומנטלי, בנוי לקירות LED ארוכים." data-src="/videos/worlds/cathedral.mp4">
+      <img src="/videos/worlds/cathedral.jpg" alt="Cathedral — חזית קתדרלה גותית עם חלון ורדים זוהר" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Cathedral</span><span class="gc-tag">זהב וחום</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
     <button class="gcard" type="button" data-cat="soft" data-title="Indigo" data-label="רך ורומנטי" data-desc="שיער שנפרש כמו עשן כחול וסגול במים. עולם שקט יותר, מתאים לרגעים שבין הסטים." data-src="/videos/clip4.mp4">
       <img src="/videos/posters/indigo.jpg" alt="Indigo — שיער שנפרש כעשן כחול וסגול במים" loading="lazy" decoding="async" width="1280" height="720">
       <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
       <span class="gc-motion">מונפש</span>
       <span class="gc-cap"><span class="gc-name">Indigo</span><span class="gc-tag">רך ורומנטי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="dark" data-title="Masquerade" data-label="אפל ועוצמתי" data-desc="מלכה במסכה מוזהבת בתוך מסגרת אש כתומה, ועורבים שעפים מתוך העשן. מסתורי ותיאטרלי.">
+      <img src="/videos/worlds/masquerade.jpg" alt="Masquerade — מלכה במסכה מוזהבת בתוך מסגרת אש" loading="lazy" decoding="async" width="1280" height="720">
+      <span class="gc-cap"><span class="gc-name">Masquerade</span><span class="gc-tag">אפל ועוצמתי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="neon" data-title="Disco" data-label="ניאון וצבע" data-desc="כדור דיסקו שמתפוצץ לאלפי רסיסים מעל דמות כרום בתוך מסגרת אור לבנה. העולם הכי מסיבתי בסט.">
+      <img src="/videos/worlds/disco.jpg" alt="Disco — כדור דיסקו מתפוצץ מעל דמות כרום" loading="lazy" decoding="async" width="1280" height="720">
+      <span class="gc-cap"><span class="gc-name">Disco</span><span class="gc-tag">ניאון וצבע</span></span>
       <span class="gc-cue">לצפייה</span>
     </button>
 
@@ -591,11 +636,15 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       <span class="gc-cue">לצפייה</span>
     </button>
 
-    <button class="gcard" type="button" data-cat="soft" data-title="Solstice" data-label="רך ורומנטי" data-desc="כתר קרניים ונטיפי אור, בין ורוד לטורקיז. הכי קרוב לאסתטיקה של חתונה, בלי לוותר על העוצמה." data-src="/videos/solstice.mp4">
-      <img src="/videos/posters/solstice.jpg" alt="Solstice — כתר קרניים ונטיפי אור בוורוד וטורקיז" loading="lazy" decoding="async" width="1280" height="720">
-      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
-      <span class="gc-motion">מונפש</span>
-      <span class="gc-cap"><span class="gc-name">Solstice</span><span class="gc-tag">רך ורומנטי</span></span>
+    <button class="gcard" type="button" data-cat="neon" data-title="Prism" data-label="ניאון וצבע" data-desc="פנים מגבישי קרח שקופים בתוך עשן כחול, וקרני לייזר סגולות שחוצות אותן. קר, חד ומודרני.">
+      <img src="/videos/worlds/prism.jpg" alt="Prism — פנים מגבישי קרח וקרני לייזר סגולות" loading="lazy" decoding="async" width="1280" height="720">
+      <span class="gc-cap"><span class="gc-name">Prism</span><span class="gc-tag">ניאון וצבע</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="gold" data-title="Guardian" data-label="זהב וחום" data-desc="שומר מוזהב עם כתר קרניים שיוצא מתוך מסגרת אור, ושברי זהב סביבו. תחושה של כניסה מלכותית.">
+      <img src="/videos/worlds/guardian.jpg" alt="Guardian — שומר מוזהב יוצא ממסגרת אור" loading="lazy" decoding="async" width="1280" height="720">
+      <span class="gc-cap"><span class="gc-name">Guardian</span><span class="gc-tag">זהב וחום</span></span>
       <span class="gc-cue">לצפייה</span>
     </button>
 
@@ -607,15 +656,53 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       <span class="gc-cue">לצפייה</span>
     </button>
 
+    <button class="gcard feat" type="button" data-cat="gold" data-title="Phoenix" data-label="זהב וחום" data-desc="עוף חול שנפרש בלהבות כתומות ובגיצים. עוצמה מלאה, לפתיחה של השלב המתקדם.">
+      <img src="/videos/worlds/phoenix.jpg" alt="Phoenix — עוף חול נפרש בלהבות" loading="lazy" decoding="async" width="1280" height="720">
+      <span class="gc-cap"><span class="gc-name">Phoenix</span><span class="gc-tag">זהב וחום</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="soft" data-title="Solstice" data-label="רך ורומנטי" data-desc="כתר קרניים ונטיפי אור, בין ורוד לטורקיז. הכי קרוב לאסתטיקה של חתונה, בלי לוותר על העוצמה." data-src="/videos/solstice.mp4">
+      <img src="/videos/posters/solstice.jpg" alt="Solstice — כתר קרניים ונטיפי אור בוורוד וטורקיז" loading="lazy" decoding="async" width="1280" height="720">
+      <video class="gv" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="gc-motion">מונפש</span>
+      <span class="gc-cap"><span class="gc-name">Solstice</span><span class="gc-tag">רך ורומנטי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="dark" data-title="Siren" data-label="אפל ועוצמתי" data-desc="דמות בשריון לבה שעולה מתוך מים שחורים, עם קרני לייזר כתומות ועשן. אפל, חם ומאיים במידה הנכונה.">
+      <img src="/videos/worlds/siren.jpg" alt="Siren — דמות בשריון לבה עולה ממים שחורים" loading="lazy" decoding="async" width="1280" height="720">
+      <span class="gc-cap"><span class="gc-name">Siren</span><span class="gc-tag">אפל ועוצמתי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
     <button class="gcard" type="button" data-cat="neon" data-title="Voltage" data-label="ניאון וצבע" data-desc="ברקים לבנים שפורצים מהעיניים, בתוך טבעת ציאן ומגנטה. עולם חד ותוקפני, לרגעי השיא של הסט.">
       <img src="/gallery/voltage.jpg" alt="Voltage — פנים עם ברקים לבנים בתוך טבעת ציאן ומגנטה" loading="lazy" decoding="async" width="1600" height="900">
       <span class="gc-cap"><span class="gc-name">Voltage</span><span class="gc-tag">ניאון וצבע</span></span>
       <span class="gc-cue">לצפייה</span>
     </button>
 
+    <button class="gcard" type="button" data-cat="soft" data-title="Bloom" data-label="רך ורומנטי" data-desc="פרח שבנוי מאלפי סיבי אור, בין לבן לסגול. רך ונושם, לרגעים שבין הסטים.">
+      <img src="/videos/worlds/flower.jpg" alt="Bloom — פרח עשוי סיבי אור לבנים וסגולים" loading="lazy" decoding="async" width="1280" height="720">
+      <span class="gc-cap"><span class="gc-name">Bloom</span><span class="gc-tag">רך ורומנטי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="neon" data-title="Shatter" data-label="ניאון וצבע" data-desc="דמות מזכוכית נוזלית שמנפצת את מסגרת המסך, עם זיקוקים מאחוריה. תלת ממד שנראה כאילו יוצא מהקיר.">
+      <img src="/videos/worlds/shatter.jpg" alt="Shatter — דמות זכוכית מנפצת את מסגרת המסך" loading="lazy" decoding="async" width="1280" height="720">
+      <span class="gc-cap"><span class="gc-name">Shatter</span><span class="gc-tag">ניאון וצבע</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
     <button class="gcard" type="button" data-cat="soft" data-title="Onyx" data-label="רך ורומנטי" data-desc="דיוקן על רקע לבן, עם שיער שנפרש כמו דיו שחור במים. ניגוד חזק שנראה מצוין על מסך גדול.">
       <img src="/gallery/onyx.jpg" alt="Onyx — דיוקן עם שיער כדיו שחור על רקע לבן" loading="lazy" decoding="async" width="1600" height="900">
       <span class="gc-cap"><span class="gc-name">Onyx</span><span class="gc-tag">רך ורומנטי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="gold" data-title="Pillars" data-label="זהב וחום" data-desc="אולם של עמודים שחורים עם להבה על כל אחד, ורצפה שמשקפת את האור. שקט וחגיגי, מצוין לכניסה.">
+      <img src="/videos/worlds/pillars.jpg" alt="Pillars — אולם עמודים עם להבות ורצפה משקפת" loading="lazy" decoding="async" width="1280" height="720">
+      <span class="gc-cap"><span class="gc-name">Pillars</span><span class="gc-tag">זהב וחום</span></span>
       <span class="gc-cue">לצפייה</span>
     </button>
 
@@ -645,15 +732,33 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
       <span class="gc-cue">לצפייה</span>
     </button>
 
+    <button class="gcard" type="button" data-cat="soft" data-title="Frost" data-label="רך ורומנטי" data-desc="אלה עשויה קרח ששיערה נפרש כמו זרמי מים, בתוך מסגרת ציאן. צלול, קר ואלגנטי.">
+      <img src="/videos/worlds/frost.jpg" alt="Frost — אלת קרח בתוך מסגרת ציאן" loading="lazy" decoding="async" width="1280" height="720">
+      <span class="gc-cap"><span class="gc-name">Frost</span><span class="gc-tag">רך ורומנטי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
     <button class="gcard" type="button" data-cat="gold" data-title="Solaris" data-label="זהב וחום" data-desc="פיצוץ של קווי אור כתומים סביב דמות. חם, רועש ומלא אנרגיה, ההפך הגמור מהעולמות הכחולים.">
       <img src="/gallery/solaris.jpg" alt="Solaris — פיצוץ קווי אור כתומים סביב דמות" loading="lazy" decoding="async" width="1600" height="900">
       <span class="gc-cap"><span class="gc-name">Solaris</span><span class="gc-tag">זהב וחום</span></span>
       <span class="gc-cue">לצפייה</span>
     </button>
 
+    <button class="gcard" type="button" data-cat="soft" data-title="Glasswing" data-label="רך ורומנטי" data-desc="דמות לבנה עם כנפיים של רסיסי זכוכית בכחול וסגול, בתוך מסגרת אור. שקט ומלכותי.">
+      <img src="/videos/worlds/glasswing.jpg" alt="Glasswing — דמות עם כנפי זכוכית כחולות וסגולות" loading="lazy" decoding="async" width="1280" height="720">
+      <span class="gc-cap"><span class="gc-name">Glasswing</span><span class="gc-tag">רך ורומנטי</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
     <button class="gcard" type="button" data-cat="gold" data-title="Halo" data-label="זהב וחום" data-desc="טבעת אור לבנה סביב דמות עם אור זהוב בחזה. נקי וסימטרי, יושב טוב במרכז מסך עגול.">
       <img src="/gallery/halo.jpg" alt="Halo — טבעת אור לבנה סביב דמות עם אור זהוב בחזה" loading="lazy" decoding="async" width="1600" height="900">
       <span class="gc-cap"><span class="gc-name">Halo</span><span class="gc-tag">זהב וחום</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard band" type="button" data-cat="gold" data-title="Nautilus" data-label="זהב וחום" data-desc="קונכיית נאוטילוס מזהב וחוטי אור שעומדת במדבר בשקיעה. רחב ושקט, עם פרטים שמתגלים על מסך גדול.">
+      <img src="/videos/worlds/nautilus.jpg" alt="Nautilus — קונכיית נאוטילוס מזהב במדבר בשקיעה" loading="lazy" decoding="async" width="1280" height="720">
+      <span class="gc-cap"><span class="gc-name">Nautilus</span><span class="gc-tag">זהב וחום</span></span>
       <span class="gc-cue">לצפייה</span>
     </button>
 
@@ -666,6 +771,12 @@ footer{padding:40px;text-align:center;color:var(--faint);font-size:10.5px;letter
     <button class="gcard" type="button" data-cat="neon" data-title="Verdant" data-label="ניאון וצבע" data-desc="דמות בתוך כדור טורקיז עם ברקים ירוקים שרצים על העור. אחד העולמות הכי קריאים ממרחק.">
       <img src="/gallery/verdant.jpg" alt="Verdant — דמות בכדור טורקיז עם ברקים ירוקים" loading="lazy" decoding="async" width="1600" height="900">
       <span class="gc-cap"><span class="gc-name">Verdant</span><span class="gc-tag">ניאון וצבע</span></span>
+      <span class="gc-cue">לצפייה</span>
+    </button>
+
+    <button class="gcard" type="button" data-cat="soft" data-title="Ascension" data-label="רך ורומנטי" data-desc="דמות שמרחפת מעל ים עננים, מתחת להילה של אור ציאן. בהיר ורך, קרוב לאסתטיקה של חופה.">
+      <img src="/videos/worlds/ascension.jpg" alt="Ascension — דמות מרחפת מעל עננים מתחת להילה" loading="lazy" decoding="async" width="1280" height="720">
+      <span class="gc-cap"><span class="gc-name">Ascension</span><span class="gc-tag">רך ורומנטי</span></span>
       <span class="gc-cue">לצפייה</span>
     </button>
 
